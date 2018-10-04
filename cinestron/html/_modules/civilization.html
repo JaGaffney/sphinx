@@ -1,0 +1,779 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>civilization &mdash; cinestron 2018 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> cinestron
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cinestron</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>civilization</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for civilization</h1><div class="highlight"><pre>
+<span></span><span class="c1">#Copyright © 2018 by Joe Gaffney, Jon Gaffney of Cinestron Ltd, All Rights Reserved</span>
+<span class="c1"># context contains all of our main imports and the CsContext class </span>
+<span class="c1">#imported in with no namespace</span>
+<span class="kn">from</span> <span class="nn">context</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">schedule_manager_ui</span> <span class="k">as</span> <span class="nn">schedule_manager_ui</span>
+<span class="kn">import</span> <span class="nn">file_browser</span> <span class="k">as</span> <span class="nn">FileBrowser</span>
+<span class="kn">import</span> <span class="nn">ftp_connect</span> <span class="k">as</span> <span class="nn">ftp_connect</span>
+<span class="kn">import</span> <span class="nn">qtdbg</span> <span class="k">as</span> <span class="nn">qtdbg</span>
+<span class="kn">import</span> <span class="nn">web_browser_alt</span> <span class="k">as</span> <span class="nn">web_browser</span>
+<span class="c1">#import threading_example as threading_example</span>
+<span class="kn">import</span> <span class="nn">threading_ftp</span> <span class="k">as</span> <span class="nn">threading_ftp</span>
+<span class="kn">import</span> <span class="nn">top_banner</span> <span class="k">as</span> <span class="nn">top_banner</span>
+<span class="kn">import</span> <span class="nn">spolier</span> <span class="k">as</span> <span class="nn">spolier</span>
+<span class="kn">import</span> <span class="nn">ftp_connect_ui</span> <span class="k">as</span> <span class="nn">ftp_connect_ui</span>
+<span class="kn">import</span> <span class="nn">update_check</span> <span class="k">as</span> <span class="nn">update_check</span>
+
+<span class="k">def</span> <span class="nf">showdialog</span><span class="p">(</span><span class="n">in_context</span><span class="p">,</span> <span class="n">in_terms_info</span><span class="p">):</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="p">()</span>
+    <span class="n">msg</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Information</span><span class="p">)</span>
+    <span class="n">terms_info</span> <span class="o">=</span> <span class="n">in_terms_info</span>
+    <span class="n">msg</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Do you agree to the terms and conditions of using this software and servers?&quot;</span><span class="p">)</span>
+    <span class="n">msg</span><span class="o">.</span><span class="n">setInformativeText</span><span class="p">(</span><span class="n">terms_info</span><span class="p">)</span>
+    <span class="n">msg</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Terms and conditions&quot;</span><span class="p">)</span>
+    <span class="c1">#msg.setDetailedText(cinestron_user_info.terms_and_conditions)</span>
+    <span class="n">msg</span><span class="o">.</span><span class="n">setStandardButtons</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">)</span>
+
+    <span class="n">retval</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">retval</span>
+
+<span class="c1">############################################################################</span>
+<span class="c1"># main ui class</span>
+<span class="c1">############################################################################</span>
+<span class="n">g_debug</span> <span class="o">=</span> <span class="mi">0</span>
+<div class="viewcode-block" id="CivilizationUI"><a class="viewcode-back" href="../dev_docs.html#civilization.CivilizationUI">[docs]</a><span class="k">class</span> <span class="nc">CivilizationUI</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    what this class does</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">log</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># ui vars</span>
+    <span class="n">tab_list</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">tab_list</span><span class="p">[</span><span class="s2">&quot;total&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ftp_connect_list</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">ftp_connect_list</span><span class="p">[</span><span class="s2">&quot;total&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">label_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Login&quot;</span><span class="p">,</span> <span class="s2">&quot;Communication&quot;</span><span class="p">,</span> <span class="s2">&quot;Project Manager&quot;</span><span class="p">,</span> <span class="s2">&quot;Filebrowser&quot;</span><span class="p">,</span> <span class="s2">&quot;Filebrowser&quot;</span><span class="p">,</span> <span class="s2">&quot;Filebrowser&quot;</span><span class="p">]</span>
+    <span class="n">tool_tip_browser</span> <span class="o">=</span> <span class="s2">&quot;Curent directory location for mapping</span><span class="se">\n\n</span><span class="s2"> Red=missing local, Green=match, Blue=missing on server(you have it only).&quot;</span>
+    <span class="n">label_keys_tips</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Login info&quot;</span><span class="p">,</span> <span class="s2">&quot;Communication info&quot;</span><span class="p">,</span> <span class="s2">&quot;Project info&quot;</span><span class="p">,</span> <span class="n">tool_tip_browser</span><span class="p">,</span> <span class="n">tool_tip_browser</span><span class="p">,</span> <span class="n">tool_tip_browser</span><span class="p">]</span>
+
+<div class="viewcode-block" id="CivilizationUI.__init__"><a class="viewcode-back" href="../dev_docs.html#civilization.CivilizationUI.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">in_context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CivilizationUI</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type parent: </span>
+<span class="sd">        :param parent:</span>
+<span class="sd">        :type in_context: </span>
+<span class="sd">        :param in_context:  </span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># initlize our context</span>
+        <span class="c1"># if one is not passed in</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">in_context</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">in_context</span>
+        <span class="k">else</span><span class="p">:</span>    
+            <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">CsContext</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">loadContext</span><span class="p">()</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_form_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span><span class="c1">#QFormLayout()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_layout</span> <span class="o">=</span> <span class="n">QTabWidget</span><span class="p">()</span>
+        <span class="c1"># for side tabs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_layout</span><span class="o">.</span><span class="n">setTabBar</span><span class="p">(</span><span class="n">FingerTabBarWidget</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span><span class="n">height</span><span class="o">=</span><span class="mi">50</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_layout</span><span class="o">.</span><span class="n">setTabPosition</span><span class="p">(</span><span class="n">QTabWidget</span><span class="o">.</span><span class="n">West</span><span class="p">)</span>
+
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_tab</span><span class="p">(</span><span class="s2">&quot;tab&quot;</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab1UI</span><span class="p">()</span>
+        <span class="c1">#</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_form_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_master_layout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_master_form_layout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Civilization - </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">CS_VERSION</span><span class="p">))</span>
+
+        <span class="c1"># console logger.</span>
+        <span class="c1"># hidden by default</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">qtdbg</span><span class="o">.</span><span class="n">QDbgConsole</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">set_scheme</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Console log:&quot;</span><span class="p">)</span>
+
+        <span class="n">dbg_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">dbg_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+        <span class="n">spolier_widget</span> <span class="o">=</span> <span class="n">spolier</span><span class="o">.</span><span class="n">Spoiler</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Console log:&quot;</span><span class="p">)</span>
+        <span class="n">spolier_widget</span><span class="o">.</span><span class="n">setContentLayout</span><span class="p">(</span><span class="n">dbg_layout</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_form_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">spolier_widget</span><span class="p">)</span>
+        <span class="c1"># auto login if user has allready login on there system</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">post_login</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">login_call</span><span class="p">()</span>
+
+        <span class="c1"># refresh login ui</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">login_mode_change</span><span class="p">()</span></div>
+
+    <span class="c1">############################################################################</span>
+    <span class="c1"># tab utils</span>
+    <span class="c1">############################################################################</span>
+<div class="viewcode-block" id="CivilizationUI.add_tab"><a class="viewcode-back" href="../dev_docs.html#civilization.CivilizationUI.add_tab">[docs]</a>    <span class="k">def</span> <span class="nf">add_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">in_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type name: </span>
+<span class="sd">        :param name:</span>
+<span class="sd">        :type in_type: </span>
+<span class="sd">        :param in_type:  </span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">use_name</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_list</span><span class="p">[</span><span class="s2">&quot;total&quot;</span><span class="p">])</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_list</span><span class="p">[</span><span class="s2">&quot;total&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_list</span><span class="p">[</span><span class="n">use_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">in_type</span><span class="p">,</span> <span class="n">index</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_list</span><span class="p">[</span><span class="s2">&quot;total&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_list</span><span class="p">[</span><span class="s2">&quot;total&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_list</span><span class="p">[</span><span class="s2">&quot;current_tab_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">use_name</span>
+
+        <span class="c1"># attach tab and add labels etc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_layout</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_list</span><span class="p">[</span><span class="n">use_name</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">use_name</span><span class="p">)</span>
+        <span class="n">label_index</span> <span class="o">=</span> <span class="n">index</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">label_index</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="n">label_index</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="n">label_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_keys</span><span class="p">[</span><span class="n">label_index</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_layout</span><span class="o">.</span><span class="n">setTabText</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">label_name</span><span class="p">)</span>
+        <span class="n">tool_tip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_keys_tips</span><span class="p">[</span><span class="n">label_index</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_layout</span><span class="o">.</span><span class="n">setTabToolTip</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">tool_tip</span><span class="p">)</span></div>
+
+    <span class="c1">############################################################################</span>
+    <span class="c1"># login</span>
+    <span class="c1">############################################################################</span>
+<div class="viewcode-block" id="CivilizationUI.tab1UI"><a class="viewcode-back" href="../dev_docs.html#civilization.CivilizationUI.tab1UI">[docs]</a>    <span class="k">def</span> <span class="nf">tab1UI</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab1</span> <span class="o">=</span> <span class="n">QFormLayout</span><span class="p">()</span>
+
+        <span class="c1"># usernames and passowrd feilds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_name&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab1</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="s2">&quot;Username:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_email_password&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="o">.</span><span class="n">setEchoMode</span><span class="p">(</span><span class="n">QLineEdit</span><span class="o">.</span><span class="n">Password</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">passwordLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Password Email:&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab1</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">passwordLabel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">passwordServer</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_server_password&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">passwordServer</span><span class="o">.</span><span class="n">setEchoMode</span><span class="p">(</span><span class="n">QLineEdit</span><span class="o">.</span><span class="n">Password</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">passwordServerLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Password Server:&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab1</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">passwordServerLabel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">passwordServer</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">passwordIM</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_IM_password&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">passwordIM</span><span class="o">.</span><span class="n">setEchoMode</span><span class="p">(</span><span class="n">QLineEdit</span><span class="o">.</span><span class="n">Password</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">passwordIMLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Password IM:&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab1</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">passwordIMLabel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">passwordIM</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Login_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;LOGIN&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Login_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">login_functions</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">passwordServer</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">passwordIM</span><span class="o">.</span><span class="n">text</span><span class="p">()))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Logout_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;LOGOUT&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Logout_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">logout_functions</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">passwordServer</span><span class="o">.</span><span class="n">text</span><span class="p">()))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab1</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Logout_button</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Login_button</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab1</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QHLine</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab1</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QHLine</span><span class="p">())</span>
+
+
+        <span class="c1"># hide options inspolier</span>
+        <span class="n">mode_layout</span> <span class="o">=</span> <span class="n">QFormLayout</span><span class="p">()</span>
+
+        <span class="c1"># login choice</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">login_modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Unified&quot;</span><span class="p">,</span> <span class="s2">&quot;Seperate&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">login_mode</span> <span class="o">=</span> <span class="s2">&quot;Unified&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">login_mode_combobox</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">login_modes</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">login_mode_combobox</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">login_mode_combobox</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">login_mode_change</span><span class="p">)</span>
+        <span class="n">mode_layout</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="s2">&quot;Login Mode:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">login_mode_combobox</span><span class="p">)</span>
+
+        <span class="c1"># drive choice</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active_drive_combobox</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">active_drive</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">active_drive</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active_drive_combobox</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">active_drive</span><span class="p">)</span>
+
+        <span class="c1"># add the rest of the drivess</span>
+        <span class="n">tmp_drive_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">drive_list</span>
+        <span class="n">tmp_drive_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">active_drive</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">tmp_drive_list</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_drive_combobox</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">active_drive_combobox</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">drive_change</span><span class="p">)</span>
+        <span class="n">mode_layout</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="s2">&quot;Drive:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_drive_combobox</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">debug_CheckBox</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debug_CheckBox</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">debug_change</span><span class="p">)</span>
+        <span class="n">mode_layout</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Debug:&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug_CheckBox</span><span class="p">)</span>
+
+        <span class="c1">#</span>
+        <span class="n">spolier_widget</span> <span class="o">=</span> <span class="n">spolier</span><span class="o">.</span><span class="n">Spoiler</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">spolier_widget</span><span class="o">.</span><span class="n">setContentLayout</span><span class="p">(</span><span class="n">mode_layout</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab1</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Options:&quot;</span><span class="p">),</span> <span class="n">spolier_widget</span><span class="p">)</span>
+
+        <span class="c1">############################################################################</span>
+        <span class="c1">#Clock Widget top logo</span>
+        <span class="c1">############################################################################</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top_banner</span> <span class="o">=</span> <span class="n">top_banner</span><span class="o">.</span><span class="n">mainBanner</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top_banner</span><span class="o">.</span><span class="n">banner_layout</span><span class="p">()</span>
+
+        <span class="c1">#main ui</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_form_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">top_banner</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_layout</span><span class="o">.</span><span class="n">setTabText</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;Login&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_list</span><span class="p">[</span><span class="s2">&quot;tab0&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout_tab1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CivilizationUI.drive_change"><a class="viewcode-back" href="../dev_docs.html#civilization.CivilizationUI.drive_change">[docs]</a>    <span class="k">def</span> <span class="nf">drive_change</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">active_drive</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_drive_combobox</span><span class="o">.</span><span class="n">currentText</span><span class="p">())</span></div>
+
+    <span class="k">def</span> <span class="nf">debug_change</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">debug_CheckBox</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;debug&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;debug&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="CivilizationUI.login_mode_change"><a class="viewcode-back" href="../dev_docs.html#civilization.CivilizationUI.login_mode_change">[docs]</a>    <span class="k">def</span> <span class="nf">login_mode_change</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">login_mode</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">login_mode_combobox</span><span class="o">.</span><span class="n">currentText</span><span class="p">())</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">login_mode</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">login_modes</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">passwordLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Password:&quot;</span><span class="p">)</span>    
+            <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">passwordServer</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">passwordIM</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">passwordLabel</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">passwordServerLabel</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">passwordIMLabel</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">passwordLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Password Email:&quot;</span><span class="p">)</span>    
+            <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">passwordServer</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">passwordIM</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">passwordLabel</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">passwordServerLabel</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">passwordIMLabel</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CivilizationUI.logout_functions"><a class="viewcode-back" href="../dev_docs.html#civilization.CivilizationUI.logout_functions">[docs]</a>    <span class="k">def</span> <span class="nf">logout_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">passwordServer</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type name: string</span>
+<span class="sd">        :param name:</span>
+<span class="sd">        :type password: string</span>
+<span class="sd">        :param password:</span>
+<span class="sd">        :type passwordServer:  string</span>
+<span class="sd">        :param passwordServer:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">buttonReply</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">question</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="s1">&#39;Logout&#39;</span><span class="p">,</span> <span class="s2">&quot;Are you sure you want to logout?&quot;</span><span class="p">,</span>
+             <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">buttonReply</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">removeContext</span><span class="p">()</span>
+            <span class="n">logout</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span></div>
+        
+    <span class="c1"># post lpgin functions</span>
+<div class="viewcode-block" id="CivilizationUI.login_functions"><a class="viewcode-back" href="../dev_docs.html#civilization.CivilizationUI.login_functions">[docs]</a>    <span class="k">def</span> <span class="nf">login_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">passwordServer</span><span class="p">,</span> <span class="n">passwordIM</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type name: string</span>
+<span class="sd">        :param name:</span>
+<span class="sd">        :type password: string</span>
+<span class="sd">        :param password:</span>
+<span class="sd">        :type passwordServer:  string</span>
+<span class="sd">        :param passwordServer:</span>
+<span class="sd">        :type passwordIM:  string</span>
+<span class="sd">        :param passwordIM:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># form login structure</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
+        <span class="n">server_password</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">passwordServer</span><span class="p">)</span>
+        <span class="n">IM_password</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">passwordIM</span><span class="p">)</span>
+
+        <span class="c1"># unified password</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">login_mode</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">login_modes</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
+            <span class="n">server_password</span> <span class="o">=</span> <span class="n">password</span>
+            <span class="n">IM_password</span> <span class="o">=</span> <span class="n">password</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">passwordServer</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">server_password</span><span class="p">)</span>    
+            <span class="bp">self</span><span class="o">.</span><span class="n">passwordIM</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">IM_password</span><span class="p">)</span>    
+
+        <span class="c1"># configure email</span>
+        <span class="n">email</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;@cinestron.com&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">email</span> <span class="o">+=</span> <span class="s2">&quot;@cinestron.com&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_name_server&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;X</span><span class="se">\\</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_email&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">email</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_email_password&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">password</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_server_password&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">server_password</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_IM_password&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">IM_password</span>
+
+        <span class="n">sucessful_login</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># VALIDATE THE LOGIN</span>
+        <span class="n">validate_mode</span> <span class="o">=</span> <span class="s2">&quot;YANDEX&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">validate_mode</span> <span class="o">==</span> <span class="s2">&quot;YANDEX&quot;</span><span class="p">):</span>
+            <span class="n">sucessful_login</span> <span class="o">=</span> <span class="n">valid_email</span><span class="p">(</span>  <span class="n">fromaddr</span> <span class="o">=</span> <span class="n">email</span><span class="p">,</span>
+                                            <span class="n">frompassword</span> <span class="o">=</span> <span class="n">password</span><span class="p">,</span>
+                                            <span class="n">log</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">sucessful_login</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;fullname&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cinestron_user_info</span><span class="o">.</span><span class="n">cinestron_user_info</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;fullname&quot;</span><span class="p">]</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;fullname&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_name&quot;</span><span class="p">]</span>
+            <span class="n">terms_info</span> <span class="o">=</span> <span class="n">cinestron_user_info</span><span class="o">.</span><span class="n">terms_and_conditions_simple</span>
+            <span class="n">terms_info</span> <span class="o">=</span> <span class="n">terms_info</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;NAME&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;fullname&quot;</span><span class="p">])</span>
+
+            <span class="n">choice</span> <span class="o">=</span> <span class="n">showdialog</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">,</span> <span class="n">terms_info</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">choice</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
+                <span class="n">sucessful_login</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">email_signed_login</span><span class="p">(</span><span class="n">terms_info</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sucessful_login</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">sucessful_login</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">login_call</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">post_login</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;color: rgb(200, 0, 0);&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;color: rgb(200, 0, 0);&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">passwordServer</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;color: rgb(200, 0, 0);&quot;</span><span class="p">)</span>      
+            <span class="bp">self</span><span class="o">.</span><span class="n">passwordIM</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;color: rgb(200, 0, 0);&quot;</span><span class="p">)</span>      </div>
+
+<div class="viewcode-block" id="CivilizationUI.login_call"><a class="viewcode-back" href="../dev_docs.html#civilization.CivilizationUI.login_call">[docs]</a>    <span class="k">def</span> <span class="nf">login_call</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># update check popup | implement this when ftp server allows download</span>
+        <span class="n">update_check</span><span class="o">.</span><span class="n">updateCheck</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Sucessful login&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Login_button</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active_drive_combobox</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabWebBrowserUI</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabscheduleManagerUI</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newBrowserTab</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">post_login</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;color: rgb(0, 200, 0);&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;color: rgb(0, 200, 0);&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">passwordServer</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;color: rgb(0, 200, 0);&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">passwordIM</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;color: rgb(0, 200, 0);&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">saveContext</span><span class="p">()</span></div>
+
+    <span class="c1">############################################################################</span>
+    <span class="c1"># email</span>
+    <span class="c1">############################################################################</span>
+<div class="viewcode-block" id="CivilizationUI.tabEmailContacts"><a class="viewcode-back" href="../dev_docs.html#civilization.CivilizationUI.tabEmailContacts">[docs]</a>    <span class="k">def</span> <span class="nf">tabEmailContacts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self:</span>
+<span class="sd">        :rtype: object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#</span>
+        <span class="n">layout_tab</span> <span class="o">=</span> <span class="n">QFormLayout</span><span class="p">()</span>
+        <span class="n">sendemail</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Send email&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">email_subject</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">email_body</span> <span class="o">=</span> <span class="n">QTextEdit</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">email_recipients</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">members_full_list</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">cinestron_user_info</span><span class="o">.</span><span class="n">cinestron_user_info</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">members_full_list</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">members_full_list</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_email_recipent</span><span class="p">)</span>
+
+        <span class="n">layout_tab</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="s2">&quot;add:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">members_full_list</span><span class="p">)</span>
+        <span class="n">layout_tab</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="s2">&quot;recipients:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">email_recipients</span><span class="p">)</span>
+        <span class="n">layout_tab</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="s2">&quot;Email Subject:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">email_subject</span><span class="p">)</span>
+        <span class="n">layout_tab</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="s2">&quot;Email Body:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">email_body</span><span class="p">)</span>
+
+        <span class="n">sendemail</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">email_wrapper</span><span class="p">())</span>
+        <span class="n">layout_tab</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">sendemail</span><span class="p">)</span>
+        <span class="n">return_tab</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="n">return_tab</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout_tab</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">return_tab</span></div>
+
+<div class="viewcode-block" id="CivilizationUI.tabWebBrowserUI"><a class="viewcode-back" href="../dev_docs.html#civilization.CivilizationUI.tabWebBrowserUI">[docs]</a>    <span class="k">def</span> <span class="nf">tabWebBrowserUI</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#</span>
+        <span class="n">layout_tab</span> <span class="o">=</span> <span class="n">QFormLayout</span><span class="p">()</span>
+        <span class="n">tab_browsers</span> <span class="o">=</span> <span class="n">QTabWidget</span><span class="p">()</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QUrl</span><span class="p">(</span><span class="s1">&#39;http://www.yandex.com&#39;</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QUrl</span><span class="p">(</span><span class="s1">&#39;https://passport.yandex.com/passport?mode=auth&amp;from=mail&amp;retpath=https://mail.yandex.com&amp;origin=hostroot_com_nol_mobile_enter&#39;</span><span class="p">)</span>
+        <span class="n">wb2</span> <span class="o">=</span> <span class="n">web_browser</span><span class="o">.</span><span class="n">MainWindow</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">in_context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">,</span> <span class="n">in_login</span><span class="o">=</span><span class="s2">&quot;yandex&quot;</span><span class="p">)</span>
+        <span class="n">tab_browsers</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">wb2</span><span class="p">,</span> <span class="s2">&quot;Email (Yandex)&quot;</span><span class="p">)</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QUrl</span><span class="p">(</span><span class="s1">&#39;https://discordapp.com/invite/Pt7wsQg&#39;</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QUrl</span><span class="p">(</span><span class="s1">&#39;https://discordapp.com/login&#39;</span><span class="p">)</span>
+        <span class="n">wb4</span> <span class="o">=</span> <span class="n">web_browser</span><span class="o">.</span><span class="n">MainWindow</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">in_context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">,</span> <span class="n">in_login</span><span class="o">=</span><span class="s2">&quot;discord&quot;</span><span class="p">)</span>
+        <span class="n">tab_browsers</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">wb4</span><span class="p">,</span> <span class="s2">&quot;IM (Discord)&quot;</span><span class="p">)</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QUrl</span><span class="p">(</span><span class="s1">&#39;http://cinestron.com/about-us&#39;</span><span class="p">)</span>      
+        <span class="n">wb6</span> <span class="o">=</span> <span class="n">web_browser</span><span class="o">.</span><span class="n">MainWindow</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">in_context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
+        <span class="n">tab_browsers</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">wb6</span><span class="p">,</span> <span class="s2">&quot;Homepage&quot;</span><span class="p">)</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QUrl</span><span class="p">(</span><span class="s2">&quot;file:///</span><span class="si">%s</span><span class="s2">/development/cinestron/build/html/index.html&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">active_drive</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">CS_VERSION</span> <span class="o">!=</span> <span class="s2">&quot;development&quot;</span><span class="p">):</span>
+            <span class="n">base_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+            <span class="n">base_path</span> <span class="o">=</span> <span class="n">base_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
+            <span class="n">my_path</span> <span class="o">=</span> <span class="s2">&quot;file:///&quot;</span> <span class="o">+</span> <span class="n">base_path</span> <span class="o">+</span> <span class="s2">&quot;/docs/html/index.html&quot;</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QUrl</span><span class="p">(</span><span class="n">my_path</span><span class="p">)</span>
+        <span class="n">wb</span> <span class="o">=</span> <span class="n">web_browser</span><span class="o">.</span><span class="n">MainWindow</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">in_context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
+        <span class="n">tab_browsers</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">wb</span><span class="p">,</span> <span class="s2">&quot;FAQ/Docs&quot;</span><span class="p">)</span>
+
+        <span class="n">user_intel</span> <span class="o">=</span> <span class="n">cinestron_user_info</span><span class="o">.</span><span class="n">cinestron_user_info</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_name&quot;</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;developer&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">user_intel</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QUrl</span><span class="p">(</span><span class="s1">&#39;https://trello.com/cinestron&#39;</span><span class="p">)</span>      
+            <span class="n">wb7</span> <span class="o">=</span> <span class="n">web_browser</span><span class="o">.</span><span class="n">MainWindow</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">in_context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
+            <span class="c1">#tab_browsers.addTab(wb7, &quot;Trello&quot;)</span>
+
+            <span class="n">url</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QUrl</span><span class="p">(</span><span class="s1">&#39;https://bitbucket.org/jgaffney/cinestron&#39;</span><span class="p">)</span>      
+            <span class="n">wb8</span> <span class="o">=</span> <span class="n">web_browser</span><span class="o">.</span><span class="n">MainWindow</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">in_context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
+            <span class="c1">#tab_browsers.addTab(wb8, &quot;Bitbucket&quot;)</span>
+
+        <span class="c1">#tab_browsers.addTab(self.tabEmailContacts(), &quot;Fast Email&quot;)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_tab</span><span class="p">(</span><span class="s2">&quot;tab&quot;</span><span class="p">,</span> <span class="n">tab_browsers</span><span class="p">)</span></div>
+
+    <span class="c1"># email functions</span>
+<div class="viewcode-block" id="CivilizationUI.add_email_recipent"><a class="viewcode-back" href="../dev_docs.html#civilization.CivilizationUI.add_email_recipent">[docs]</a>    <span class="k">def</span> <span class="nf">add_email_recipent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">email_recipients</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="n">to_add</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">members_full_list</span><span class="o">.</span><span class="n">currentText</span><span class="p">())</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">to_add</span> <span class="ow">in</span> <span class="n">current</span><span class="p">):</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_add</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">total_to</span> <span class="o">=</span> <span class="n">current</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">total_to</span> <span class="o">=</span> <span class="n">current</span> <span class="o">+</span> <span class="n">to_add</span> <span class="o">+</span> <span class="s2">&quot;@cinestron.com&quot;</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span>
+        <span class="n">total_to</span> <span class="o">=</span> <span class="n">total_to</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,,&quot;</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">email_recipients</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">total_to</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CivilizationUI.email_wrapper"><a class="viewcode-back" href="../dev_docs.html#civilization.CivilizationUI.email_wrapper">[docs]</a>    <span class="k">def</span> <span class="nf">email_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">text_addition</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">email_body</span><span class="o">.</span><span class="n">toPlainText</span><span class="p">())</span>
+        <span class="n">subject_addition</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">email_subject</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="n">fromaddr</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">@cinestron.com&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">frompassword</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">recipients</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">email_recipients</span><span class="o">.</span><span class="n">text</span><span class="p">())</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+
+        <span class="n">sendemailalt</span><span class="p">(</span><span class="n">subject_addition</span> <span class="o">=</span> <span class="n">subject_addition</span><span class="p">,</span>
+                     <span class="n">text_addition</span> <span class="o">=</span> <span class="n">text_addition</span><span class="p">,</span>
+                     <span class="n">fromaddr</span> <span class="o">=</span> <span class="n">fromaddr</span><span class="p">,</span>
+                     <span class="n">frompassword</span> <span class="o">=</span> <span class="n">frompassword</span><span class="p">,</span>
+                     <span class="n">recipients</span> <span class="o">=</span> <span class="n">recipients</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CivilizationUI.email_signed_login"><a class="viewcode-back" href="../dev_docs.html#civilization.CivilizationUI.email_signed_login">[docs]</a>    <span class="k">def</span> <span class="nf">email_signed_login</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_terms_info</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type in_term_info: string</span>
+<span class="sd">        :param in_term_info:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">text_addition</span> <span class="o">=</span> <span class="n">in_terms_info</span>
+        <span class="n">subject_addition</span> <span class="o">=</span> <span class="s2">&quot;Cinestron Terms and condtions agreement: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">fromaddr</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">@cinestron.com&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">frompassword</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">recipients</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mail@cinestron.com&quot;</span><span class="p">,</span> <span class="s2">&quot;j.gaffney@cinestron.com&quot;</span><span class="p">,</span> <span class="s2">&quot;a.turusov@cinestron.com&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fromaddr</span><span class="p">]</span>
+
+        <span class="n">sendemailalt</span><span class="p">(</span><span class="n">subject_addition</span> <span class="o">=</span> <span class="n">subject_addition</span><span class="p">,</span>
+                     <span class="n">text_addition</span> <span class="o">=</span> <span class="n">text_addition</span><span class="p">,</span>
+                     <span class="n">fromaddr</span> <span class="o">=</span> <span class="n">fromaddr</span><span class="p">,</span>
+                     <span class="n">frompassword</span> <span class="o">=</span> <span class="n">frompassword</span><span class="p">,</span>
+                     <span class="n">recipients</span> <span class="o">=</span> <span class="n">recipients</span><span class="p">)</span></div>
+
+    <span class="c1">############################################################################</span>
+    <span class="c1"># schedule</span>
+    <span class="c1">############################################################################</span>
+<div class="viewcode-block" id="CivilizationUI.tabscheduleManagerUI"><a class="viewcode-back" href="../dev_docs.html#civilization.CivilizationUI.tabscheduleManagerUI">[docs]</a>    <span class="k">def</span> <span class="nf">tabscheduleManagerUI</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#</span>
+        <span class="n">layout_tab</span> <span class="o">=</span> <span class="n">QFormLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduleManagerUIWidget</span> <span class="o">=</span> <span class="n">schedule_manager_ui</span><span class="o">.</span><span class="n">scheduleManagerUI</span><span class="p">(</span>
+            <span class="n">in_context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">,</span> 
+            <span class="n">in_log</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_tab</span><span class="p">(</span><span class="s2">&quot;tab&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheduleManagerUIWidget</span><span class="p">)</span></div>
+
+    <span class="c1">############################################################################</span>
+    <span class="c1">#  filebrowser</span>
+    <span class="c1">############################################################################</span>
+<div class="viewcode-block" id="CivilizationUI.newBrowserTab"><a class="viewcode-back" href="../dev_docs.html#civilization.CivilizationUI.newBrowserTab">[docs]</a>    <span class="k">def</span> <span class="nf">newBrowserTab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tab_name</span><span class="o">=</span><span class="s2">&quot;tab&quot;</span><span class="p">,</span> <span class="n">previous_tab</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type tab_name: string</span>
+<span class="sd">        :param tab_name:</span>
+<span class="sd">        :type previous_tab: None type</span>
+<span class="sd">        :param previous_tab:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># passes schedule manger from manager_ui widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filebrowsers</span> <span class="o">=</span> <span class="n">ftp_connect_ui</span><span class="o">.</span><span class="n">FtpConnectUI</span><span class="p">(</span>
+            <span class="n">in_context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">,</span> 
+            <span class="n">in_log</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">,</span>
+            <span class="n">in_schedule_manager</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scheduleManagerUIWidget</span><span class="o">.</span><span class="n">schedule_manager</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_tab</span><span class="p">(</span><span class="s2">&quot;FileBrowser&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filebrowsers</span><span class="p">)</span></div></div>
+
+<span class="c1">############################################################################</span>
+<span class="c1"># main ui setup</span>
+<span class="c1">############################################################################</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="mi">2280</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">1520</span><span class="o">/</span><span class="mi">2</span>
+    <span class="c1"># checks if QApplication already exists</span>
+    <span class="n">app</span><span class="o">=</span><span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>  
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">app</span><span class="p">:</span>    <span class="c1"># create QApplication if it doesnt exist</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+
+    <span class="c1"># set app icon    </span>
+    <span class="n">app_icon</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">()</span>
+    <span class="n">logo_locaion</span> <span class="o">=</span> <span class="n">get_base_path</span><span class="p">()</span> <span class="o">+</span><span class="s1">&#39;\images\logo.jpg&#39;</span>
+    <span class="n">app_icon</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span><span class="n">logo_locaion</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">))</span>
+    <span class="n">app_icon</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span><span class="n">logo_locaion</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span><span class="mi">24</span><span class="p">))</span>
+    <span class="n">app_icon</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span><span class="n">logo_locaion</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">))</span>
+    <span class="n">app_icon</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span><span class="n">logo_locaion</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">48</span><span class="p">,</span><span class="mi">48</span><span class="p">))</span>
+    <span class="n">app_icon</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span><span class="n">logo_locaion</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">))</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">setWindowIcon</span><span class="p">(</span><span class="n">app_icon</span><span class="p">)</span>
+
+    <span class="n">ex</span> <span class="o">=</span> <span class="n">CivilizationUI</span><span class="p">()</span>
+    <span class="n">ex</span> <span class="o">=</span> <span class="n">set_scheme</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span>
+    <span class="n">ex</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="c1">#ex.resize(w, h)</span>
+
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">())</span>
+
+<span class="k">def</span> <span class="nf">logout</span><span class="p">():</span>
+    <span class="n">QApplication</span><span class="o">.</span><span class="n">closeAllWindows</span><span class="p">();</span>
+    <span class="n">QCoreApplication</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+    <span class="c1">#main()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+   <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cinestron Ltd.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2018',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

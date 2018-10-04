@@ -1,0 +1,481 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>context &mdash; cinestron 2018 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> cinestron
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cinestron</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>context</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for context</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">smtplib</span>
+<span class="kn">import</span> <span class="nn">pprint</span> 
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">sleep</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+<span class="kn">import</span> <span class="nn">urllib.request</span><span class="o">,</span> <span class="nn">urllib.error</span><span class="o">,</span> <span class="nn">urllib.parse</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">ftplib</span> <span class="k">import</span> <span class="n">FTP</span>
+
+<span class="kn">from</span> <span class="nn">email.mime.multipart</span> <span class="k">import</span> <span class="n">MIMEMultipart</span>
+<span class="kn">from</span> <span class="nn">email.mime.text</span> <span class="k">import</span> <span class="n">MIMEText</span>
+
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;QTWEBKIT_PLUGIN_PATH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;C:\Windows\SysWow64\;C:\Windows\SysWow64\Macromed\Flash&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;QTWEBKIT_PLUGIN_PATH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;C:\Program Files\Mozilla Firefox&quot;</span>
+<span class="c1">#print((os.environ[&quot;QTWEBKIT_PLUGIN_PATH&quot;]))</span>
+
+<span class="c1"># third party</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="k">import</span> <span class="n">QT_VERSION_STR</span>
+<span class="kn">from</span> <span class="nn">PyQt5.Qt</span> <span class="k">import</span> <span class="n">PYQT_VERSION_STR</span>
+<span class="kn">from</span> <span class="nn">sip</span> <span class="k">import</span> <span class="n">SIP_VERSION_STR</span>
+<span class="nb">print</span><span class="p">((</span><span class="s2">&quot;Qt version:&quot;</span><span class="p">,</span> <span class="n">QT_VERSION_STR</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">((</span><span class="s2">&quot;SIP version:&quot;</span><span class="p">,</span> <span class="n">SIP_VERSION_STR</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">((</span><span class="s2">&quot;PyQt version:&quot;</span><span class="p">,</span> <span class="n">PYQT_VERSION_STR</span><span class="p">))</span>
+
+
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="k">import</span> <span class="o">*</span> 
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="k">import</span> <span class="n">QThread</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="k">import</span> <span class="n">QObject</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="k">import</span> <span class="n">QDateTime</span>
+<span class="c1">#, SIGNAL</span>
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="k">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtWidgets</span> 
+
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="k">import</span> <span class="n">QtWebEngineWidgets</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWebEngineWidgets</span> <span class="k">import</span> <span class="n">QWebEngineView</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWebEngineWidgets</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="c1"># replacements from 4 to 5</span>
+<span class="n">QtGui</span><span class="o">.</span><span class="n">QTextEdit</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QTextEdit</span>
+<span class="n">QtGui</span><span class="o">.</span><span class="n">QGridLayout</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGridLayout</span>
+<span class="n">QtGui</span><span class="o">.</span><span class="n">QWidget</span> <span class="o">=</span> <span class="n">QWidget</span>
+<span class="n">QtGui</span><span class="o">.</span><span class="n">QMenuBar</span> <span class="o">=</span> <span class="n">QMenuBar</span> 
+<span class="n">QtGui</span><span class="o">.</span><span class="n">QToolBar</span> <span class="o">=</span> <span class="n">QToolBar</span>
+<span class="n">QtGui</span><span class="o">.</span><span class="n">QStatusBar</span> <span class="o">=</span> <span class="n">QStatusBar</span>
+<span class="n">QtGui</span><span class="o">.</span><span class="n">QProgressBar</span> <span class="o">=</span> <span class="n">QProgressBar</span>
+<span class="n">QtGui</span><span class="o">.</span><span class="n">QLineEdit</span> <span class="o">=</span> <span class="n">QLineEdit</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">_fromUtf8</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QString</span><span class="o">.</span><span class="n">fromUtf8</span>
+<span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_fromUtf8</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="k">return</span> 
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">_encoding</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span>
+    <span class="k">def</span> <span class="nf">_translate</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">disambig</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">disambig</span><span class="p">,</span> <span class="n">_encoding</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_translate</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">disambig</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">disambig</span><span class="p">)</span>
+
+<span class="c1"># local</span>
+<span class="c1"># dictionaries</span>
+<span class="kn">import</span> <span class="nn">cinestron_user_info</span> <span class="k">as</span> <span class="nn">cinestron_user_info</span>
+<span class="kn">import</span> <span class="nn">cinestron_task_info</span> <span class="k">as</span> <span class="nn">cinestron_task_info</span>
+<span class="c1">#functions</span>
+<span class="kn">from</span> <span class="nn">utils</span> <span class="k">import</span> <span class="o">*</span>
+<span class="n">g_debug</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">CS_VERSION</span> <span class="o">=</span> <span class="s2">&quot;development&quot;</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./my_version_file.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> 
+    <span class="n">CS_VERSION</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CS_VERSION not set&quot;</span><span class="p">)</span>
+
+<span class="c1"># to disable could move to context</span>
+<span class="n">do_mongodb</span> <span class="o">=</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="CsContext"><a class="viewcode-back" href="../dev_docs.html#context.CsContext">[docs]</a><span class="k">class</span> <span class="nc">CsContext</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    what this class does</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">############################################################################</span>
+    <span class="c1"># User info</span>
+    <span class="c1">############################################################################</span>
+    <span class="n">context_prefs_path</span> <span class="o">=</span> <span class="s2">&quot;C:\internal\cinestron_prefs.json&quot;</span>
+    <span class="n">context_prefs_basedir</span> <span class="o">=</span> <span class="s2">&quot;C:\internal</span><span class="se">\\</span><span class="s2">&quot;</span>
+    <span class="n">context_shows_basedir</span> <span class="o">=</span> <span class="s2">&quot;C:\internal</span><span class="se">\\</span><span class="s2">&quot;</span>
+    <span class="n">post_login</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">user_info</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;fullname&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_email&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_email_password&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_server_password&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_IM_password&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;file_browser_tabs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;debug&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1">############################################################################</span>
+    <span class="c1"># Drive info</span>
+    <span class="c1">############################################################################</span>
+    <span class="n">active_drive</span> <span class="o">=</span> <span class="s2">&quot;C:&quot;</span>
+    <span class="n">drive_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Z:&quot;</span><span class="p">,</span> <span class="s2">&quot;C:&quot;</span><span class="p">,</span> <span class="s2">&quot;D:&quot;</span><span class="p">,</span> <span class="s2">&quot;F:&quot;</span><span class="p">]</span>
+    <span class="c1">############################################################################</span>
+    <span class="c1"># creation of the blank dicts/vars to drive ui fields</span>
+    <span class="c1">############################################################################</span>
+    <span class="n">show_json</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">show_list_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">active_show</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">active_sequence</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">active_shot</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="c1">############################################################################</span>
+    <span class="c1"># Logger</span>
+    <span class="c1">############################################################################</span>
+    <span class="n">log</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="CsContext.__init__"><a class="viewcode-back" href="../dev_docs.html#context.CsContext.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="kc">None</span></div>
+        <span class="c1">#self.log = None</span>
+
+<div class="viewcode-block" id="CsContext.clear_file_browser_tabs"><a class="viewcode-back" href="../dev_docs.html#context.CsContext.clear_file_browser_tabs">[docs]</a>    <span class="k">def</span> <span class="nf">clear_file_browser_tabs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;file_browser_tabs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span></div>
+
+<div class="viewcode-block" id="CsContext.add_file_browser_tab"><a class="viewcode-back" href="../dev_docs.html#context.CsContext.add_file_browser_tab">[docs]</a>    <span class="k">def</span> <span class="nf">add_file_browser_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type path: </span>
+<span class="sd">        :param path:</span>
+<span class="sd">        :type index: </span>
+<span class="sd">        :param index:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#return</span>
+        <span class="c1">#</span>
+        <span class="n">exists</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">current</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;file_browser_tabs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;file_browser_tabs&quot;</span><span class="p">][</span><span class="n">current</span><span class="p">]</span> <span class="o">==</span> <span class="n">path</span><span class="p">:</span>
+                <span class="n">exists</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">exists</span> <span class="o">==</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;file_browser_tabs&quot;</span><span class="p">][</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">path</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">saveContext</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="CsContext.remove_file_browser_tab"><a class="viewcode-back" href="../dev_docs.html#context.CsContext.remove_file_browser_tab">[docs]</a>    <span class="k">def</span> <span class="nf">remove_file_browser_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type index: string</span>
+<span class="sd">        :param index:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;file_browser_tabs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;file_browser_tabs&quot;</span><span class="p">][</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">saveContext</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;file_browser_tabs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;file_browser_tabs&quot;</span><span class="p">][</span><span class="n">index</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">saveContext</span><span class="p">()</span></div>
+        
+<div class="viewcode-block" id="CsContext.saveContext"><a class="viewcode-back" href="../dev_docs.html#context.CsContext.saveContext">[docs]</a>    <span class="k">def</span> <span class="nf">saveContext</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">class_to_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;context_prefs_path&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">context_prefs_path</span><span class="p">}</span><span class="c1">#dict(self)</span>
+        <span class="n">class_to_dict</span><span class="p">[</span><span class="s2">&quot;post_login&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_login</span>
+        <span class="n">class_to_dict</span><span class="p">[</span><span class="s2">&quot;user_info&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_info</span>
+        <span class="n">class_to_dict</span><span class="p">[</span><span class="s2">&quot;active_drive&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_drive</span>
+
+        <span class="c1"># cache out th prefs</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context_prefs_basedir</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context_prefs_basedir</span><span class="p">)</span>
+        <span class="n">save_json_allways</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context_prefs_path</span><span class="p">,</span> <span class="n">class_to_dict</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CsContext.removeContext"><a class="viewcode-back" href="../dev_docs.html#context.CsContext.removeContext">[docs]</a>    <span class="k">def</span> <span class="nf">removeContext</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context_prefs_path</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="CsContext.loadContext"><a class="viewcode-back" href="../dev_docs.html#context.CsContext.loadContext">[docs]</a>    <span class="k">def</span> <span class="nf">loadContext</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">class_to_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">class_to_dict</span> <span class="o">=</span> <span class="n">read_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context_prefs_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;context_prefs_path&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">class_to_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">context_prefs_path</span> <span class="o">=</span> <span class="n">class_to_dict</span><span class="p">[</span><span class="s2">&quot;context_prefs_path&quot;</span><span class="p">]</span><span class="c1">#dict(self)</span>
+        <span class="k">if</span> <span class="s2">&quot;post_login&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">class_to_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">post_login</span> <span class="o">=</span> <span class="n">class_to_dict</span><span class="p">[</span><span class="s2">&quot;post_login&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;user_info&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">class_to_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">user_info</span> <span class="o">=</span> <span class="n">class_to_dict</span><span class="p">[</span><span class="s2">&quot;user_info&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;user_IM_password&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_info</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_IM_password&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_email_password&quot;</span><span class="p">]</span>
+            <span class="c1">#</span>
+            <span class="k">if</span> <span class="s2">&quot;debug&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_info</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;debug&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="c1">#</span>
+            <span class="k">if</span> <span class="s2">&quot;file_browser_tabs&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_info</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;file_browser_tabs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="s2">&quot;active_drive&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">class_to_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_drive</span> <span class="o">=</span> <span class="n">class_to_dict</span><span class="p">[</span><span class="s2">&quot;active_drive&quot;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="CsContext.get_drive"><a class="viewcode-back" href="../dev_docs.html#context.CsContext.get_drive">[docs]</a>    <span class="k">def</span> <span class="nf">get_drive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self:</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_drive</span></div>
+
+<div class="viewcode-block" id="CsContext.setup_root_dirs"><a class="viewcode-back" href="../dev_docs.html#context.CsContext.setup_root_dirs">[docs]</a>    <span class="k">def</span> <span class="nf">setup_root_dirs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">internal_base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_drive</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;internal&quot;</span><span class="o">+</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">internal_base_dir</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">internal_base_dir</span><span class="p">)</span>
+
+        <span class="n">shows_base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_drive</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;internal&quot;</span><span class="o">+</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span> <span class="p">,</span> <span class="s2">&quot;SHOWS&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">shows_base_dir</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">shows_base_dir</span><span class="p">)</span>
+
+        <span class="c1"># keep this for using to pass intot he first call of the recursion function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context_shows_basedir</span> <span class="o">=</span> <span class="n">shows_base_dir</span></div>
+
+<div class="viewcode-block" id="CsContext.get_master_json"><a class="viewcode-back" href="../dev_docs.html#context.CsContext.get_master_json">[docs]</a>    <span class="k">def</span> <span class="nf">get_master_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self:</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_drive</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;internal&quot;</span><span class="o">+</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span> <span class="p">,</span> <span class="s2">&quot;SHOWS&quot;</span><span class="p">)</span>
+        <span class="n">show_list</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="s2">&quot;cinestronshow_list.json&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">show_list</span></div>
+
+    <span class="k">def</span> <span class="nf">get_debug</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;debug&quot;</span><span class="p">]</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+   <span class="nb">print</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+   <span class="n">context</span> <span class="o">=</span> <span class="n">CsContext</span><span class="p">()</span>
+   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;worked&quot;</span><span class="p">)</span>
+   <span class="nb">print</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">get_master_json</span><span class="p">())</span>
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cinestron Ltd.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2018',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

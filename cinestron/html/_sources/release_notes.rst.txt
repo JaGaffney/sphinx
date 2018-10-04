@@ -1,0 +1,79 @@
+Release Notes
+*****************************************
+
+.. toctree::
+   :maxdepth: 4
+   :caption: Contents:
+
+
+Version 1.1.1 - 8rd June 2018
+----------------------------------
+New Features:
+	- Schedule manager: add duplicate shot, which will copy all existing data in one shot and make a new one with new name.
+
+
+Updated Features:
+	- Ui: fix clock widget when logged out. They become squashed. Put the time zone identifier underneath and make the cinestron logo a half the size. Hint: Might need to group all these in better layouts to do this.
+
+
+Bug Fixes:
+	- Right clicking (opening context) on a list without data no longer crashes.
+
+Version 1.1.0 - 3rd June 2018
+----------------------------------
+Main improvements are in the Filebrowser and in the Project Manager(previously called Schedule Manager). These talk to each other better. And the the file browsers has improved functionality for syncing and opening files. Also Filebrowser saves what tabs you had last open.
+
+The Project Manager also has a tasks tab so you can see overall assignments and status per user.
+
+Also there is a basic email notification system when people upload/push files.
+
+Environment variables also get set CS_SHOW, CS_SEQ, CS_SHOT etc will get passed to other ran applications houdini for example
+
+
+New Features:
+	- file browser: Allow entering specific paths. Show/Seq/Shot task drop down fast select.
+	- file browser: delete on server and local
+	- file browser: if file is matching open it with a system call and set env vars. CS_ROOT, CS_SHOW, CS_SEQ, CS_SHOT, CS_TASK
+	- file manager: resolve some issues with matching files on server and local and which one is regarded as the winner.
+	- General: User preference file.json saved to C:// that restores UI with logins. And what tabs they had open.
+	- schedule manager: my tasks tab now functional, display users tasks
+	- schedule manager: now able to create custom tasks
+	- schedule manager: keyboard shortcuts now work for deleting(del) and adding new data (return / enter)
+	- Multiple tabs for file browser
+	- schedule manager, Create task folders on server simultaneously.
+	- File management: check local files against  server files. Colour code with red orange green traffic light system.
+	- File management: ftp push data
+	- Add direct links to Sphinx HTML documentation in ui’s.
+	- File management: Recursive pull and push from root directory.
+	- File manager. Browse shots/tasks. Add wild card for file matching. File size cap. Check if files are different.
+	- schedule manager: delete option now avaialbe includeing popup warnning
+	- schedule manager: added context menu(right click) which have various functionality (build folders/delete/showinfo/rename etc)
+	- schedule manager: custom Show info on right click
+	- File management. Send notification message when something is added to the server.
+	- schedule manager: added task management
+
+Updated Features:
+	- Refactor schedule_manager_ui.py
+	- progress bar for file downloads.
+	- Schedule manager. Add show, sequence and shot independently into show dictionaries.
+	- Support multiple drives.
+	- Core: improve deployment system
+	- CSS now cleaned and whole program uses same CSS
+
+Bug Fixes:
+	- Threading no longers locks the ui when using the ftp.
+	- No longer creates duplicate data if more than 1 seq is made 
+	- schedle manager lists now show correct colour scheme
+
+
+
+Version 1.0.0
+----------------------------------
+New Features:
+	- 
+
+Updated Features:
+	- 
+
+Bug Fixes:
+	- 

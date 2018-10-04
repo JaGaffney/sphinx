@@ -1,0 +1,353 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>web_browser_alt &mdash; cinestron 2018 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> cinestron
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cinestron</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>web_browser_alt</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for web_browser_alt</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># context contains all of our main imports and the CsContext class </span>
+<span class="c1">#imported in with no namespace</span>
+<span class="kn">from</span> <span class="nn">context</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="c1">#QWebEngineView</span>
+<div class="viewcode-block" id="MainWindow"><a class="viewcode-back" href="../dev_docs.html#web_browser_alt.MainWindow">[docs]</a><span class="k">class</span> <span class="nc">MainWindow</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QWidget</span><span class="p">):</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">login</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">in_context</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">in_login</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MainWindow</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+
+
+        <span class="c1"># initlize our context</span>
+        <span class="c1"># if one is not passed in</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">in_context</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">in_context</span>
+        <span class="k">else</span><span class="p">:</span>    
+            <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">CsContext</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">login</span> <span class="o">=</span> <span class="n">in_login</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">website_login</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menuBar</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QMenuBar</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QToolBar</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">statusBar</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QStatusBar</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+
+        <span class="c1"># init ui</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_form_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="c1">#self.statusBar = QtGui.QMenuBar(self)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">statusBar</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pbar</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QProgressBar</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pbar</span><span class="o">.</span><span class="n">setMaximumWidth</span><span class="p">(</span><span class="mi">120</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">=</span><span class="n">QtWebEngineWidgets</span><span class="o">.</span><span class="n">QWebEngineView</span><span class="p">(</span><span class="n">loadProgress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pbar</span><span class="o">.</span><span class="n">setValue</span><span class="p">,</span> <span class="n">loadFinished</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pbar</span><span class="o">.</span><span class="n">hide</span><span class="p">,</span> <span class="n">loadStarted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pbar</span><span class="o">.</span><span class="n">show</span><span class="p">,</span> <span class="n">titleChanged</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span>
+
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">(</span><span class="n">QWebEnginePage</span><span class="o">.</span><span class="n">Back</span><span class="p">,</span> <span class="n">QWebEnginePage</span><span class="o">.</span><span class="n">Forward</span><span class="p">,</span> <span class="n">QWebEnginePage</span><span class="o">.</span><span class="n">Reload</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tb</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">pageAction</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QLineEdit</span><span class="p">(</span><span class="n">returnPressed</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">setUrl</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QUrl</span><span class="o">.</span><span class="n">fromUserInput</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">text</span><span class="p">())))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">urlChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">u</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">toString</span><span class="p">()))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">urlChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">setCompleter</span><span class="p">(</span><span class="n">QCompleter</span><span class="p">(</span><span class="nb">list</span><span class="p">([(</span><span class="n">i</span><span class="o">.</span><span class="n">url</span><span class="p">()</span><span class="o">.</span><span class="n">toString</span><span class="p">())</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">history</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()]),</span> <span class="n">caseSensitivity</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">CaseInsensitive</span><span class="p">)))</span>
+
+        <span class="c1">#self.wb.statusBarMessage.connect(self.sb.showMessage)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">page</span><span class="p">()</span><span class="o">.</span><span class="n">linkHovered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">l</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sb</span><span class="o">.</span><span class="n">showMessage</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="mi">3000</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">search</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QLineEdit</span><span class="p">(</span><span class="n">returnPressed</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">text</span><span class="p">()))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">showSearch</span> <span class="o">=</span> <span class="n">QShortcut</span><span class="p">(</span><span class="s2">&quot;Ctrl+F&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">activated</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">setFocus</span><span class="p">()))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hideSearch</span> <span class="o">=</span> <span class="n">QShortcut</span><span class="p">(</span><span class="s2">&quot;Esc&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">activated</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">hide</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">setFocus</span><span class="p">()))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">quit</span> <span class="o">=</span> <span class="n">QShortcut</span><span class="p">(</span><span class="s2">&quot;Ctrl+Q&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">activated</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoomIn</span> <span class="o">=</span> <span class="n">QShortcut</span><span class="p">(</span><span class="s2">&quot;Ctrl++&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">activated</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">setZoomFactor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">zoomFactor</span><span class="p">()</span><span class="o">+.</span><span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoomOut</span> <span class="o">=</span> <span class="n">QShortcut</span><span class="p">(</span><span class="s2">&quot;Ctrl+-&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">activated</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">setZoomFactor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">zoomFactor</span><span class="p">()</span><span class="o">-.</span><span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoomOne</span> <span class="o">=</span> <span class="n">QShortcut</span><span class="p">(</span><span class="s2">&quot;Ctrl+=&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">activated</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">setZoomFactor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">zoomFactor</span><span class="p">()</span><span class="o">+.</span><span class="mi">2</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sb</span><span class="o">.</span><span class="n">addPermanentWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sb</span><span class="o">.</span><span class="n">addPermanentWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pbar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">loadFinished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_on_load_finished</span><span class="p">)</span>
+        <span class="c1"># zoom in</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">setZoomFactor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">zoomFactor</span><span class="p">()</span><span class="o">+</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_form_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tb</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_form_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sb</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_form_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_master_form_layout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Cinestron - Info&quot;</span><span class="p">)</span>
+
+<span class="c1"># Interact with the HTML page by calling the completeAndReturnName</span>
+<span class="c1"># function; print its return value to the console</span>
+
+    <span class="k">def</span> <span class="nf">_on_load_finished</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Finished Loading&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">page</span><span class="p">()</span><span class="o">.</span><span class="n">toHtml</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Callable</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">Callable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">html_str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">html</span> <span class="o">=</span> <span class="n">html_str</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">login</span> <span class="o">==</span> <span class="s2">&quot;yandex&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">page</span><span class="p">()</span><span class="o">.</span><span class="n">runJavaScript</span><span class="p">(</span><span class="s2">&quot;document.getElementsByName(&#39;login&#39;)[0].value = &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_email&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">page</span><span class="p">()</span><span class="o">.</span><span class="n">runJavaScript</span><span class="p">(</span><span class="s2">&quot;document.getElementsByName(&#39;passwd&#39;)[0].value = &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_email_password&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">page</span><span class="p">()</span><span class="o">.</span><span class="n">runJavaScript</span> <span class="p">(</span><span class="s2">&quot;document.getElementsByClassName(&#39;passport-Button&#39;)[0].click()&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">login</span> <span class="o">==</span> <span class="s2">&quot;keiro&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">page</span><span class="p">()</span><span class="o">.</span><span class="n">runJavaScript</span><span class="p">(</span><span class="s2">&quot;document.getElementsByName(&#39;kerio_username&#39;)[0].value = &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_name&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">page</span><span class="p">()</span><span class="o">.</span><span class="n">runJavaScript</span><span class="p">(</span><span class="s2">&quot;document.getElementsByName(&#39;kerio_password&#39;)[0].value = &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_server_password&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">page</span><span class="p">()</span><span class="o">.</span><span class="n">runJavaScript</span> <span class="p">(</span><span class="s2">&quot;document.getElementById(&#39;login-button&#39;).click()&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">login</span> <span class="o">==</span> <span class="s2">&quot;slack&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">page</span><span class="p">()</span><span class="o">.</span><span class="n">runJavaScript</span><span class="p">(</span><span class="s2">&quot;document.getElementsByName(&#39;email&#39;)[0].value = &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_email&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">page</span><span class="p">()</span><span class="o">.</span><span class="n">runJavaScript</span><span class="p">(</span><span class="s2">&quot;document.getElementsByName(&#39;password&#39;)[0].value = &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_IM_password&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">page</span><span class="p">()</span><span class="o">.</span><span class="n">runJavaScript</span><span class="p">(</span><span class="s2">&quot;document.getElementsByClassName(&#39;ladda-button&#39;)[0].click()&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">login</span> <span class="o">==</span> <span class="s2">&quot;discord&quot;</span><span class="p">):</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="c1"># OLD FOR REF</span>
+            <span class="c1">#self.wb.page().runJavaScript(&#39;document.getElementsByTagName(&quot;input&quot;)[0].value = &quot;%s&quot;&#39; % self.context.user_info[&quot;user_email&quot;])</span>
+            <span class="c1">#self.wb.page().runJavaScript(&#39;document.getElementsByTagName(&quot;input&quot;)[1].value = &quot;%s&quot;&#39; % self.context.user_info[&quot;user_IM_password&quot;])</span>
+
+            <span class="c1">#self.wb.page().runJavaScript(&#39;document.getElementsByTagName(&quot;input&quot;)[1].setValue(&quot;%s)&quot;&#39; % self.context.user_info[&quot;user_IM_password&quot;])</span>
+            <span class="c1">#self.wb.page().runJavaScript(&#39;document.getElementsByTagName(&quot;input&quot;)[1].click()&#39;)</span>
+            <span class="c1">#self.wb.page().runJavaScript(&quot;document.getElementById(&#39;register-password&#39;).value = &#39;%s&#39;&quot; % self.context.user_info[&quot;user_IM_password&quot;])</span>
+
+            <span class="c1"># NEW</span>
+            <span class="c1">#&lt;input class=&quot;inputDefault-_djjkz input-cIJ7To size16-14cGz5&quot; type=&quot;email&quot; autocomplete=&quot;off&quot; spellcheck=&quot;false&quot; placeholder=&quot;&quot; name=&quot;&quot; maxlength=&quot;999&quot; value=&quot;&quot;&gt;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">page</span><span class="p">()</span><span class="o">.</span><span class="n">runJavaScript</span> <span class="p">(</span><span class="s2">&quot;document.getElementsByClassName(&#39;inputDefault-_djjkz input-cIJ7To size16-14cGz5&#39;)[0].value = &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_email&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">page</span><span class="p">()</span><span class="o">.</span><span class="n">runJavaScript</span><span class="p">(</span><span class="s1">&#39;document.getElementsByTagName(&quot;input&quot;)[0].value = &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_email&quot;</span><span class="p">])</span>
+
+            <span class="c1">#&lt;input class=&quot;inputDefault-_djjkz input-cIJ7To size16-14cGz5&quot; type=&quot;password&quot; autocomplete=&quot;off&quot; spellcheck=&quot;false&quot; placeholder=&quot;&quot; name=&quot;&quot; maxlength=&quot;999&quot; value=&quot;&quot;&gt;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">page</span><span class="p">()</span><span class="o">.</span><span class="n">runJavaScript</span> <span class="p">(</span><span class="s2">&quot;document.getElementsByClassName(&#39;inputDefault-_djjkz input-cIJ7To size16-14cGz5&#39;)[1].value = &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_IM_password&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">page</span><span class="p">()</span><span class="o">.</span><span class="n">runJavaScript</span><span class="p">(</span><span class="s1">&#39;document.getElementsByTagName(&quot;input&quot;)[1].value = &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_IM_password&quot;</span><span class="p">])</span>
+
+            <span class="c1">#time.sleep(3)</span>
+            <span class="c1">#&lt;button type=&quot;submit&quot; class=&quot;marginBottom8-AtZOdT button-3k0cO7 button-38aScr lookFilled-1Gx00P colorBrand-3pXr91 sizeLarge-1vSeWK fullWidth-1orjjo grow-q77ONN&quot;&gt;&lt;div class=&quot;contents-18-Yxp&quot;&gt;Login&lt;/div&gt;&lt;/button&gt;</span>
+            <span class="c1">#self.wb.page().runJavaScript(&quot;document.getElementsByTagName(&#39;button&#39;)[0].click()&quot;)</span>
+
+    <span class="k">def</span> <span class="nf">website_login</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_email&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_email_password&quot;</span><span class="p">]</span></div>
+
+
+<span class="c1">############################################################################</span>
+<span class="c1"># main ui setup</span>
+<span class="c1">############################################################################</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="mi">2280</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">1520</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="c1"># set app icon    </span>
+    <span class="n">app_icon</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">()</span>
+    <span class="n">logo_locaion</span> <span class="o">=</span> <span class="n">get_base_path</span><span class="p">()</span> <span class="o">+</span><span class="s1">&#39;\images\logo.jpg&#39;</span>
+    <span class="n">app_icon</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span><span class="n">logo_locaion</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">))</span>
+    <span class="n">app_icon</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span><span class="n">logo_locaion</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span><span class="mi">24</span><span class="p">))</span>
+    <span class="n">app_icon</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span><span class="n">logo_locaion</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">))</span>
+    <span class="n">app_icon</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span><span class="n">logo_locaion</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">48</span><span class="p">,</span><span class="mi">48</span><span class="p">))</span>
+    <span class="n">app_icon</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span><span class="n">logo_locaion</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">))</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">setWindowIcon</span><span class="p">(</span><span class="n">app_icon</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QUrl</span><span class="o">.</span><span class="n">fromUserInput</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QUrl</span><span class="p">(</span><span class="s1">&#39;http://www.cinestron.com&#39;</span><span class="p">)</span>
+    <span class="n">ex</span><span class="o">=</span><span class="n">MainWindow</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="c1">#ex = CivilizationUI()</span>
+    <span class="n">ex</span> <span class="o">=</span> <span class="n">set_scheme</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span>
+    <span class="n">ex</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">ex</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">())</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cinestron Ltd.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2018',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

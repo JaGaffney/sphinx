@@ -1,0 +1,660 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>threading_ftp &mdash; cinestron 2018 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> cinestron
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cinestron</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>threading_ftp</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for threading_ftp</h1><div class="highlight"><pre>
+<span></span><span class="c1"># context contains all of our main imports and the CsContext class </span>
+<span class="c1">#imported in with no namespace</span>
+<span class="kn">from</span> <span class="nn">context</span> <span class="k">import</span> <span class="o">*</span>
+
+
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">traceback</span><span class="o">,</span> <span class="nn">sys</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">_fromUtf8</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QString</span><span class="o">.</span><span class="n">fromUtf8</span>
+<span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_fromUtf8</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">s</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">_encoding</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">UnicodeUTF8</span>
+    <span class="k">def</span> <span class="nf">_translate</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">disambig</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">disambig</span><span class="p">,</span> <span class="n">_encoding</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_translate</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">disambig</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">disambig</span><span class="p">)</span>
+
+
+
+<span class="k">class</span> <span class="nc">WorkerSignals</span><span class="p">(</span><span class="n">QObject</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Defines the signals available from a running worker thread.</span>
+
+<span class="sd">    Supported signals are:</span>
+
+<span class="sd">    finished</span>
+<span class="sd">        No data</span>
+
+<span class="sd">    error</span>
+<span class="sd">        `tuple` (exctype, value, traceback.format_exc() )</span>
+
+<span class="sd">    result</span>
+<span class="sd">        `object` data returned from processing, anything</span>
+
+<span class="sd">    progress</span>
+<span class="sd">        `int` indicating % progress</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">finished</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">()</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">tuple</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
+    <span class="n">progress</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
+    <span class="n">progress_file</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">finished_file</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Worker</span><span class="p">(</span><span class="n">QRunnable</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Worker thread</span>
+
+<span class="sd">    Inherits from QRunnable to handler worker thread setup, signals and wrap-up.</span>
+
+<span class="sd">    :param callback: The function callback to run on this worker thread. Supplied args and </span>
+<span class="sd">                     kwargs will be passed through to the runner.</span>
+<span class="sd">    :type callback: function</span>
+<span class="sd">    :param args: Arguments to pass to the callback function</span>
+<span class="sd">    :param kwargs: Keywords to pass to the callback function</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Worker</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># Store constructor arguments (re-used for processing)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fn</span> <span class="o">=</span> <span class="n">fn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signals</span> <span class="o">=</span> <span class="n">WorkerSignals</span><span class="p">()</span>
+
+        <span class="c1"># Add the callback to our kwargs</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;progress_callback&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">progress</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;progress_callback_file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">progress_file</span>
+
+    <span class="nd">@pyqtSlot</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Initialise the runner function with passed args, kwargs.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1"># Retrieve args/kwargs here; and fire processing using them</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+            <span class="n">exctype</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[:</span><span class="mi">2</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">emit</span><span class="p">((</span><span class="n">exctype</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>  <span class="c1"># Return the result of the processing</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>  <span class="c1"># Done</span>
+
+<div class="viewcode-block" id="ThreadingMain"><a class="viewcode-back" href="../dev_docs.html#threading_ftp.ThreadingMain">[docs]</a><span class="k">class</span> <span class="nc">ThreadingMain</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">):</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">ftp</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">schedule_manager</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">early_stop</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">resolve_mode</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span>
+    <span class="n">auto_run_action</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_context</span><span class="p">,</span> <span class="n">in_ftp</span><span class="p">,</span> <span class="n">in_schedule_manager</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">in_auto_run_action</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">in_context</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span> <span class="o">=</span> <span class="n">in_ftp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span> <span class="o">=</span> <span class="n">in_schedule_manager</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_run_action</span> <span class="o">=</span> <span class="n">in_auto_run_action</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">setupUi</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="n">_fromUtf8</span><span class="p">(</span><span class="s2">&quot;MainWindow&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">526</span><span class="p">,</span> <span class="mi">373</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centralwidget</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centralwidget</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="n">_fromUtf8</span><span class="p">(</span><span class="s2">&quot;centralwidget&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">centralwidget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="n">_fromUtf8</span><span class="p">(</span><span class="s2">&quot;verticalLayout&quot;</span><span class="p">))</span>
+
+        <span class="c1"># overrides</span>
+        <span class="n">mode_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="s2">&quot;pull&quot;</span><span class="p">,</span> <span class="s2">&quot;push&quot;</span><span class="p">,</span> <span class="s2">&quot;delete&quot;</span><span class="p">,</span> <span class="s2">&quot;force push&quot;</span><span class="p">,</span> <span class="s2">&quot;force pull&quot;</span><span class="p">]</span>
+        
+        <span class="c1">#resolve_mode = &quot;publish&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">mode_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;publish&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">resolve_mode</span> <span class="o">=</span> <span class="s2">&quot;publish&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">auto_run_action</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">mode_types</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">auto_run_action</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">resolve_mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_run_action</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top_layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top_layout</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="n">_fromUtf8</span><span class="p">(</span><span class="s2">&quot;buttons_layout&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">combo_resolve_mode</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">centralwidget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">combo_resolve_mode</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="n">_fromUtf8</span><span class="p">(</span><span class="s2">&quot;combo_resolve_mode&quot;</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">mode_types</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">combo_resolve_mode</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">combo_resolve_mode</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resolve_mode_change</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Mode:&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">combo_resolve_mode</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">top_layout</span><span class="p">)</span>
+
+        <span class="c1"># buttons</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">buttons_layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+            <span class="n">current_task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_task</span>
+            <span class="n">handoff_data</span> <span class="o">=</span> <span class="n">cinestron_task_info</span><span class="o">.</span><span class="n">task_lookup</span><span class="p">[</span><span class="n">current_task</span><span class="p">][</span><span class="s2">&quot;handoff_data&quot;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">current</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">handoff_data</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="n">button</span> <span class="o">=</span> <span class="n">QRadioButton</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">buttons_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">button</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buttons_layout</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_submissions_list</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">centralwidget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_submissions_list</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="n">_fromUtf8</span><span class="p">(</span><span class="s2">&quot;label_submissions_list&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_submissions_list</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_submissions</span> <span class="o">=</span> <span class="n">QListWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">centralwidget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_submissions</span><span class="o">.</span><span class="n">setBatchSize</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_submissions</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="n">_fromUtf8</span><span class="p">(</span><span class="s2">&quot;list_submissions&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_submissions</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar_file</span> <span class="o">=</span> <span class="n">QProgressBar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">centralwidget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar_file</span> <span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar_file</span> <span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="n">_fromUtf8</span><span class="p">(</span><span class="s2">&quot;progress_bar_file &quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progress_bar_file</span> <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span> <span class="o">=</span> <span class="n">QProgressBar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">centralwidget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="n">_fromUtf8</span><span class="p">(</span><span class="s2">&quot;progress_bar&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">buttons_layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buttons_layout</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="n">_fromUtf8</span><span class="p">(</span><span class="s2">&quot;buttons_layout&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_stop</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">centralwidget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_stop</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_stop</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="n">_fromUtf8</span><span class="p">(</span><span class="s2">&quot;btn_stop&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buttons_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btn_stop</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_start</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">centralwidget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_start</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="n">_fromUtf8</span><span class="p">(</span><span class="s2">&quot;btn_start&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buttons_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btn_start</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalLayout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buttons_layout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCentralWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">centralwidget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="n">_translate</span><span class="p">(</span><span class="s2">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s2">&quot;FTP transfer&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_submissions_list</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">_translate</span><span class="p">(</span><span class="s2">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_stop</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">_translate</span><span class="p">(</span><span class="s2">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s2">&quot;Stop&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_start</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">_translate</span><span class="p">(</span><span class="s2">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s2">&quot;Start&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+
+        <span class="c1"># connexting and threads</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_start</span><span class="o">.</span><span class="n">pressed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_stop</span><span class="o">.</span><span class="n">pressed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">)</span>
+
+        <span class="c1"># progress bars setup</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar_file</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar_file</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1">#</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">recursive</span><span class="o">==</span><span class="kc">True</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">btn_start</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">_translate</span><span class="p">(</span><span class="s2">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s2">&quot;Gather&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+
+        <span class="n">current_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">current_item</span>
+        <span class="n">directory</span> <span class="o">=</span> <span class="n">current_item</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">]</span>
+        <span class="n">directory_root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">server_active_dir</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;transfer root: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory_root</span><span class="p">,</span> <span class="n">directory</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_submissions</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">threadpool</span> <span class="o">=</span> <span class="n">QThreadPool</span><span class="p">()</span>
+        <span class="c1">#print(&quot;Multithreading with maximum %d threads&quot; % self.threadpool.maxThreadCount())</span>
+
+        <span class="c1"># auto start for dirs</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">recursive</span><span class="o">==</span><span class="kc">True</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">resolve_mode_change</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resolve_mode</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">combo_resolve_mode</span><span class="o">.</span><span class="n">currentText</span><span class="p">())</span>
+
+    <span class="c1">############################################################################</span>
+    <span class="c1"># main functions</span>
+    <span class="c1">############################################################################</span>
+    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_stop</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_start</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># Pass the function to execute</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">worker</span> <span class="o">=</span> <span class="n">Worker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">execute_this_fn</span><span class="p">)</span> <span class="c1"># Any other args, kwargs are passed to the run function</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">recursive</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">worker</span> <span class="o">=</span> <span class="n">Worker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">execute_this_fn_gather</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">recursive_mode</span> <span class="o">==</span> <span class="s2">&quot;resolve&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">worker</span> <span class="o">=</span> <span class="n">Worker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">execute_this_fn_resolve</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">worker</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">print_output</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">worker</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thread_complete</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">worker</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">progress</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progress_fn</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">worker</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">progress_file</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progress_fn_file</span><span class="p">)</span>
+        <span class="c1"># Execute</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">threadpool</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">worker</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_stop</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_start</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">G_THREAD_RUNNING</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Exit!&quot;</span><span class="p">,</span> <span class="s2">&quot;Stop!&quot;</span><span class="p">)</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">-----------------Exit! early Stop!---------------</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_submissions</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">early_stop</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1">#self.progress_bar.setValue(len(self.max_file_list))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">thread_complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">recursive</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">recursive_mode</span> <span class="o">==</span> <span class="s2">&quot;resolve&quot;</span><span class="p">):</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">-----------------Done! Gathering files! Now you can resolve.---------------</span><span class="se">\n</span><span class="s2">&quot;</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">list_submissions</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+                <span class="c1">#QMessageBox.information(self, &quot;Done!&quot;, &quot;Done gathering files! Now you can resolve.&quot;)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">btn_stop</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">btn_start</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">end</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">early_stop</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">btn_stop</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">btn_start</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">-----------------Exit! early Stop! Ftp closed ---------------</span><span class="se">\n</span><span class="s2">&quot;</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">list_submissions</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">end</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Show the message that fetching posts is done.</span>
+<span class="sd">            Disable Stop button, enable the Start one and reset progress bar to 0</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">-----------------Done! Resolving files!---------------</span><span class="se">\n</span><span class="s2">&quot;</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">list_submissions</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">btn_stop</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">btn_start</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+            <span class="c1">#QMessageBox.information(self, &quot;Done!&quot;, &quot;Done Resolving files!&quot;)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">send_notification</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">auto_run_action</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="c1">############################################################################</span>
+    <span class="c1"># logic functions</span>
+    <span class="c1">############################################################################</span>
+    <span class="k">def</span> <span class="nf">execute_this_fn_gather</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress_callback</span><span class="p">,</span> <span class="n">progress_callback_file</span><span class="p">):</span>
+        <span class="n">current_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">current_item</span>
+        <span class="n">recursion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">recursive</span>
+        <span class="n">directory</span> <span class="o">=</span> <span class="n">current_item</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">]</span>
+
+        <span class="c1"># stop people calling mutliple</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_stop</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_start</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">changeDir</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">my_recursion</span><span class="p">(</span><span class="n">in_callback</span><span class="o">=</span><span class="n">progress_callback</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">recursive_mode</span> <span class="o">=</span> <span class="s2">&quot;resolve&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_start</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">_translate</span><span class="p">(</span><span class="s2">&quot;MainWindow&quot;</span><span class="p">,</span> <span class="s2">&quot;Resolve&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">recursive_results</span><span class="p">))</span>
+        <span class="c1"># Setting the value on every run to 0</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">-----------------Total files </span><span class="si">%g</span><span class="s2">. Total size </span><span class="si">%s</span><span class="s2">---------------</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">recursive_results</span><span class="p">),</span> <span class="n">humanize_bytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">recursive_size</span><span class="p">))</span> 
+        <span class="n">progress_callback</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;-----------------Pull size </span><span class="si">%s</span><span class="s2">. Push size </span><span class="si">%s</span><span class="s2">. Match size </span><span class="si">%s</span><span class="s2"> ---------------</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">humanize_bytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">recursive_size_pull</span><span class="p">),</span> <span class="n">humanize_bytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">recursive_size_push</span><span class="p">),</span> <span class="n">humanize_bytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">recursive_size_match</span><span class="p">))</span> 
+        <span class="n">progress_callback</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="c1"># updating progress bar needs signals slots</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;RESET&quot;</span>
+        <span class="n">progress_callback</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+        <span class="c1"># toggle back</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_stop</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_start</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">execute_this_fn_resolve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress_callback</span><span class="p">,</span> <span class="n">progress_callback_file</span><span class="p">):</span>
+        <span class="c1"># stop people calling mutliple</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_stop</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_start</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">current</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">recursive_results</span><span class="p">:</span>
+            <span class="c1"># </span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;RESET&quot;</span>
+            <span class="n">progress_callback_file</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">current_item</span> <span class="o">=</span> <span class="n">current</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">server_active_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">current_item</span><span class="p">[</span><span class="s2">&quot;cur_dir_server&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">local_active_dir</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">current_item</span><span class="p">[</span><span class="s2">&quot;cur_dir_local&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">execute_this_fn</span><span class="p">(</span><span class="n">progress_callback</span><span class="p">,</span> <span class="n">progress_callback_file</span><span class="p">)</span>
+            <span class="c1">#</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resolve_mode</span> <span class="o">==</span> <span class="s2">&quot;delete&quot;</span><span class="p">):</span>
+            <span class="c1"># NOTE could be bad calling this from here</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">recursive_results_dirs</span><span class="p">))</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;RESET&quot;</span>
+            <span class="n">progress_callback</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">sort_recursive_results_dirs</span><span class="p">()</span>
+            
+            <span class="k">for</span> <span class="n">current</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">recursive_results_dirs</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">current_item</span> <span class="o">=</span> <span class="n">current</span>
+                <span class="n">current_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">current_item</span>
+                <span class="n">recursion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">recursive</span>
+                <span class="n">directory</span> <span class="o">=</span> <span class="n">current_item</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">trash_files_server</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">in_callback</span><span class="o">=</span><span class="n">progress_callback</span><span class="p">,</span> <span class="n">in_callback_file</span><span class="o">=</span><span class="n">progress_callback_file</span><span class="p">)</span>
+                <span class="c1"># u</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;UPDATE_BAR&quot;</span>
+                <span class="n">progress_callback</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="c1"># toggle back</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_stop</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_start</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">recursive_mode</span> <span class="o">=</span> <span class="s2">&quot;finished&quot;</span>
+
+    <span class="k">def</span> <span class="nf">execute_this_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress_callback</span><span class="p">,</span> <span class="n">progress_callback_file</span><span class="p">):</span>
+        <span class="n">current_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">current_item</span>
+        <span class="n">recursion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">recursive</span>
+        <span class="n">directory</span> <span class="o">=</span> <span class="n">current_item</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">]</span>
+
+        <span class="c1"># multiple checks to decided on what to with the files.</span>
+        <span class="c1"># need improved date checking aswell</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="kc">None</span> 
+        <span class="k">if</span> <span class="p">(</span><span class="n">current_item</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;red&quot;</span><span class="p">):</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;pull&quot;</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">current_item</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;blue&quot;</span><span class="p">):</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;push&quot;</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">current_item</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;orange&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">current_item</span><span class="p">[</span><span class="s2">&quot;status_winner&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;server&quot;</span><span class="p">):</span>
+                <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;pull&quot;</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">current_item</span><span class="p">[</span><span class="s2">&quot;status_winner&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;local&quot;</span><span class="p">):</span>
+                <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;push&quot;</span>
+
+        <span class="c1"># override&#39;s</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resolve_mode</span> <span class="o">==</span> <span class="s2">&quot;force pull&quot;</span><span class="p">):</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;pull&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resolve_mode</span> <span class="o">==</span> <span class="s2">&quot;force push&quot;</span><span class="p">):</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;push&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resolve_mode</span> <span class="o">==</span> <span class="s2">&quot;delete&quot;</span><span class="p">):</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;delete&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resolve_mode</span> <span class="o">==</span> <span class="s2">&quot;publish&quot;</span><span class="p">):</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;publish&quot;</span>        
+
+        <span class="c1"># three distinct modes of operation</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;publish&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">publish_files</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">in_callback</span><span class="o">=</span><span class="n">progress_callback</span><span class="p">,</span> <span class="n">in_callback_file</span><span class="o">=</span><span class="n">progress_callback_file</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;delete&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">trash_files_server</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">in_callback</span><span class="o">=</span><span class="n">progress_callback</span><span class="p">,</span> <span class="n">in_callback_file</span><span class="o">=</span><span class="n">progress_callback_file</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;pull&quot;</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resolve_mode</span> <span class="o">==</span> <span class="s2">&quot;pull&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolve_mode</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolve_mode</span> <span class="o">==</span> <span class="s2">&quot;force pull&quot;</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">pull_files</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">current_item</span><span class="p">[</span><span class="s2">&quot;server_bytes&quot;</span><span class="p">],</span> <span class="n">in_callback</span><span class="o">=</span><span class="n">progress_callback</span><span class="p">,</span> <span class="n">in_callback_file</span><span class="o">=</span><span class="n">progress_callback_file</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;push&quot;</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resolve_mode</span> <span class="o">==</span> <span class="s2">&quot;push&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolve_mode</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolve_mode</span> <span class="o">==</span> <span class="s2">&quot;force push&quot;</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">push_files</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">in_callback</span><span class="o">=</span><span class="n">progress_callback</span><span class="p">,</span> <span class="n">in_callback_file</span><span class="o">=</span><span class="n">progress_callback_file</span><span class="p">)</span>
+
+        <span class="c1"># updating progress bar needs signals slots</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;UPDATE_BAR&quot;</span>
+        <span class="n">progress_callback</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+        <span class="c1">#</span>
+        <span class="k">return</span> <span class="s2">&quot;Done.&quot;</span>
+
+    <span class="c1">############################################################################</span>
+    <span class="c1"># progress functions</span>
+    <span class="c1">############################################################################</span>
+    <span class="k">def</span> <span class="nf">progress_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="c1">#print(&quot;progress_fn called&quot;)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="s2">&quot;RESET&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">n</span> <span class="o">!=</span> <span class="s2">&quot;UPDATE_BAR&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">list_submissions</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">value</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_submissions</span><span class="o">.</span><span class="n">scrollToBottom</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">progress_fn_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="c1">#print(&quot;progress_fn called&quot;)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="s2">&quot;RESET&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar_file</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar_file</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_submissions</span><span class="o">.</span><span class="n">scrollToBottom</span><span class="p">()</span>
+
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    def progress_fn_file_reset(self):</span>
+<span class="sd">        self.progress_bar_file.setValue(0)</span>
+<span class="sd">        self.list_submissions.scrollToBottom()</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">print_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_submissions</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">value</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span></div>
+    
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="kn">import</span> <span class="nn">ftp_connect</span> <span class="k">as</span> <span class="nn">ftp_connect</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">CsContext</span><span class="p">()</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">loadContext</span><span class="p">()</span>
+    <span class="n">ftpConnect</span> <span class="o">=</span> <span class="n">ftp_connect</span><span class="o">.</span><span class="n">FtpConnect</span><span class="p">()</span>
+    <span class="n">ftpConnect</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+    <span class="n">ftpConnect</span><span class="o">.</span><span class="n">print_base_location</span><span class="p">()</span>
+
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">ThreadingMain</span><span class="p">(</span><span class="n">context</span><span class="p">,</span><span class="n">ftpConnect</span><span class="p">)</span>
+    <span class="n">form</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+<span class="c1">#app = QApplication([])</span>
+<span class="c1">#window = MainWindow()</span>
+<span class="c1">#app.exec_()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cinestron Ltd.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2018',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
