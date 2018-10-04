@@ -1,0 +1,862 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>task_key &mdash; cinestron 2018 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> cinestron
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cinestron</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>task_key</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for task_key</h1><div class="highlight"><pre>
+<span></span><span class="c1">#Copyright © 2018 by Jon Gaffney, All Rights Reserved, created to be used for Cinestron Ltd civilzation.py program</span>
+<span class="c1"># context contains all of our main imports and the CsContext class </span>
+<span class="c1">#imported in with no namespace</span>
+<span class="kn">from</span> <span class="nn">context</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">schedule_manager</span> <span class="k">as</span> <span class="nn">schedule_manager</span>
+<span class="kn">import</span> <span class="nn">new_window</span> <span class="k">as</span> <span class="nn">new_window</span>
+
+<span class="c1">############################################################################</span>
+<span class="c1"># main ui class</span>
+<span class="c1">############################################################################</span>
+<div class="viewcode-block" id="taskKey"><a class="viewcode-back" href="../dev_docs.html#task_key.taskKey">[docs]</a><span class="k">class</span> <span class="nc">taskKey</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    this class creates the table widget that appears in the scheulde_manager_ui.py, all of the logic and</span>
+<span class="sd">    ui elements for this table are inside the taskKey class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">show_json</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">task_key_json</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">empty_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">active_show</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">active_sequence</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">active_shot</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">active_tasks_headers</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">schedule_manager</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="taskKey.__init__"><a class="viewcode-back" href="../dev_docs.html#task_key.taskKey.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_schedule_manager</span><span class="p">,</span> <span class="n">simple_mode</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">taskKey</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type in_schedule_manager: class</span>
+<span class="sd">        :param in_schedule_manager: ensures the currnet working schedule_manager is used</span>
+<span class="sd">        :type simple_mode: boolean</span>
+<span class="sd">        :param simple_mode: TODO does nothing? refactor??</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span> <span class="o">=</span> <span class="n">in_schedule_manager</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active_tasks_headers</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">cinestron_task_info</span><span class="o">.</span><span class="n">task_names</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">header_task_keys</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">cinestron_task_info</span><span class="o">.</span><span class="n">cinestron_task_key</span><span class="p">)</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">header_task_keys</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;task_data&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">header_task_keys</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;status_current&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">header_task_keys</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">header_task_keys</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">header_task_order</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+        <span class="c1">#header_task_order = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">header_task_keys</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">header_task_keys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">header_task_order</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">form_widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_table_size</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">item_click</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span>
+                    <span class="n">myListWidget</span><span class="p">,</span>
+                    <span class="n">current_item</span><span class="p">,</span>
+                    <span class="n">row</span><span class="p">,</span>
+                    <span class="n">column</span><span class="p">,</span>
+                    <span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">action_mode</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">tab_name</span><span class="o">=</span><span class="s2">&quot;tab4&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type myListWidget: object/QWidget</span>
+<span class="sd">        :param myListWidget:</span>
+<span class="sd">        :type current_item: string</span>
+<span class="sd">        :param current_item: </span>
+<span class="sd">        :type row: integer</span>
+<span class="sd">        :param row: </span>
+<span class="sd">        :type column: integer</span>
+<span class="sd">        :param column: </span>
+<span class="sd">        :type recursive: Boolean</span>
+<span class="sd">        :param recursive: </span>
+<span class="sd">        :type action_mode: Boolean</span>
+<span class="sd">        :param action_mode: </span>
+<span class="sd">        :type tab_name: string</span>
+<span class="sd">        :param tab_name:  </span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Item clicked&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;row&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;column&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+        <span class="c1">#item = myListWidget.currentItem()</span>
+        <span class="c1">#current = str(item.text())</span>
+        <span class="c1">#self.go_button(current_item[current], recursive=recursive, action_mode=action_mode, tab_name=tab_name)</span>
+
+    <span class="k">def</span> <span class="nf">on_context_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                        <span class="n">myListWidget</span><span class="p">,</span>
+                        <span class="n">current_item</span><span class="p">,</span>
+                        <span class="n">pos</span><span class="p">,</span>
+                        <span class="n">file</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">tab_name</span><span class="o">=</span><span class="s2">&quot;tab4&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type myListWidget: object/QWidget</span>
+<span class="sd">        :param myListWidget:</span>
+<span class="sd">        :type current_item: string</span>
+<span class="sd">        :param current_item: </span>
+<span class="sd">        :type pos: integer</span>
+<span class="sd">        :param pos: </span>
+<span class="sd">        :type file: Boolean</span>
+<span class="sd">        :param file: </span>
+<span class="sd">        :type tab_name: </span>
+<span class="sd">        :param tab_name: string</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># finds the position based on col/row location</span>
+        <span class="k">if</span> <span class="n">myListWidget</span><span class="o">.</span><span class="n">selectionModel</span><span class="p">()</span><span class="o">.</span><span class="n">selection</span><span class="p">()</span><span class="o">.</span><span class="n">indexes</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">myListWidget</span><span class="o">.</span><span class="n">selectionModel</span><span class="p">()</span><span class="o">.</span><span class="n">selection</span><span class="p">()</span><span class="o">.</span><span class="n">indexes</span><span class="p">():</span>
+                <span class="n">row</span><span class="p">,</span> <span class="n">column</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">row</span><span class="p">(),</span> <span class="n">i</span><span class="o">.</span><span class="n">column</span><span class="p">()</span>
+            <span class="c1">#menu = QtGui.QMenu()</span>
+
+            <span class="n">current_item</span> <span class="o">=</span> <span class="n">myListWidget</span><span class="o">.</span><span class="n">cellWidget</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
+            <span class="n">current_item</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+
+            <span class="c1"># create context buttons</span>
+            <span class="n">open_action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Open&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="n">rename_action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Rename&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="n">active_action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Activate&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span> <span class="c1"># this will be viewed only on deactive lines</span>
+            <span class="n">deactive_action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Deactivate&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span> <span class="c1"># this will be viewed only on active lines</span>
+            
+            <span class="c1"># second layer context buttons - STATUS</span>
+            <span class="n">red_status</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Red&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="n">orange_status</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Orange&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="n">green_status</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Green&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+            <span class="c1"># second layer context buttons - CLEAR</span>
+            <span class="n">box_clear</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Box&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="n">row_clear</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Row&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="n">table_clear</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Table&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+            <span class="c1"># create context menu</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">open_action</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">rename_action</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">active_action</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">deactive_action</span><span class="p">)</span>
+
+            <span class="c1"># second layer context menu - STATUS</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popSubMenu_status</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popSubMenu_status</span><span class="o">.</span><span class="n">setTitle</span><span class="p">(</span><span class="s2">&quot;Status&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">popSubMenu_status</span><span class="p">)</span>
+
+            <span class="c1"># create second layer context menu - STATUS</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popSubMenu_status</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">red_status</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popSubMenu_status</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">orange_status</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popSubMenu_status</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">green_status</span><span class="p">)</span>
+
+            <span class="c1"># second layer context menu - CLEAR</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popSubMenu_clear</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popSubMenu_clear</span><span class="o">.</span><span class="n">setTitle</span><span class="p">(</span><span class="s2">&quot;Clear&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">popSubMenu_clear</span><span class="p">)</span>
+
+            <span class="c1"># create second layer context menu - CLEAR</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popSubMenu_clear</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">box_clear</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popSubMenu_clear</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">row_clear</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popSubMenu_clear</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">table_clear</span><span class="p">)</span>
+
+            <span class="c1"># trigger events</span>
+            <span class="n">open_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">item_click</span><span class="p">,</span> <span class="n">myListWidget</span><span class="p">,</span> <span class="n">current_item</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">tab_name</span><span class="o">=</span><span class="n">tab_name</span><span class="p">,</span> <span class="n">action_mode</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">))</span>
+            <span class="n">table_clear</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">clear_table</span><span class="p">())</span>
+            <span class="n">rename_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                <span class="k">lambda</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;rename&quot;</span><span class="p">))</span>
+            <span class="n">red_status</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                <span class="k">lambda</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">current_item</span><span class="p">,</span> <span class="s2">&quot;red&quot;</span><span class="p">))</span>
+            <span class="n">box_clear</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clear_box</span><span class="p">,</span> <span class="n">myListWidget</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">))</span>
+
+            <span class="c1"># show context menu</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="o">.</span><span class="n">exec_</span><span class="p">(</span><span class="n">myListWidget</span><span class="o">.</span><span class="n">mapToGlobal</span><span class="p">(</span><span class="n">pos</span><span class="p">))</span>
+
+    <span class="c1">#####################################################################################</span>
+    <span class="c1"># sets the dimensions/size of the table based on list paramaters</span>
+    <span class="c1">#####################################################################################</span>
+<div class="viewcode-block" id="taskKey.set_table_size"><a class="viewcode-back" href="../dev_docs.html#task_key.taskKey.set_table_size">[docs]</a>    <span class="k">def</span> <span class="nf">set_table_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type col: list</span>
+<span class="sd">        :param col: uses the list size to determine the size of the table columns</span>
+<span class="sd">        :type row: list</span>
+<span class="sd">        :param row: uses the list size to determine the size of the table rows</span>
+<span class="sd">        :rtype: object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">length_col_table</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">length_row_table</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">length_col_table</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+            <span class="n">length_row_table</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">do_nothing</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form_widget</span> <span class="o">=</span> <span class="n">QTableWidget</span><span class="p">(</span><span class="n">length_col_table</span><span class="p">,</span> <span class="n">length_row_table</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form_widget</span><span class="o">.</span><span class="n">setContextMenuPolicy</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">CustomContextMenu</span><span class="p">)</span>
+        <span class="n">current_files</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">tab_name</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form_widget</span><span class="o">.</span><span class="n">customContextMenuRequested</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_context_menu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_widget</span><span class="p">,</span> <span class="n">current_files</span><span class="p">,</span> <span class="n">tab_name</span><span class="o">=</span><span class="n">tab_name</span><span class="p">))</span>
+        <span class="c1">#self.form_widget.customContextMenuRequested.connect(partial(self.contextMenuEvent, self.form_widget))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_widget</span></div>
+
+    <span class="c1">#####################################################################################</span>
+    <span class="c1"># creates/refreshes the headers/columns names for the table</span>
+    <span class="c1">#####################################################################################</span>
+<div class="viewcode-block" id="taskKey.refresh"><a class="viewcode-back" href="../dev_docs.html#task_key.taskKey.refresh">[docs]</a>    <span class="k">def</span> <span class="nf">refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type mode: string</span>
+<span class="sd">        :param mode: when the program is first ran will create a baisc outline from default paramaters</span>
+<span class="sd">        :type check: NoneType</span>
+<span class="sd">        :param check: list of keys from dict will be used to create the row header names</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># add header horizontal and vertical to the tabel</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">mode</span><span class="o">==</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">check</span><span class="o">==</span><span class="kc">None</span><span class="p">:</span>
+                <span class="n">row_headers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_tasks_headers</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">row_headers</span> <span class="o">=</span> <span class="n">check</span>
+        <span class="c1"># for single table widget</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">mode</span> <span class="o">!=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+            <span class="n">row_headers</span> <span class="o">=</span> <span class="n">mode</span>
+
+        <span class="n">col_headers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header_task_keys</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCentralWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_table_size</span><span class="p">(</span><span class="n">row_headers</span><span class="p">,</span> <span class="n">col_headers</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form_widget</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">(</span><span class="n">col_headers</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form_widget</span><span class="o">.</span><span class="n">setVerticalHeaderLabels</span><span class="p">(</span><span class="n">row_headers</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form_widget</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setStretchLastSection</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form_widget</span><span class="o">.</span><span class="n">resizeColumnsToContents</span><span class="p">()</span></div>
+
+    <span class="c1">#####################################################################################</span>
+    <span class="c1"># status red/orange/green function</span>
+    <span class="c1">#####################################################################################</span>
+    <span class="k">def</span> <span class="nf">context_menu_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="c1">#####################################################################################</span>
+    <span class="c1"># clear/deletes all of the data in the rows of the table</span>
+    <span class="c1">#####################################################################################</span>
+    <span class="k">def</span> <span class="nf">clear_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self: clears the table, used multiple times as recreating a table requires clearing first</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rowCount</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_widget</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">row_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rowCount</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">col_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">form_widget</span><span class="o">.</span><span class="n">columnCount</span><span class="p">()):</span>
+                <span class="c1">#print(&quot;self.form_widget.removeCellWidget(%s, %s )&quot; %(row_index, col_index))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">form_widget</span><span class="o">.</span><span class="n">removeCellWidget</span><span class="p">(</span><span class="n">row_index</span><span class="p">,</span> <span class="n">col_index</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">clear_box</span><span class="p">(</span>  <span class="bp">self</span><span class="p">,</span> 
+                    <span class="n">myListWidget</span><span class="p">,</span>
+                    <span class="n">row</span><span class="p">,</span>
+                    <span class="n">column</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self: clears the box that is currently selected by the user</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+       <span class="c1"># print(row)</span>
+      <span class="c1">#  print(column)</span>
+        <span class="n">box_selected</span> <span class="o">=</span> <span class="n">myListWidget</span><span class="o">.</span><span class="n">cellWidget</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
+       <span class="c1"># print(str(box_selected.text()))</span>
+      <span class="c1">#  print(self.show_json[self.active_show][self.active_sequence][self.active_shot][&quot;internal_data&quot;])</span>
+
+    <span class="k">def</span> <span class="nf">clear_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+
+    <span class="c1"># used in utils.py</span>
+<div class="viewcode-block" id="taskKey.sizeHint"><a class="viewcode-back" href="../dev_docs.html#task_key.taskKey.sizeHint">[docs]</a>    <span class="k">def</span> <span class="nf">sizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self: ?? not sure what this is used for as doesnt appear to be called</span>
+<span class="sd">        :rtype: QSize object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">horizontal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_widget</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span>
+        <span class="n">vertical</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_widget</span><span class="o">.</span><span class="n">verticalHeader</span><span class="p">()</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_widget</span><span class="o">.</span><span class="n">frameWidth</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">QSize</span><span class="p">(</span><span class="n">horizontal</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="o">+</span> <span class="n">vertical</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">+</span> <span class="n">frame</span><span class="p">,</span>
+                     <span class="n">vertical</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="o">+</span> <span class="n">horizontal</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">+</span> <span class="n">frame</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="taskKey.selectFile"><a class="viewcode-back" href="../dev_docs.html#task_key.taskKey.selectFile">[docs]</a>    <span class="k">def</span> <span class="nf">selectFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lineEdit</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type lineEdit: var</span>
+<span class="sd">        :param lineEdit: </span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="o">.</span><span class="n">getOpenFileName</span><span class="p">()</span>
+        <span class="n">lineEdit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+    <span class="c1">#####################################################################################</span>
+    <span class="c1"># dictates what happesn when an item inside of the table is clicked/typed</span>
+    <span class="c1">#####################################################################################</span>
+<div class="viewcode-block" id="taskKey.itemChanged"><a class="viewcode-back" href="../dev_docs.html#task_key.taskKey.itemChanged">[docs]</a>    <span class="k">def</span> <span class="nf">itemChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_element</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">in_task</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;comboBox&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type ui_element: object Qwidget</span>
+<span class="sd">        :param ui_element: the current object type being changed</span>
+<span class="sd">        :type key: string</span>
+<span class="sd">        :param key: the current key being alterd from the main dict</span>
+<span class="sd">        :type in_task: string</span>
+<span class="sd">        :param in_task:the current key being alterd from the main dict </span>
+<span class="sd">        :type mode: string</span>
+<span class="sd">        :param mode: the type of QWidget, combowbox,qlineedit,checkbox etc</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">do_redraw</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;view&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">task_key_json</span><span class="p">[</span><span class="n">in_task</span><span class="p">][</span><span class="n">key</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">task_key_json</span><span class="p">[</span><span class="n">in_task</span><span class="p">][</span><span class="n">key</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">task_key_json</span><span class="p">[</span><span class="n">in_task</span><span class="p">][</span><span class="n">key</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="c1"># DATEBASE IN #</span>
+            <span class="c1"># pull from server before modifing our result</span>
+            <span class="c1"># in this case we have to grab the task key componet encase someone else was getting it</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">db_get</span><span class="p">()</span>
+            <span class="n">task_key_json_server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">active_show</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span><span class="p">][</span><span class="s2">&quot;internal_data&quot;</span><span class="p">]</span>
+            <span class="c1">#print(&quot;task_key_json_server&quot;)</span>
+            <span class="c1">#try:</span>
+            <span class="c1">#    print(list(task_key_json_server.keys()))</span>
+            <span class="c1">#except:</span>
+            <span class="c1">#    print(task_key_json_server)</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">task_key_json_server</span> <span class="o">!=</span> <span class="p">{}):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">task_key_json</span> <span class="o">=</span> <span class="n">task_key_json_server</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;comboBox&quot;</span><span class="p">):</span>
+                <span class="n">tmp</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ui_element</span><span class="o">.</span><span class="n">currentText</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">task_key_json</span><span class="p">[</span><span class="n">in_task</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;text&quot;</span><span class="p">):</span>
+                <span class="n">tmp</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ui_element</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">task_key_json</span><span class="p">[</span><span class="n">in_task</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;toPlainText&quot;</span><span class="p">):</span>
+                <span class="n">tmp</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ui_element</span><span class="o">.</span><span class="n">toPlainText</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">task_key_json</span><span class="p">[</span><span class="n">in_task</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">mode</span><span class="o">==</span><span class="s2">&quot;CheckBox&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">ui_element</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">task_key_json</span><span class="p">[</span><span class="n">in_task</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;True&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">task_key_json</span><span class="p">[</span><span class="n">in_task</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;False&quot;</span>
+                <span class="n">do_redraw</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;calender&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">new_calender</span> <span class="o">=</span>  <span class="n">new_window</span><span class="o">.</span><span class="n">newDialogWindow</span><span class="p">(</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
+                                                                <span class="n">window_type</span><span class="o">=</span><span class="s2">&quot;calender&quot;</span><span class="p">,</span>
+                                                                <span class="n">in_context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">context</span><span class="p">,</span>
+                                                                <span class="n">in_schedule_manager</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">new_calender</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_calender</span><span class="o">.</span><span class="n">get_date</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">task_key_json</span><span class="p">[</span><span class="n">in_task</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+                <span class="n">ui_element</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">active_show</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span><span class="p">][</span><span class="s2">&quot;internal_data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">task_key_json</span>
+
+            <span class="c1"># DATEBASE OUT #</span>
+            <span class="c1"># Push back to server after modifing our result</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">db_push</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">)</span>
+            <span class="c1"># NOTE original</span>
+            <span class="c1">#self.schedule_manager.localbd_push(self.show_json)</span>
+
+        <span class="c1"># redraw the table</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">do_redraw</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">task_run</span><span class="p">(</span>  <span class="n">show</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_show</span><span class="p">,</span>
+                            <span class="n">sequence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">,</span>
+                            <span class="n">shot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span><span class="p">,</span> 
+                            <span class="n">in_show_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">)</span></div>
+        <span class="c1">#self.show_json = self.schedule_manager.read_show(self.show_json)</span>
+
+    <span class="c1">############################################################################################</span>
+    <span class="c1"># functions to populate the table with information as well as retrives/saves the infromation</span>
+    <span class="c1">############################################################################################</span>
+<div class="viewcode-block" id="taskKey.row_population"><a class="viewcode-back" href="../dev_docs.html#task_key.taskKey.row_population">[docs]</a>    <span class="k">def</span> <span class="nf">row_population</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span>
+                        <span class="n">row_cords</span><span class="p">,</span>
+                        <span class="n">in_dict</span><span class="p">,</span>
+                        <span class="n">multi_line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">in_task</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">in_task_header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">read_only</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type row_cords: integer</span>
+<span class="sd">        :param row_cords: the current location where the data will be created 0,0 to 0,1 etc</span>
+<span class="sd">        :type in_dict: dict</span>
+<span class="sd">        :param in_dict: the main dictonary</span>
+<span class="sd">        :type multi_line: boolean</span>
+<span class="sd">        :param multi_line: set to True if multiple table rows are being populated at once</span>
+<span class="sd">        :type in_task: string</span>
+<span class="sd">        :param in_task: the name of the task which is having its data populated</span>
+<span class="sd">        :type in_task_header: list</span>
+<span class="sd">        :param in_task_header: current active task headers, will match the in_task string</span>
+<span class="sd">        :type read_only: Boolean</span>
+<span class="sd">        :param read_only: if the data can be edited after it has been populated</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># use this data to set defualt text</span>
+        <span class="n">task_key_current</span> <span class="o">=</span> <span class="n">in_dict</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">multi_line</span><span class="o">==</span><span class="kc">True</span><span class="p">):</span>
+            <span class="n">local_task</span> <span class="o">=</span> <span class="n">in_task</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">local_task</span> <span class="o">=</span> <span class="n">in_task</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">in_task</span><span class="p">)</span>
+
+        <span class="c1"># sorts the task key into an orderd/customizable list</span>
+        <span class="n">task_key</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">cinestron_task_info</span><span class="o">.</span><span class="n">cinestron_task_key</span><span class="p">)</span>
+        <span class="n">task_key</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;task_data&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">task_key</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;status_current&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>                  
+        <span class="n">task_key_sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">task_key</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">task_key_order</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+        <span class="n">task_key_sorted</span> <span class="o">=</span> <span class="p">[</span><span class="n">task_key_sorted</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">task_key_order</span><span class="p">]</span>
+        <span class="n">column_location</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># decide if we draw the full row</span>
+        <span class="n">is_active</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;active&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">task_key_current</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">task_key_current</span><span class="p">[</span><span class="s2">&quot;active&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span> <span class="ow">or</span> <span class="n">task_key_current</span><span class="p">[</span><span class="s2">&quot;active&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+                <span class="n">is_active</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># populates the table depending on what type of ui_element is present (combow,text,check etc)</span>
+        <span class="n">new_item</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">keys</span> <span class="ow">in</span> <span class="n">task_key_sorted</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">keys</span> 
+            <span class="k">if</span> <span class="p">(</span><span class="n">keys</span> <span class="o">!=</span> <span class="s2">&quot;task_data&quot;</span><span class="p">):</span>
+                <span class="n">new_item</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">in_dict</span><span class="p">[</span><span class="n">keys</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                    <span class="n">key_error_pop_up</span><span class="p">(</span><span class="n">passed_error</span><span class="o">=</span><span class="n">e</span><span class="p">)</span>
+
+                <span class="c1"># correct missing entries</span>
+                <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;active&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">task_key_current</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+                    <span class="n">task_key_current</span><span class="p">[</span><span class="s2">&quot;active&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;start_date&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">task_key_current</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+                    <span class="n">task_key_current</span><span class="p">[</span><span class="s2">&quot;start_date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;end_date&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">task_key_current</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+                    <span class="n">task_key_current</span><span class="p">[</span><span class="s2">&quot;end_date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+                <span class="n">current_data</span> <span class="o">=</span> <span class="n">task_key_current</span><span class="p">[</span><span class="n">keys</span><span class="p">]</span>
+                <span class="n">default_data</span> <span class="o">=</span> <span class="n">task_key</span><span class="p">[</span><span class="n">keys</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">in_task</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">in_task</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">task_key_json</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">keys</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_data</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">task_key_json</span><span class="p">[</span><span class="n">in_task</span><span class="p">][</span><span class="n">keys</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_data</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="n">keys</span> <span class="o">==</span> <span class="s2">&quot;active&quot;</span><span class="p">):</span>
+                    <span class="c1"># set the defaults</span>
+                    <span class="n">new_item</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">()</span>
+                    <span class="n">new_item</span><span class="o">.</span><span class="n">setTristate</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+                    <span class="n">new_item</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+                    <span class="n">new_item</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;color: red; background-color: red;&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">current_data</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">):</span>
+                        <span class="n">new_item</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                        <span class="n">new_item</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;color: green; background-color: green;&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">new_item</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+                        <span class="n">new_item</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">itemChanged</span><span class="p">,</span> <span class="n">new_item</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">local_task</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;CheckBox&quot;</span><span class="p">))</span>  
+                    <span class="c1">#</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># only make other fields if active</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">is_active</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">keys</span> <span class="o">==</span> <span class="s2">&quot;info&quot;</span><span class="p">):</span>
+                            <span class="n">new_item</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QTextEdit</span><span class="p">()</span>
+                            <span class="c1">#new_item.setText(default_data)</span>
+                            <span class="n">new_item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">current_data</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="p">(</span><span class="n">new_item</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+                                <span class="n">new_item</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">itemChanged</span><span class="p">,</span> <span class="n">new_item</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">local_task</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;toPlainText&quot;</span><span class="p">))</span>  
+                            <span class="c1">#</span>
+                        <span class="k">elif</span> <span class="p">(</span><span class="n">keys</span> <span class="o">==</span> <span class="s2">&quot;handoff_data&quot;</span><span class="p">):</span>
+                            <span class="n">new_item</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+                            <span class="n">new_item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;View&quot;</span><span class="p">)</span>
+                            <span class="c1">#new_item.clicked.connect(partial(self.selectFile, new_item))</span>
+                            <span class="k">if</span> <span class="p">(</span><span class="n">new_item</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+                                <span class="n">new_item</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">itemChanged</span><span class="p">,</span> <span class="n">new_item</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">local_task</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;view&quot;</span><span class="p">))</span>
+                            <span class="c1">#</span>
+                        <span class="k">elif</span> <span class="p">(</span><span class="n">keys</span> <span class="o">==</span><span class="s2">&quot;start_date&quot;</span> <span class="ow">or</span> <span class="n">keys</span><span class="o">==</span><span class="s2">&quot;end_date&quot;</span><span class="p">):</span> 
+                            <span class="n">new_item</span> <span class="o">=</span> <span class="n">QToolButton</span><span class="p">()</span>
+                            <span class="n">new_item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">current_data</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="p">(</span><span class="n">new_item</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+                                <span class="n">new_item</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">itemChanged</span><span class="p">,</span> <span class="n">new_item</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">local_task</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;calender&quot;</span><span class="p">))</span>
+                            <span class="c1">#</span>
+                        <span class="k">elif</span> <span class="p">(</span><span class="n">keys</span> <span class="o">==</span><span class="s2">&quot;task_forward&quot;</span> <span class="ow">or</span> <span class="n">keys</span><span class="o">==</span><span class="s2">&quot;task_backward&quot;</span><span class="p">):</span>
+                            <span class="n">label_name</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_data</span><span class="p">)</span>
+                            <span class="n">new_item</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="n">label_name</span><span class="p">)</span>
+                            <span class="c1">#</span>
+                        <span class="k">elif</span> <span class="p">(</span><span class="n">keys</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+                            <span class="n">new_item</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">()</span>
+                            <span class="n">new_item</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="n">default_data</span><span class="p">)</span>
+                            <span class="n">new_item</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">current_data</span><span class="p">)</span>
+                            <span class="n">combo_index</span> <span class="o">=</span> <span class="n">new_item</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="n">current_data</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="p">(</span><span class="n">combo_index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">):</span>
+                                 <span class="n">new_item</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">combo_index</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="p">(</span><span class="n">new_item</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+                                <span class="n">new_item</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">itemChanged</span><span class="p">,</span> <span class="n">new_item</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">local_task</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;comboBox&quot;</span><span class="p">))</span>
+                        <span class="c1">#</span>
+                    <span class="c1">#</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">new_item</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">form_widget</span><span class="o">.</span><span class="n">setCellWidget</span><span class="p">(</span><span class="n">row_cords</span><span class="p">,</span> <span class="n">column_location</span><span class="p">,</span> <span class="n">new_item</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">read_only</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+                        <span class="n">new_item</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">column_location</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1">#</span>
+        <span class="c1"># resizes the table width/hight depending on how big the data is</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form_widget</span><span class="o">.</span><span class="n">resizeColumnsToContents</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="taskKey.task_run"><a class="viewcode-back" href="../dev_docs.html#task_key.taskKey.task_run">[docs]</a>    <span class="k">def</span> <span class="nf">task_run</span><span class="p">(</span>   <span class="bp">self</span><span class="p">,</span>
+                    <span class="n">show</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                    <span class="n">sequence</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                    <span class="n">shot</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                    <span class="n">task</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                    <span class="n">in_show_json</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span> <span class="c1"># gather data</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type show: string</span>
+<span class="sd">        :param show: the active show key which data is being gatherd from to create the tasks</span>
+<span class="sd">        :type sequence: string</span>
+<span class="sd">        :param sequence: the active sequence key which data is being gatherd from to create the tasks</span>
+<span class="sd">        :type shot: string</span>
+<span class="sd">        :param shot: the active shot key which data is being gatherd from to create the tasks</span>
+<span class="sd">        :type task: string</span>
+<span class="sd">        :param task: the active task key which data is being gatherd from to create the tasks</span>
+<span class="sd">        :type in_show_json: dict</span>
+<span class="sd">        :param in_show_json: the active dictionary where the data is being gather</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active_show</span> <span class="o">=</span> <span class="n">show</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span> <span class="o">=</span> <span class="n">sequence</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span> <span class="o">=</span> <span class="n">shot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="n">in_show_json</span>
+
+        <span class="c1"># get data fall back to default if none exists</span>
+        <span class="n">shot_keys_local</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;internal_data&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">active_show</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+            <span class="n">shot_keys_local</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">active_show</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span><span class="p">][</span><span class="s2">&quot;internal_data&quot;</span><span class="p">]</span>
+
+        <span class="c1"># depending if we have a default shot or an asset show differnt tasks are created</span>
+        <span class="n">shot_keys_default</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">get_sequence_mode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">,</span> <span class="n">in_active_show</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">active_show</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">):</span>
+            <span class="n">shot_keys_default</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">cinestron_task_info</span><span class="o">.</span><span class="n">cinestron_task_info_default</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">shot_keys_default</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">cinestron_task_info</span><span class="o">.</span><span class="n">cinestron_task_asset_info_default</span><span class="p">)</span>
+
+        <span class="n">shot_keys</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># add are local data</span>
+        <span class="k">for</span> <span class="n">keys</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">shot_keys_local</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="n">shot_keys</span><span class="p">[</span><span class="n">keys</span><span class="p">]</span> <span class="o">=</span> <span class="n">shot_keys_local</span><span class="p">[</span><span class="n">keys</span><span class="p">]</span>
+
+        <span class="c1"># if there isnt any local data add our default data</span>
+        <span class="k">for</span> <span class="n">keys</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">shot_keys_default</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">keys</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">shot_keys</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+                <span class="n">do_nothing</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">shot_keys</span><span class="p">[</span><span class="n">keys</span><span class="p">]</span> <span class="o">=</span> <span class="n">shot_keys_default</span><span class="p">[</span><span class="n">keys</span><span class="p">]</span>
+            
+            <span class="c1"># fill task data           </span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">shot_keys</span><span class="p">[</span><span class="n">keys</span><span class="p">][</span><span class="s2">&quot;handoff_data&quot;</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">do_nothing</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">shot_keys</span><span class="p">[</span><span class="n">keys</span><span class="p">][</span><span class="s2">&quot;handoff_data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cinestron_task_info</span><span class="o">.</span><span class="n">task_lookup</span><span class="p">[</span><span class="n">keys</span><span class="p">][</span><span class="s2">&quot;handoff_data&quot;</span><span class="p">]</span>
+            <span class="c1"># override task forward and backward</span>
+            <span class="n">shot_keys</span><span class="p">[</span><span class="n">keys</span><span class="p">][</span><span class="s2">&quot;task_forward&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cinestron_task_info</span><span class="o">.</span><span class="n">task_lookup</span><span class="p">[</span><span class="n">keys</span><span class="p">][</span><span class="s2">&quot;task_forward&quot;</span><span class="p">]</span>
+            <span class="n">shot_keys</span><span class="p">[</span><span class="n">keys</span><span class="p">][</span><span class="s2">&quot;task_backward&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cinestron_task_info</span><span class="o">.</span><span class="n">task_lookup</span><span class="p">[</span><span class="n">keys</span><span class="p">][</span><span class="s2">&quot;task_backward&quot;</span><span class="p">]</span>
+        
+        <span class="c1">#  pop legacy tasks</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">current</span> <span class="ow">in</span> <span class="n">cinestron_task_info</span><span class="o">.</span><span class="n">task_names_legacy</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">current</span>  <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">shot_keys</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+                    <span class="n">shot_keys</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">task_key_json</span> <span class="o">=</span> <span class="n">shot_keys</span>
+        <span class="c1">#</span>
+        <span class="n">seen</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active_tasks_headers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># clear table widget so that new data can be added, needs to be refreshed on each shot click</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_table</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">shot_keys</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="c1"># populates full table widget</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">shot_keys</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="n">build</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="c1"># don&#39;t build the legacy tasks</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">name</span> <span class="ow">in</span> <span class="n">cinestron_task_info</span><span class="o">.</span><span class="n">task_names_legacy</span><span class="p">):</span>
+                        <span class="n">build</span> <span class="o">=</span> <span class="kc">False</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="n">build</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">):</span>
+                        <span class="n">do_nothing</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">active_tasks_headers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+                        <span class="n">seen</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">row_population</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">shot_keys</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">multi_line</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">in_task</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">in_task_header</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">active_tasks_headers</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                    <span class="n">items</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># my tasks in the schedule_manager_ui.py file for single table views</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">build</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="c1"># don&#39;t build the legacy tasks</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">task</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">cinestron_task_info</span><span class="o">.</span><span class="n">task_names_legacy</span><span class="p">):</span>
+                    <span class="n">build</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">build</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">row_population</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">shot_keys</span><span class="p">[</span><span class="n">task</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">multi_line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">in_task</span><span class="o">=</span><span class="n">task</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># if blank build</span>
+        <span class="n">task_key_json_server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">active_show</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span><span class="p">][</span><span class="s2">&quot;internal_data&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">task_key_json_server</span> <span class="o">==</span> <span class="p">{}):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">active_show</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span><span class="p">][</span><span class="s2">&quot;internal_data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">task_key_json</span>
+            <span class="c1"># DATEBASE OUT #</span>
+            <span class="c1"># Push back to server after modifing our result</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">db_push</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">)</span></div></div>
+
+<span class="c1">############################################################################</span>
+<span class="c1"># main ui setup</span>
+<span class="c1">############################################################################</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="mi">2280</span><span class="o">/</span><span class="mi">3</span><span class="p">;</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">2280</span><span class="o">/</span><span class="mi">3</span>
+    <span class="c1"># checks if QApplication already exists</span>
+    <span class="n">app</span><span class="o">=</span><span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>  
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">app</span><span class="p">:</span>    <span class="c1"># create QApplication if it doesnt exist</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+
+    <span class="c1"># set app icon    </span>
+    <span class="n">app_icon</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">()</span>
+    <span class="n">logo_locaion</span> <span class="o">=</span> <span class="n">get_base_path</span><span class="p">()</span> <span class="o">+</span><span class="s1">&#39;\images\logo.jpg&#39;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;logo_locaion&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">logo_locaion</span><span class="p">)</span>
+    <span class="n">app_icon</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span><span class="n">logo_locaion</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">))</span>
+    <span class="n">app_icon</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span><span class="n">logo_locaion</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span><span class="mi">24</span><span class="p">))</span>
+    <span class="n">app_icon</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span><span class="n">logo_locaion</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">))</span>
+    <span class="n">app_icon</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span><span class="n">logo_locaion</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">48</span><span class="p">,</span><span class="mi">48</span><span class="p">))</span>
+    <span class="n">app_icon</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span><span class="n">logo_locaion</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">))</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">setWindowIcon</span><span class="p">(</span><span class="n">app_icon</span><span class="p">)</span>
+    
+    <span class="c1">#log = qtdbg.QDbgConsole()</span>
+    <span class="c1">#ex = FtpConnectUI(in_log=log)</span>
+    <span class="n">sch</span> <span class="o">=</span> <span class="n">schedule_manager</span><span class="o">.</span><span class="n">scheduleManager</span><span class="p">()</span>
+    <span class="n">ex</span> <span class="o">=</span> <span class="n">taskKey</span><span class="p">(</span><span class="n">sch</span><span class="p">)</span>
+    <span class="n">ex</span> <span class="o">=</span> <span class="n">set_scheme</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span>
+    <span class="n">ex</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="c1">#ex.resize(w, h)</span>
+    <span class="c1">#active_show = &quot;note&quot;</span>
+    <span class="c1">#active_sequence = &quot;a&quot;</span>
+    <span class="c1">#active_shot = &quot;a&quot;</span>
+    <span class="c1">#show_json = read_json(&quot;C:\\internal\\note\\note.json&quot;)</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">read_json</span><span class="p">(</span><span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">internal</span><span class="se">\\</span><span class="s2">note</span><span class="se">\\</span><span class="s2">note.json&quot;</span><span class="p">)</span>
+    <span class="n">ex</span><span class="o">.</span><span class="n">task_run</span><span class="p">(</span><span class="n">in_show_json</span><span class="o">=</span><span class="n">tmp</span><span class="p">)</span>
+    <span class="n">sch</span><span class="o">.</span><span class="n">localbd_push</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">show_json</span><span class="p">)</span>
+
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">())</span>
+
+
+
+    
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+   <span class="n">main</span><span class="p">()</span>
+
+
+
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cinestron Ltd.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2018',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

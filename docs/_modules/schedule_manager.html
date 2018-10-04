@@ -1,0 +1,959 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>schedule_manager &mdash; cinestron 2018 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> cinestron
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cinestron</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>schedule_manager</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for schedule_manager</h1><div class="highlight"><pre>
+<span></span><span class="c1">#Copyright Ã‚Â© 2018 by Jon Gaffney, All Rights Reserved, created to be used for Cinestron Ltd civilzation.py program</span>
+<span class="c1"># context contains all of our main imports and the CsContext class </span>
+<span class="c1">#imported in with no namespace</span>
+<span class="kn">from</span> <span class="nn">context</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">task_key</span> <span class="k">as</span> <span class="nn">task_key</span>
+<span class="kn">import</span> <span class="nn">ftp_connect</span> <span class="k">as</span> <span class="nn">ftp_connect</span>
+<span class="kn">import</span> <span class="nn">database_connection</span> <span class="k">as</span> <span class="nn">database_connection</span>
+
+<span class="k">def</span> <span class="nf">copy_scheduleManager</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">cur</span><span class="p">):</span>
+    <span class="n">my_copy</span> <span class="o">=</span> <span class="n">scheduleManager</span><span class="p">(</span><span class="n">in_context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span> <span class="n">fast_init</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1">#ftpConnect.print_base_location()</span>
+    <span class="c1"># copy values over</span>
+    <span class="c1"># Share these</span>
+    <span class="n">my_copy</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">show_json</span>
+    <span class="n">my_copy</span><span class="o">.</span><span class="n">database_connection</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">database_connection</span>
+
+    <span class="c1"># make these direct copies.</span>
+    <span class="n">my_copy</span><span class="o">.</span><span class="n">sequence_listview</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">sequence_listview</span>
+    <span class="n">my_copy</span><span class="o">.</span><span class="n">shot_listview</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">shot_listview</span>
+    <span class="n">my_copy</span><span class="o">.</span><span class="n">my_tasks_dict</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">my_tasks_dict</span>
+    <span class="c1"># strings</span>
+    <span class="n">my_copy</span><span class="o">.</span><span class="n">active_show</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">cur</span><span class="o">.</span><span class="n">active_show</span><span class="p">)</span>
+    <span class="n">my_copy</span><span class="o">.</span><span class="n">active_sequence</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">cur</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">)</span>
+    <span class="n">my_copy</span><span class="o">.</span><span class="n">active_shot</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">cur</span><span class="o">.</span><span class="n">active_shot</span><span class="p">)</span>
+    <span class="n">my_copy</span><span class="o">.</span><span class="n">active_task</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">cur</span><span class="o">.</span><span class="n">active_task</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="k">return</span> <span class="n">my_copy</span>
+
+<span class="c1">############################################################################</span>
+<span class="c1"># main ui class</span>
+<span class="c1">############################################################################</span>
+<div class="viewcode-block" id="scheduleManager"><a class="viewcode-back" href="../dev_docs.html#schedule_manager.scheduleManager">[docs]</a><span class="k">class</span> <span class="nc">scheduleManager</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    contatins the main logic for all of the data inside the project tab, this includes dictionary/json/folder creataion</span>
+<span class="sd">    connection to the server as well as mongo database</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># general use</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">log</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">dir_filter</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1">#dicts</span>
+    <span class="n">show_json</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">sequence_listview</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">asset_listview</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">shot_listview</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">my_tasks_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># strings</span>
+    <span class="n">active_show</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">active_sequence</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">active_shot</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">active_task</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="c1">#ui_elements/widgets</span>
+    <span class="n">show_listview_ui</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">sequence_listview_ui</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">asset_listview_ui</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">shot_listview_ui</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="c1">#my tasks</span>
+    <span class="n">task_key_ui</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">database_connection</span> <span class="o">=</span> <span class="kc">None</span>
+    
+<div class="viewcode-block" id="scheduleManager.__init__"><a class="viewcode-back" href="../dev_docs.html#schedule_manager.scheduleManager.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_context</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">task_key_make</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fast_init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">in_log</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type in_context: class</span>
+<span class="sd">        :param in_context: uses the context.py file if context was not called correctly</span>
+<span class="sd">        :type task_key_make: string</span>
+<span class="sd">        :param task_key_make: finds the current working directory of the server</span>
+<span class="sd">        :type fast_init: mode</span>
+<span class="sd">        :param fast_init: mode to check if its first run</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># initlize our context, if one is not passed in</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">in_context</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">in_context</span>
+        <span class="k">else</span><span class="p">:</span>    
+            <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">CsContext</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">fast_init</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reuse exisitng database_connection&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">setup_root_dirs</span><span class="p">()</span>
+
+            <span class="c1"># pass in class database_connection</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">database_connection</span> <span class="o">=</span> <span class="n">database_connection</span><span class="o">.</span><span class="n">databaseConnection</span><span class="p">(</span><span class="n">in_context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
+            
+            <span class="c1"># DATEBASE IN #</span>
+            <span class="c1"># pull from server before modifing our result</span>
+            <span class="c1"># as it&#39;s the first run we should save too </span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">db_get</span><span class="p">(</span><span class="n">first_run</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># see about moving these to schedule manager UI.</span>
+        <span class="c1"># classes from other files</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">task_key_make</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">task_key_ui</span> <span class="o">=</span> <span class="n">task_key</span><span class="o">.</span><span class="n">taskKey</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="scheduleManager.set_active"><a class="viewcode-back" href="../dev_docs.html#schedule_manager.scheduleManager.set_active">[docs]</a>    <span class="k">def</span> <span class="nf">set_active</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="n">active_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type tmp: string</span>
+<span class="sd">        :param tmp: sets active vars to be used for dicts</span>
+<span class="sd">        :type active_type: mode</span>
+<span class="sd">        :param active_type: mode used to depending on what active type will be selected</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">active_type</span> <span class="o">==</span> <span class="s2">&quot;show&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_show</span> <span class="o">=</span> <span class="n">tmp</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_task</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">active_type</span> <span class="o">==</span> <span class="s2">&quot;seq&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span> <span class="o">=</span> <span class="n">tmp</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_task</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">active_type</span> <span class="o">==</span> <span class="s2">&quot;shot&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span> <span class="o">=</span> <span class="n">tmp</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_task</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">active_type</span> <span class="o">==</span> <span class="s2">&quot;task&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_task</span> <span class="o">=</span> <span class="n">tmp</span></div>
+
+    <span class="k">def</span> <span class="nf">print_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># strings</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;active_show = </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_show</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;active_sequence = </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;active_shot = </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;active_task = </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_task</span><span class="p">)</span>
+
+    <span class="c1">#</span>
+    <span class="k">def</span> <span class="nf">get_full_network_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">server_root</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">&quot;SHOWS&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_network_path</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+
+<div class="viewcode-block" id="scheduleManager.get_network_path"><a class="viewcode-back" href="../dev_docs.html#schedule_manager.scheduleManager.get_network_path">[docs]</a>    <span class="k">def</span> <span class="nf">get_network_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type root: string</span>
+<span class="sd">        :param root: the root directory of the server in order to see what data should be saved</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> 
+                            <span class="bp">self</span><span class="o">.</span><span class="n">active_show</span><span class="p">,</span> 
+                            <span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">,</span> 
+                            <span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_show</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+                    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;internal_data&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_task</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">path</span></div>
+
+<div class="viewcode-block" id="scheduleManager.build_active_from_path"><a class="viewcode-back" href="../dev_docs.html#schedule_manager.scheduleManager.build_active_from_path">[docs]</a>    <span class="k">def</span> <span class="nf">build_active_from_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type path: string</span>
+<span class="sd">        :param path: the root directory of the server in order to see what data should be saved</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#return</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1">#[&#39;C:&#39;, &#39;internal&#39;, &#39;SHOWS&#39;, &#39;empire_v&#39;, &#39;seq_001&#39;, &#39;shot_001&#39;]</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">path</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;SHOWS&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">set_active</span><span class="p">(</span><span class="n">path</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">active_type</span><span class="o">=</span><span class="s2">&quot;show&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">):</span>  
+                    <span class="bp">self</span><span class="o">.</span><span class="n">set_active</span><span class="p">(</span><span class="n">path</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">active_type</span><span class="o">=</span><span class="s2">&quot;seq&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">set_active</span><span class="p">(</span><span class="n">path</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">active_type</span><span class="o">=</span><span class="s2">&quot;shot&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">7</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">set_active</span><span class="p">(</span><span class="n">path</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">active_type</span><span class="o">=</span><span class="s2">&quot;task&quot;</span><span class="p">)</span></div>
+
+    <span class="c1">############################################################################</span>
+    <span class="c1"># Gathers the data from the dict to create the ui list view</span>
+    <span class="c1">############################################################################</span>
+<div class="viewcode-block" id="scheduleManager.get_shows"><a class="viewcode-back" href="../dev_docs.html#schedule_manager.scheduleManager.get_shows">[docs]</a>    <span class="k">def</span> <span class="nf">get_shows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self: searches the dict and only uses correct shows from defined paramaters</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">db_get</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span></div>
+
+
+<div class="viewcode-block" id="scheduleManager.get_sequence"><a class="viewcode-back" href="../dev_docs.html#schedule_manager.scheduleManager.get_sequence">[docs]</a>    <span class="k">def</span> <span class="nf">get_sequence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self: searches the dict and only uses correct sequences from defined paramaters</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_show</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_show</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sequence_listview</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">active_show</span><span class="p">]</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence_listview</span>
+        
+        <span class="c1"># NULL</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence_listview</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence_listview</span></div>
+
+    <span class="k">def</span> <span class="nf">get_sequence_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cur_sequence</span><span class="p">,</span> <span class="n">in_active_show</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self: searches the dict and only uses correct sequences from defined paramaters</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
+        <span class="c1"># skip the non ui keys</span>
+        <span class="k">if</span> <span class="n">cur_sequence</span> <span class="ow">in</span> <span class="n">non_create_keys</span><span class="p">:</span>        
+            <span class="k">return</span> <span class="n">mode</span>
+        <span class="k">if</span> <span class="n">cur_sequence</span> <span class="ow">in</span> <span class="n">non_create_keys_ui</span><span class="p">:</span>        
+            <span class="k">return</span> <span class="n">mode</span>
+
+        <span class="n">cur_show</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_show</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">in_active_show</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">cur_show</span> <span class="o">=</span> <span class="n">in_active_show</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">cur_show</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">cur_show</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">[</span><span class="n">cur_show</span><span class="p">][</span><span class="n">cur_sequence</span><span class="p">]</span>
+                <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;mode&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">[</span><span class="n">cur_show</span><span class="p">][</span><span class="n">cur_sequence</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+                    <span class="n">mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">[</span><span class="n">cur_show</span><span class="p">][</span><span class="n">cur_sequence</span><span class="p">][</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span>
+
+        <span class="c1">#</span>
+        <span class="k">return</span> <span class="n">mode</span>
+
+<div class="viewcode-block" id="scheduleManager.get_shot"><a class="viewcode-back" href="../dev_docs.html#schedule_manager.scheduleManager.get_shot">[docs]</a>    <span class="k">def</span> <span class="nf">get_shot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self: searches the dict and only uses correct shots from defined paramaters</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">active_show</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">shot_listview</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">active_show</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">]</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shot_listview</span>
+        
+        <span class="c1"># NULL</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shot_listview</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shot_listview</span></div>
+        
+<div class="viewcode-block" id="scheduleManager.get_task"><a class="viewcode-back" href="../dev_docs.html#schedule_manager.scheduleManager.get_task">[docs]</a>    <span class="k">def</span> <span class="nf">get_task</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type : </span>
+<span class="sd">        :param : searches the dict and only uses correct tasks from defined paramaters</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">active_show</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">my_tasks_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">active_show</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span><span class="p">][</span><span class="s2">&quot;internal_data&quot;</span><span class="p">]</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_tasks_dict</span>
+
+        <span class="c1"># NULL</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">my_tasks_dict</span> <span class="o">=</span> <span class="p">{}</span>    
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_tasks_dict</span></div>
+
+    <span class="c1">############################################################################</span>
+    <span class="c1"># building of the database that has been input into the schedule_manager_ui</span>
+    <span class="c1">############################################################################</span>
+<div class="viewcode-block" id="scheduleManager.build_json_show"><a class="viewcode-back" href="../dev_docs.html#schedule_manager.scheduleManager.build_json_show">[docs]</a>    <span class="k">def</span> <span class="nf">build_json_show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show_list</span><span class="p">,</span> <span class="n">show</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type show_list: string</span>
+<span class="sd">        :param show_list: gathers the location of where json file will be saved</span>
+<span class="sd">        :type show: </span>
+<span class="sd">        :param show: searches the dict and only uses correct tasks from defined paramaters</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># DATEBASE IN #</span>
+        <span class="c1"># pull from server before modifing our result</span>
+        <span class="n">json_show_list_database</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">db_get</span><span class="p">()</span>
+
+        <span class="n">show_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">show</span><span class="p">)</span>
+
+        <span class="n">json_show_list</span> <span class="o">=</span> <span class="p">{</span>  <span class="s2">&quot;delivery_data&quot;</span><span class="p">:</span> <span class="n">cinestron_task_info</span><span class="o">.</span><span class="n">delivery_data</span> <span class="p">,</span>
+                            <span class="s2">&quot;external_data&quot;</span><span class="p">:</span> <span class="n">cinestron_task_info</span><span class="o">.</span><span class="n">external_data</span><span class="p">,</span>
+                            <span class="s2">&quot;show_start&quot;</span><span class="p">:</span> <span class="n">get_time</span><span class="p">(),</span>
+                            <span class="s2">&quot;show_end&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;show_name&quot;</span><span class="p">:</span> <span class="n">show_name</span><span class="p">,</span>
+                            <span class="s2">&quot;hidden&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                            <span class="s2">&quot;show_info&quot;</span><span class="p">:</span> <span class="n">cinestron_task_info</span><span class="o">.</span><span class="n">show_info_default</span><span class="p">}</span>
+
+        <span class="n">json_show_list_database</span><span class="p">[</span><span class="n">show_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">json_show_list</span>
+
+        <span class="c1"># DATEBASE OUT #</span>
+        <span class="c1"># Push back to server after modifing our result</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="n">json_show_list_database</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">db_push</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span></div>
+
+<div class="viewcode-block" id="scheduleManager.build_sequence"><a class="viewcode-back" href="../dev_docs.html#schedule_manager.scheduleManager.build_sequence">[docs]</a>    <span class="k">def</span> <span class="nf">build_sequence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_show</span><span class="p">,</span> <span class="n">in_sequence</span><span class="p">,</span> <span class="n">in_mode</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type in_dict: dict</span>
+<span class="sd">        :param in_dict: main dictionary</span>
+<span class="sd">        :type in_show: string</span>
+<span class="sd">        :param in_show: the current show key where the sequence will be added</span>
+<span class="sd">        :type in_sequence: string </span>
+<span class="sd">        :param in_sequence: the current sequence key where the data will be created</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># DATEBASE IN #</span>
+        <span class="c1"># pull from server before modifing our result</span>
+        <span class="n">in_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">db_get</span><span class="p">()</span>
+
+        <span class="n">s_show</span> <span class="o">=</span> <span class="n">in_dict</span><span class="p">[</span><span class="n">in_show</span><span class="p">][</span><span class="s2">&quot;show_name&quot;</span><span class="p">]</span>
+
+        <span class="n">s_sequence</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">in_sequence</span><span class="p">)</span>
+        <span class="n">s_sequence</span> <span class="o">=</span> <span class="n">s_sequence</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">s_sequence</span> <span class="o">=</span> <span class="n">s_sequence</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+        <span class="n">total_sequences</span> <span class="o">=</span> <span class="n">s_sequence</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        
+        <span class="n">sequence_key</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;delivery_data&quot;</span><span class="p">:</span> <span class="n">cinestron_task_info</span><span class="o">.</span><span class="n">delivery_data</span><span class="p">,</span>
+                         <span class="s2">&quot;external_data&quot;</span><span class="p">:</span> <span class="n">cinestron_task_info</span><span class="o">.</span><span class="n">external_data</span><span class="p">,</span>
+                         <span class="s2">&quot;hidden&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                         <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="n">in_mode</span><span class="p">}</span>
+
+        <span class="n">out_dict</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">in_dict</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">current</span> <span class="ow">in</span> <span class="n">total_sequences</span><span class="p">:</span>
+            <span class="n">out_dict</span><span class="p">[</span><span class="n">s_show</span><span class="p">][</span><span class="n">current</span><span class="p">]</span> <span class="o">=</span> <span class="n">sequence_key</span>
+
+        <span class="c1"># DATEBASE OUT #</span>
+        <span class="c1"># Push back to server after modifing our result</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="n">out_dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">db_push</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span></div>
+
+<div class="viewcode-block" id="scheduleManager.build_shot"><a class="viewcode-back" href="../dev_docs.html#schedule_manager.scheduleManager.build_shot">[docs]</a>    <span class="k">def</span> <span class="nf">build_shot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_show</span><span class="p">,</span> <span class="n">in_sequence</span><span class="p">,</span> <span class="n">in_shot</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type in_dict: dict</span>
+<span class="sd">        :param in_dict: main dictionary</span>
+<span class="sd">        :type in_show: string</span>
+<span class="sd">        :param in_show: the current show key where the shot will be added</span>
+<span class="sd">        :type in_sequence: string </span>
+<span class="sd">        :param in_sequence: the current sequence key where the shot will be added</span>
+<span class="sd">        :type in_shot: string </span>
+<span class="sd">        :param in_shot: the current shot key where the data will be created</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># DATEBASE IN #</span>
+        <span class="c1"># pull from server before modifing our result</span>
+        <span class="n">in_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">db_get</span><span class="p">()</span>
+
+        <span class="n">s_show</span> <span class="o">=</span> <span class="n">in_dict</span><span class="p">[</span><span class="n">in_show</span><span class="p">][</span><span class="s2">&quot;show_name&quot;</span><span class="p">]</span>
+        <span class="n">out_dict</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">in_dict</span><span class="p">)</span> 
+
+        <span class="n">s_sequence</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">in_sequence</span><span class="p">)</span>
+        <span class="n">s_shot</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">in_shot</span><span class="p">)</span>
+        <span class="n">s_shot</span> <span class="o">=</span> <span class="n">s_shot</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">s_shot</span> <span class="o">=</span> <span class="n">s_shot</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+        <span class="n">total_shots</span> <span class="o">=</span> <span class="n">s_shot</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+
+        <span class="n">shot_key</span> <span class="o">=</span> <span class="p">{</span>    <span class="s2">&quot;delivery_data&quot;</span><span class="p">:</span> <span class="n">cinestron_task_info</span><span class="o">.</span><span class="n">delivery_data</span><span class="p">,</span> 
+                        <span class="s2">&quot;external_data&quot;</span><span class="p">:</span> <span class="n">cinestron_task_info</span><span class="o">.</span><span class="n">external_data</span><span class="p">,</span> 
+                        <span class="s2">&quot;internal_data&quot;</span><span class="p">:</span> <span class="n">cinestron_task_info</span><span class="o">.</span><span class="n">internal_data</span><span class="p">,</span>
+                        <span class="s2">&quot;hidden&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">current_shot</span> <span class="ow">in</span> <span class="n">total_shots</span><span class="p">:</span>
+            <span class="n">out_dict</span><span class="p">[</span><span class="n">s_show</span><span class="p">][</span><span class="n">s_sequence</span><span class="p">][</span><span class="n">current_shot</span><span class="p">]</span> <span class="o">=</span> <span class="n">shot_key</span>
+ 
+        <span class="c1"># DATEBASE OUT #</span>
+        <span class="c1"># Push back to server after modifing our result</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="n">out_dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">db_push</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">)</span>
+
+        <span class="c1"># finalize</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span>           </div>
+
+<div class="viewcode-block" id="scheduleManager.build_task"><a class="viewcode-back" href="../dev_docs.html#schedule_manager.scheduleManager.build_task">[docs]</a>    <span class="k">def</span> <span class="nf">build_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_task</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type in_task: string</span>
+<span class="sd">        :param in_task: adds a new task based to the shot</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># DATEBASE IN #</span>
+        <span class="c1"># pull from server before modifing our result</span>
+        <span class="n">in_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">db_get</span><span class="p">()</span>
+
+        <span class="n">s_task</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">in_task</span><span class="p">)</span>
+        <span class="n">s_task</span> <span class="o">=</span> <span class="n">s_task</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">s_task</span> <span class="o">=</span> <span class="n">s_task</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+        <span class="n">total_tasks</span> <span class="o">=</span> <span class="n">s_task</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">current_task</span> <span class="ow">in</span> <span class="n">total_tasks</span><span class="p">:</span>
+            <span class="n">in_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">active_show</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span><span class="p">][</span><span class="s2">&quot;internal_data&quot;</span><span class="p">][</span><span class="n">current_task</span><span class="p">]</span> <span class="o">=</span> <span class="n">cinestron_task_info</span><span class="o">.</span><span class="n">cinestron_task_key_default</span>
+
+        <span class="c1"># DATEBASE OUT #</span>
+        <span class="c1"># Push back to server after modifing our result</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="n">in_dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">db_push</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">localbd_push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show_dictionary</span><span class="p">,</span> <span class="n">build_folders</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">localbd_push</span><span class="p">(</span><span class="n">show_dictionary</span><span class="p">,</span> <span class="n">build_folders</span><span class="o">=</span><span class="n">build_folders</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">ftpdb_push</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># mongo then ftpserver then local</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">db_push</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">,</span> <span class="n">sync_ftp</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">create_folders_main_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">build_folders</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">build_server_folders</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self: </span>
+<span class="sd">        :param self: builds json file on the server</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">create_folders_main</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">,</span> <span class="n">build_folders</span><span class="o">=</span><span class="n">build_folders</span><span class="p">,</span> <span class="n">build_server_folders</span><span class="o">=</span><span class="n">build_server_folders</span><span class="p">)</span>
+    
+    <span class="c1">############################################################################</span>
+    <span class="c1"># creation of list UI and populates list</span>
+    <span class="c1">############################################################################</span>
+<div class="viewcode-block" id="scheduleManager.set_list"><a class="viewcode-back" href="../dev_docs.html#schedule_manager.scheduleManager.set_list">[docs]</a>    <span class="k">def</span> <span class="nf">set_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dict</span><span class="p">,</span> <span class="n">list_widget</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type in_dict: dict</span>
+<span class="sd">        :param in_dict: the dictionary for what the list will be set with</span>
+<span class="sd">        :type list_widget: object</span>
+<span class="sd">        :param list_widget: the object where the list will be set with</span>
+<span class="sd">        :rtype: object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">in_dict</span> <span class="o">!=</span> <span class="p">{}):</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">populate_list</span><span class="p">(</span><span class="n">in_dict</span><span class="p">,</span> <span class="n">list_widget</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">item</span></div>
+
+    <span class="c1"># populates list</span>
+<div class="viewcode-block" id="scheduleManager.populate_list"><a class="viewcode-back" href="../dev_docs.html#schedule_manager.scheduleManager.populate_list">[docs]</a>    <span class="k">def</span> <span class="nf">populate_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dict</span><span class="p">,</span> <span class="n">list_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type in_dict: dict</span>
+<span class="sd">        :param in_dict: the dictionary for what the list will be set with</span>
+<span class="sd">        :type list_name: var</span>
+<span class="sd">        :param list_name: the list name which will be populated</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">list_name</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">list_keys</span> <span class="o">=</span> <span class="n">in_dict</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">list_keys</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">dict</span><span class="p">):</span>    
+            <span class="n">list_keys_sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">list_keys</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">item_names_list</span> <span class="ow">in</span> <span class="n">list_keys_sorted</span><span class="p">:</span>
+                <span class="n">my_item</span> <span class="o">=</span> <span class="n">QListWidgetItem</span><span class="p">(</span><span class="n">item_names_list</span><span class="p">)</span>
+
+                <span class="c1"># skip the non ui keys</span>
+                <span class="k">if</span> <span class="n">item_names_list</span> <span class="ow">in</span> <span class="n">non_create_keys</span><span class="p">:</span>        
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">item_names_list</span> <span class="ow">in</span> <span class="n">non_create_keys_ui</span><span class="p">:</span>        
+                    <span class="k">continue</span>
+
+                <span class="c1"># don&#39;t display if hidden</span>
+                <span class="n">hidden</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">in_dict</span><span class="p">[</span><span class="n">item_names_list</span><span class="p">]</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">dict</span><span class="p">):</span> 
+                    <span class="c1">#in_dict[item_names_list][&quot;hidden&quot;] = False</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;hidden&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+                        <span class="n">tmp_data</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="s2">&quot;hidden&quot;</span><span class="p">]</span> 
+                        <span class="k">if</span> <span class="p">(</span><span class="n">tmp_data</span> <span class="o">==</span> <span class="kc">True</span> <span class="ow">or</span> <span class="n">tmp_data</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span> <span class="ow">or</span> <span class="n">tmp_data</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span><span class="p">):</span>
+                            <span class="n">hidden</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="n">hidden</span> <span class="o">==</span> <span class="kc">False</span><span class="p">):</span>
+                    <span class="c1">#</span>
+                    <span class="c1"># labels</span>
+                    <span class="c1"># we can manipulate the lables here further for better visibility on data</span>
+                    <span class="n">label_tips</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">in_dict</span><span class="p">[</span><span class="n">item_names_list</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">dict</span><span class="p">):</span> 
+                        <span class="k">for</span> <span class="n">keys</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">in_dict</span><span class="p">[</span><span class="n">item_names_list</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                            <span class="c1">#</span>
+                            <span class="n">cur_data</span> <span class="o">=</span> <span class="n">in_dict</span><span class="p">[</span><span class="n">item_names_list</span><span class="p">][</span><span class="n">keys</span><span class="p">]</span>
+                            <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">cur_data</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">dict</span><span class="p">):</span> 
+                                <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;hidden&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">cur_data</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+                                    <span class="n">cur_data</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;hidden&quot;</span><span class="p">,</span> <span class="n">cur_data</span><span class="p">[</span><span class="s2">&quot;hidden&quot;</span><span class="p">])</span>
+
+                            <span class="n">label_tips</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">cur_data</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">label_tips</span> <span class="o">=</span> <span class="s2">&quot;TODO define tooltip&quot;</span>
+                    <span class="c1">#</span>
+                    <span class="n">my_item</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">label_tips</span><span class="p">)</span>
+                    <span class="n">list_name</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">my_item</span><span class="p">)</span></div>
+
+    <span class="c1">############################################################################</span>
+    <span class="c1"># refreshes UI list</span>
+    <span class="c1">############################################################################</span>
+    <span class="k">def</span> <span class="nf">refresh_show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_listview_ui</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_shows</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_list</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_listview_ui</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">refresh_sequence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence_listview_ui</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+        <span class="c1">#</span>
+        <span class="n">sequence_level_keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sequence</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence_listview</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">asset_listview</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">sequence_level_keys</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sequence_mode</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sequence_listview</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sequence_level_keys</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_list</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence_listview</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence_listview_ui</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># decide if sequence or asset container</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">asset_listview</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sequence_level_keys</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_list</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_listview</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_listview_ui</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">refresh_shot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shot_listview_ui</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shot_listview</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shot_listview</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_shot</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_list</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">shot_listview</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shot_listview_ui</span><span class="p">)</span>
+
+    <span class="c1">#######################################################################################</span>
+    <span class="c1"># when an item in the list are clicked, changes depening on mode -show/sequence/shot</span>
+    <span class="c1">####################################################################################### </span>
+<div class="viewcode-block" id="scheduleManager.item_click"><a class="viewcode-back" href="../dev_docs.html#schedule_manager.scheduleManager.item_click">[docs]</a>    <span class="k">def</span> <span class="nf">item_click</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">myListWidget</span><span class="p">,</span> <span class="n">current_item</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;show&quot;</span><span class="p">,</span> <span class="n">seq_mode</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type myListWidget: object</span>
+<span class="sd">        :param myListWidget: the list that is being clicked</span>
+<span class="sd">        :type current_item: var</span>
+<span class="sd">        :param current_item: the item inside the list being clicked</span>
+<span class="sd">        :type mode: string</span>
+<span class="sd">        :param mode: how the function reacts depending on what list is seletcted</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">myListWidget</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">mode</span><span class="o">==</span><span class="s2">&quot;show&quot;</span><span class="p">):</span>
+            <span class="c1">#self.refresh_show()</span>
+            <span class="c1"># this needs to be set to &quot;&quot; so that def &#39;enabled_disabled(self)&#39; can reset shot</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_show</span> <span class="o">=</span> <span class="n">current</span> 
+            <span class="n">existing_items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_show</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequence_listview_ui</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">asset_listview_ui</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shot_listview_ui</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+            <span class="c1"># check we are not allready on the same show #1. #2. #3. below</span>
+            <span class="n">same_show</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;show_name&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">[</span><span class="s2">&quot;show_name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_show</span><span class="p">):</span>
+                    <span class="c1"># 1. if we are on the same show don&#39;t change.</span>
+                    <span class="n">same_show</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">same_show</span> <span class="o">==</span> <span class="kc">False</span><span class="p">):</span>
+                <span class="c1"># write show here</span>
+                <span class="c1">#self.localbd_push(self.show_json)</span>
+
+                <span class="c1"># 2.check if we have show on disk</span>
+                <span class="n">temp_dict</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">temp_dict</span> <span class="o">=</span> <span class="n">read_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">get_master_json</span><span class="p">())</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="n">temp_dict</span> <span class="o">!=</span> <span class="p">{}):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="n">temp_dict</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># 3. if show doesnt exist create one in memory</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_json_show</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_show</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequence_listview_ui</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">asset_listview_ui</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shot_listview_ui</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="c1"># clear table widget so that new data can be added, needs to be refreshed on each shot click</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">task_key_ui</span><span class="o">.</span><span class="n">clear_table</span><span class="p">()</span>
+              
+        <span class="c1"># updates the shots when a sequence is clicked</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">mode</span><span class="o">==</span><span class="s2">&quot;sequence&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">seq_mode</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">asset_listview_ui</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sequence_listview_ui</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="c1">#</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shot_listview_ui</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">task_key_ui</span><span class="o">.</span><span class="n">clear_table</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shot_listview</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span> <span class="o">=</span> <span class="n">current</span>
+
+            <span class="c1">#</span>
+            <span class="n">shot_level_keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">active_show</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">shot_level_keys</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">non_create_keys_ui</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">shot_listview</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">set_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shot_listview</span><span class="p">,</span>  
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">shot_listview_ui</span><span class="p">)</span>
+
+        <span class="c1"># updates the task_key when a shot is clicked            </span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">mode</span><span class="o">==</span><span class="s2">&quot;shot&quot;</span><span class="p">):</span>
+            <span class="c1">#####################################</span>
+            <span class="c1"># DATEBASE IN #</span>
+            <span class="c1"># pull from server before modifing our result</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">db_get</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span> <span class="o">=</span> <span class="n">current</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">task_key_ui</span><span class="o">.</span><span class="n">task_run</span><span class="p">(</span>  <span class="n">show</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_show</span><span class="p">,</span>
+                                        <span class="n">sequence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">,</span>
+                                        <span class="n">shot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_shot</span><span class="p">,</span> 
+                                        <span class="n">in_show_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">)</span></div>
+
+
+<span class="c1">############################################################################</span>
+<span class="c1"># My Tasks UI</span>
+<span class="c1">############################################################################</span>
+    <span class="c1">############################################################################</span>
+    <span class="c1"># Search through the Json/Dict file through looping</span>
+    <span class="c1">############################################################################</span>
+<div class="viewcode-block" id="scheduleManager.find_in_obj"><a class="viewcode-back" href="../dev_docs.html#schedule_manager.scheduleManager.find_in_obj">[docs]</a>    <span class="k">def</span> <span class="nf">find_in_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">condition</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type obj: dict</span>
+<span class="sd">        :param obj: full dict to search through</span>
+<span class="sd">        :type condition: string</span>
+<span class="sd">        :param condition: the filter string that you want to search through the dict</span>
+<span class="sd">        :type path: string</span>
+<span class="sd">        :param path: how deep into the dict you currently are based on previous keys</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>    
+
+        <span class="c1"># In case this is a list</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+                <span class="n">new_path</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="n">new_path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">find_in_obj</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">condition</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">new_path</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">result</span> 
+
+        <span class="c1"># In case this is a dictionary</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">new_path</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="n">new_path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">find_in_obj</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">condition</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">new_path</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">result</span> 
+
+                <span class="k">if</span> <span class="n">condition</span> <span class="o">==</span> <span class="n">key</span><span class="p">:</span>
+                    <span class="n">new_path</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                    <span class="n">new_path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                    <span class="k">yield</span> <span class="n">new_path</span><span class="p">,</span> <span class="n">value</span> </div>
+
+    <span class="c1">############################################################################</span>
+    <span class="c1"># Create my tasks lists</span>
+    <span class="c1">############################################################################</span>
+<div class="viewcode-block" id="scheduleManager.my_tasks_generate"><a class="viewcode-back" href="../dev_docs.html#schedule_manager.scheduleManager.my_tasks_generate">[docs]</a>    <span class="k">def</span> <span class="nf">my_tasks_generate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self:</span>
+<span class="sd">        :param self: creates the ui for the my tasks tab</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#</span>
+        <span class="n">search_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;assigned&#39;</span><span class="p">,</span> <span class="s1">&#39;producer&#39;</span><span class="p">,</span> <span class="s1">&#39;supervisor&#39;</span><span class="p">]</span>
+        <span class="n">assigned_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">role_name</span> <span class="ow">in</span> <span class="n">search_keys</span><span class="p">:</span>
+            <span class="c1"># main logic for searching dict for employee data</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_in_obj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_json</span><span class="p">,</span> <span class="n">role_name</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+                    <span class="n">apply_data</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">apply_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                    <span class="c1">#</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="c1"># get any existing tasks user may have</span>
+                        <span class="n">current_task</span> <span class="o">=</span> <span class="n">cinestron_user_info</span><span class="o">.</span><span class="n">cinestron_user_info</span><span class="p">[</span><span class="n">val</span><span class="p">][</span><span class="n">role_name</span><span class="p">]</span>
+                        <span class="c1">#apply_data.append(current_task)</span>
+
+                        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">current_task</span><span class="p">:</span>
+                            <span class="c1"># apply new task to our list of all there tasks</span>
+                            <span class="n">apply_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="c1"># apply all tasks back</span>
+                    <span class="n">cinestron_user_info</span><span class="o">.</span><span class="n">cinestron_user_info</span><span class="p">[</span><span class="n">val</span><span class="p">][</span><span class="n">role_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">apply_data</span>
+        <span class="c1">#</span>
+        <span class="k">return</span> <span class="n">cinestron_user_info</span><span class="o">.</span><span class="n">cinestron_user_info</span></div></div>
+
+<span class="c1">############################################################################</span>
+<span class="c1"># Unit test my task creation</span>
+<span class="c1">############################################################################</span>
+<span class="k">def</span> <span class="nf">find_in_obj</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">condition</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>    
+
+    <span class="c1"># In case this is a list</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+            <span class="n">new_path</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">new_path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">find_in_obj</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">condition</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">new_path</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span> 
+
+    <span class="c1"># In case this is a dictionary</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">new_path</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">new_path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">find_in_obj</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">condition</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">new_path</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span> 
+
+            <span class="k">if</span> <span class="n">condition</span> <span class="o">==</span> <span class="n">key</span><span class="p">:</span>
+                <span class="n">new_path</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="n">new_path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="k">yield</span> <span class="n">new_path</span><span class="p">,</span> <span class="n">value</span> 
+
+<span class="c1"># unit test</span>
+<span class="k">def</span> <span class="nf">unit_test_task_assignment</span><span class="p">():</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">CsContext</span><span class="p">()</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">setup_root_dirs</span><span class="p">()</span>
+
+    <span class="c1"># grabs the json file data upfront</span>
+    <span class="n">show_json</span> <span class="o">=</span> <span class="n">read_json</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">get_master_json</span><span class="p">())</span>
+
+    <span class="c1">#</span>
+    <span class="n">search_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;assigned&#39;</span><span class="p">,</span> <span class="s1">&#39;producer&#39;</span><span class="p">,</span> <span class="s1">&#39;supervisor&#39;</span><span class="p">]</span>
+    <span class="n">assigned_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">current</span> <span class="ow">in</span> <span class="n">search_keys</span><span class="p">:</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">find_in_obj</span><span class="p">(</span><span class="n">show_json</span><span class="p">,</span> <span class="n">current</span><span class="p">):</span>
+
+            <span class="c1">#print(&quot;filtered_dict&quot;)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+
+                <span class="c1">#</span>
+                <span class="n">apply_data</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">apply_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="c1">#</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="c1"># get any existing tasks user may have</span>
+                    <span class="n">current_task</span> <span class="o">=</span> <span class="n">cinestron_user_info</span><span class="o">.</span><span class="n">cinestron_user_info</span><span class="p">[</span><span class="n">val</span><span class="p">][</span><span class="n">current</span><span class="p">]</span>
+
+                    <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">current_task</span><span class="p">:</span>
+                        <span class="c1"># apply new task to our list of all there tasks</span>
+                        <span class="n">apply_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+
+                <span class="c1"># apply all tasks back</span>
+                <span class="n">cinestron_user_info</span><span class="o">.</span><span class="n">cinestron_user_info</span><span class="p">[</span><span class="n">val</span><span class="p">][</span><span class="n">current</span><span class="p">]</span> <span class="o">=</span> <span class="n">apply_data</span>
+    <span class="c1">#pprint.pprint(cinestron_user_info.cinestron_user_info)</span>
+
+<span class="k">def</span> <span class="nf">unit_test_grab_server_json</span><span class="p">():</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">CsContext</span><span class="p">()</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;j.gaffney&quot;</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="s2">&quot;Kjdo3289&quot;</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_name_server&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;X</span><span class="se">\\</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">name</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_email&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;@cinestron.com&quot;</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_email_password&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">password</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_server_password&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">password</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_IM_password&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">password</span>
+
+    <span class="n">context</span><span class="o">.</span><span class="n">setup_root_dirs</span><span class="p">()</span>
+    <span class="n">schedule_manager</span> <span class="o">=</span> <span class="n">scheduleManager</span><span class="p">(</span><span class="n">in_context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span> <span class="n">task_key_make</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+    <span class="c1">#unit_test_task_assignment()</span>
+    <span class="n">unit_test_grab_server_json</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cinestron Ltd.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2018',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

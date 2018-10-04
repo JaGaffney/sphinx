@@ -1,0 +1,1607 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Developer Documentation &mdash; cinestron 2018 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> cinestron
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Developer Documentation</a><ul>
+<li><a class="reference internal" href="#mongo-data-base">Mongo data base</a></li>
+<li><a class="reference internal" href="#module-civilization">Core</a></li>
+<li><a class="reference internal" href="#module-schedule_manager_ui">Project Manager Tab</a></li>
+<li><a class="reference internal" href="#module-web_browser_alt">Web Browser Tab</a></li>
+<li><a class="reference internal" href="#module-ftp_connect">FileBrowser Tab</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cinestron</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Developer Documentation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/dev_docs.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="developer-documentation">
+<h1>Developer Documentation<a class="headerlink" href="#developer-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="mongo-data-base">
+<h2>Mongo data base<a class="headerlink" href="#mongo-data-base" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>To fast start mongo on the server:</dt>
+<dd>cd ../../../../../&amp;&amp;cd “C:Program FilesMongoDBServer3.6bin”&amp;&amp;mongod.exe –config=”C:Program FilesMongoDBServer3.6binmongod.cfg”&amp;&amp;mongo.exe</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="module-civilization">
+<span id="core"></span><h2>Core<a class="headerlink" href="#module-civilization" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="civilization.CivilizationUI">
+<em class="property">class </em><code class="descclassname">civilization.</code><code class="descname">CivilizationUI</code><span class="sig-paren">(</span><em>parent=None</em>, <em>in_context=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/civilization.html#CivilizationUI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#civilization.CivilizationUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>what this class does</p>
+<dl class="method">
+<dt id="civilization.CivilizationUI.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>parent=None</em>, <em>in_context=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/civilization.html#CivilizationUI.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#civilization.CivilizationUI.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="civilization.CivilizationUI.add_email_recipent">
+<code class="descname">add_email_recipent</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/civilization.html#CivilizationUI.add_email_recipent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#civilization.CivilizationUI.add_email_recipent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="civilization.CivilizationUI.add_tab">
+<code class="descname">add_tab</code><span class="sig-paren">(</span><em>name</em>, <em>in_type</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/civilization.html#CivilizationUI.add_tab"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#civilization.CivilizationUI.add_tab" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> – </li>
+<li><strong>in_type</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="civilization.CivilizationUI.drive_change">
+<code class="descname">drive_change</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/civilization.html#CivilizationUI.drive_change"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#civilization.CivilizationUI.drive_change" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="civilization.CivilizationUI.email_signed_login">
+<code class="descname">email_signed_login</code><span class="sig-paren">(</span><em>in_terms_info</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/civilization.html#CivilizationUI.email_signed_login"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#civilization.CivilizationUI.email_signed_login" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>in_term_info</strong> (<em>string</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="civilization.CivilizationUI.email_wrapper">
+<code class="descname">email_wrapper</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/civilization.html#CivilizationUI.email_wrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#civilization.CivilizationUI.email_wrapper" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="civilization.CivilizationUI.login_call">
+<code class="descname">login_call</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/civilization.html#CivilizationUI.login_call"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#civilization.CivilizationUI.login_call" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="civilization.CivilizationUI.login_functions">
+<code class="descname">login_functions</code><span class="sig-paren">(</span><em>name</em>, <em>password</em>, <em>passwordServer</em>, <em>passwordIM</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/civilization.html#CivilizationUI.login_functions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#civilization.CivilizationUI.login_functions" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>string</em>) – </li>
+<li><strong>password</strong> (<em>string</em>) – </li>
+<li><strong>passwordServer</strong> (<em>string</em>) – </li>
+<li><strong>passwordIM</strong> (<em>string</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="civilization.CivilizationUI.login_mode_change">
+<code class="descname">login_mode_change</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/civilization.html#CivilizationUI.login_mode_change"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#civilization.CivilizationUI.login_mode_change" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="civilization.CivilizationUI.logout_functions">
+<code class="descname">logout_functions</code><span class="sig-paren">(</span><em>name</em>, <em>password</em>, <em>passwordServer</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/civilization.html#CivilizationUI.logout_functions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#civilization.CivilizationUI.logout_functions" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>string</em>) – </li>
+<li><strong>password</strong> (<em>string</em>) – </li>
+<li><strong>passwordServer</strong> (<em>string</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="civilization.CivilizationUI.newBrowserTab">
+<code class="descname">newBrowserTab</code><span class="sig-paren">(</span><em>tab_name='tab'</em>, <em>previous_tab=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/civilization.html#CivilizationUI.newBrowserTab"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#civilization.CivilizationUI.newBrowserTab" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>tab_name</strong> (<em>string</em>) – </li>
+<li><strong>previous_tab</strong> (<em>None type</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="civilization.CivilizationUI.tab1UI">
+<code class="descname">tab1UI</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/civilization.html#CivilizationUI.tab1UI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#civilization.CivilizationUI.tab1UI" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="civilization.CivilizationUI.tabEmailContacts">
+<code class="descname">tabEmailContacts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/civilization.html#CivilizationUI.tabEmailContacts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#civilization.CivilizationUI.tabEmailContacts" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="civilization.CivilizationUI.tabWebBrowserUI">
+<code class="descname">tabWebBrowserUI</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/civilization.html#CivilizationUI.tabWebBrowserUI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#civilization.CivilizationUI.tabWebBrowserUI" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="civilization.CivilizationUI.tabscheduleManagerUI">
+<code class="descname">tabscheduleManagerUI</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/civilization.html#CivilizationUI.tabscheduleManagerUI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#civilization.CivilizationUI.tabscheduleManagerUI" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-utils"></span><span class="target" id="module-context"></span><dl class="class">
+<dt id="context.CsContext">
+<em class="property">class </em><code class="descclassname">context.</code><code class="descname">CsContext</code><a class="reference internal" href="_modules/context.html#CsContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext" title="Permalink to this definition">¶</a></dt>
+<dd><p>what this class does</p>
+<dl class="method">
+<dt id="context.CsContext.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/context.html#CsContext.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="context.CsContext.add_file_browser_tab">
+<code class="descname">add_file_browser_tab</code><span class="sig-paren">(</span><em>path</em>, <em>index</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/context.html#CsContext.add_file_browser_tab"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext.add_file_browser_tab" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> – </li>
+<li><strong>index</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="context.CsContext.clear_file_browser_tabs">
+<code class="descname">clear_file_browser_tabs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/context.html#CsContext.clear_file_browser_tabs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext.clear_file_browser_tabs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="context.CsContext.get_drive">
+<code class="descname">get_drive</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/context.html#CsContext.get_drive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext.get_drive" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="context.CsContext.get_master_json">
+<code class="descname">get_master_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/context.html#CsContext.get_master_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext.get_master_json" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="context.CsContext.loadContext">
+<code class="descname">loadContext</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/context.html#CsContext.loadContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext.loadContext" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="context.CsContext.removeContext">
+<code class="descname">removeContext</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/context.html#CsContext.removeContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext.removeContext" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="context.CsContext.remove_file_browser_tab">
+<code class="descname">remove_file_browser_tab</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/context.html#CsContext.remove_file_browser_tab"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext.remove_file_browser_tab" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>string</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="context.CsContext.saveContext">
+<code class="descname">saveContext</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/context.html#CsContext.saveContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext.saveContext" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="context.CsContext.setup_root_dirs">
+<code class="descname">setup_root_dirs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/context.html#CsContext.setup_root_dirs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext.setup_root_dirs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-spolier"></span><dl class="class">
+<dt id="spolier.Spoiler">
+<em class="property">class </em><code class="descclassname">spolier.</code><code class="descname">Spoiler</code><span class="sig-paren">(</span><em>parent=None</em>, <em>title=''</em>, <em>animationDuration=300</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spolier.html#Spoiler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spolier.Spoiler" title="Permalink to this definition">¶</a></dt>
+<dd><p>what this class does</p>
+<dl class="method">
+<dt id="spolier.Spoiler.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>parent=None</em>, <em>title=''</em>, <em>animationDuration=300</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spolier.html#Spoiler.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spolier.Spoiler.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> – </li>
+<li><strong>title</strong> – </li>
+<li><strong>animationDuration</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="spolier.Spoiler.setContentLayout">
+<code class="descname">setContentLayout</code><span class="sig-paren">(</span><em>contentLayout</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spolier.html#Spoiler.setContentLayout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spolier.Spoiler.setContentLayout" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>contentLayout</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-clock_analog_widget"></span></div>
+<div class="section" id="module-schedule_manager_ui">
+<span id="project-manager-tab"></span><h2>Project Manager Tab<a class="headerlink" href="#module-schedule_manager_ui" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="schedule_manager_ui.scheduleManagerUI">
+<em class="property">class </em><code class="descclassname">schedule_manager_ui.</code><code class="descname">scheduleManagerUI</code><span class="sig-paren">(</span><em>parent=None</em>, <em>in_context=None</em>, <em>in_log=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>the main ui elements for the data created in scheulde_manager</p>
+<dl class="method">
+<dt id="schedule_manager_ui.scheduleManagerUI.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>parent=None</em>, <em>in_context=None</em>, <em>in_log=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager_ui.scheduleManagerUI.add_rename_functions">
+<code class="descname">add_rename_functions</code><span class="sig-paren">(</span><em>current_show</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI.add_rename_functions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI.add_rename_functions" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>current_show</strong> (<em>string</em>) – the current show that has been rightclicked</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager_ui.scheduleManagerUI.add_sequence_functions">
+<code class="descname">add_sequence_functions</code><span class="sig-paren">(</span><em>sequence</em>, <em>mode</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI.add_sequence_functions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI.add_sequence_functions" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sequence</strong> (<em>string</em>) – data inputed from the QLineEdit</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager_ui.scheduleManagerUI.add_shot_functions">
+<code class="descname">add_shot_functions</code><span class="sig-paren">(</span><em>shot</em>, <em>in_active_sequence</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI.add_shot_functions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI.add_shot_functions" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>shot</strong> (<em>string</em>) – data inputed from the QLineEdit</li>
+<li><strong>in_active_sequence</strong> (<em>variable</em>) – the current key</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager_ui.scheduleManagerUI.add_show_functions">
+<code class="descname">add_show_functions</code><span class="sig-paren">(</span><em>show</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI.add_show_functions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI.add_show_functions" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>show</strong> (<em>string</em>) – data inputed from the QLineEdit</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager_ui.scheduleManagerUI.add_show_info_functions">
+<code class="descname">add_show_info_functions</code><span class="sig-paren">(</span><em>current_show</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI.add_show_info_functions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI.add_show_info_functions" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>current_show</strong> (<em>string</em>) – the current show that has been rightclicked</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager_ui.scheduleManagerUI.add_task_functions">
+<code class="descname">add_task_functions</code><span class="sig-paren">(</span><em>in_task</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI.add_task_functions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI.add_task_functions" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>in_task</strong> (<em>string</em>) – data inputed from the QLineEdit</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager_ui.scheduleManagerUI.delete_item">
+<code class="descname">delete_item</code><span class="sig-paren">(</span><em>mode=''</em>, <em>delete_mode='hidden'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI.delete_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI.delete_item" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mode</strong> (<em>string</em>) – mode for show/sequence/shot depending on which list has been clicked</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager_ui.scheduleManagerUI.delete_pop_up">
+<code class="descname">delete_pop_up</code><span class="sig-paren">(</span><em>mode='user'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI.delete_pop_up"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI.delete_pop_up" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – popup display for when a show is been selected for deleation</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager_ui.scheduleManagerUI.enabled_disabled">
+<code class="descname">enabled_disabled</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI.enabled_disabled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI.enabled_disabled" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – defaults certain items to disabled so users cannot click ui elements, if not disalabed and data is not input correctly the program will crash</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager_ui.scheduleManagerUI.entryTab">
+<code class="descname">entryTab</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI.entryTab"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI.entryTab" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – the main tab for this program which contains all of the input elements as well as ui layout</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager_ui.scheduleManagerUI.item_click_ui">
+<code class="descname">item_click_ui</code><span class="sig-paren">(</span><em>mode='show'</em>, <em>seq_mode='default'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI.item_click_ui"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI.item_click_ui" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mode</strong> (<em>string</em>) – mode for the 2 options between show and sequence refreshing</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager_ui.scheduleManagerUI.keyPressEvent">
+<code class="descname">keyPressEvent</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> (<em>event</em>) – when a key is pressed</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager_ui.scheduleManagerUI.my_tasks_population">
+<code class="descname">my_tasks_population</code><span class="sig-paren">(</span><em>active_show</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI.my_tasks_population"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI.my_tasks_population" title="Permalink to this definition">¶</a></dt>
+<dd><p>:type :
+:param : populates the data for the my tasks
+:rtype: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager_ui.scheduleManagerUI.my_tasks_tab">
+<code class="descname">my_tasks_tab</code><span class="sig-paren">(</span><em>first_run=False</em>, <em>mode='filter'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI.my_tasks_tab"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI.my_tasks_tab" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>first_run</strong> (<em>Boolean</em>) – creates empty ui elements during first run</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager_ui.scheduleManagerUI.on_context_menu">
+<code class="descname">on_context_menu</code><span class="sig-paren">(</span><em>myListWidget</em>, <em>point</em>, <em>mode='show'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI.on_context_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI.on_context_menu" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>myListWidget</strong> (<em>object QWidget</em>) – the current/active list that has been selected with a right click</li>
+<li><strong>point</strong> (<em>point?</em>) – the current location of the mouse when a right click occurs</li>
+<li><strong>mode</strong> (<em>string</em>) – each list will have different options</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager_ui.scheduleManagerUI.refresh_sequence">
+<code class="descname">refresh_sequence</code><span class="sig-paren">(</span><em>refresh_tree=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI.refresh_sequence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI.refresh_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>refresh_tree</strong> (<em>boolean</em>) – on wether the 3rd tab should be updated, casues lag so no need to constantly update</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager_ui.scheduleManagerUI.refresh_shot">
+<code class="descname">refresh_shot</code><span class="sig-paren">(</span><em>refresh_tree=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI.refresh_shot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI.refresh_shot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>refresh_tree</strong> (<em>boolean</em>) – on wether the 3rd tab should be updated, casues lag so no need to constantly update</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager_ui.scheduleManagerUI.refresh_show">
+<code class="descname">refresh_show</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI.refresh_show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI.refresh_show" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>show</strong> (<em>string</em>) – the data that has been input into the ui element</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager_ui.scheduleManagerUI.tabUI_treeview">
+<code class="descname">tabUI_treeview</code><span class="sig-paren">(</span><em>in_tab</em>, <em>in_dictionary</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI.tabUI_treeview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI.tabUI_treeview" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>in_tab</strong> (<em>string</em>) – that tab location where the treeview will appear</li>
+<li><strong>in_dictionary</strong> (<em>dict</em>) – the current active dict</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager_ui.scheduleManagerUI.tabUI_treeview_build">
+<code class="descname">tabUI_treeview_build</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager_ui.html#scheduleManagerUI.tabUI_treeview_build"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager_ui.scheduleManagerUI.tabUI_treeview_build" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-schedule_manager"></span><dl class="class">
+<dt id="schedule_manager.scheduleManager">
+<em class="property">class </em><code class="descclassname">schedule_manager.</code><code class="descname">scheduleManager</code><span class="sig-paren">(</span><em>in_context=None</em>, <em>task_key_make=True</em>, <em>fast_init=False</em>, <em>in_log=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager.html#scheduleManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager.scheduleManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>contatins the main logic for all of the data inside the project tab, this includes dictionary/json/folder creataion
+connection to the server as well as mongo database</p>
+<dl class="method">
+<dt id="schedule_manager.scheduleManager.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>in_context=None</em>, <em>task_key_make=True</em>, <em>fast_init=False</em>, <em>in_log=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager.html#scheduleManager.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager.scheduleManager.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>in_context</strong> (<em>class</em>) – uses the context.py file if context was not called correctly</li>
+<li><strong>task_key_make</strong> (<em>string</em>) – finds the current working directory of the server</li>
+<li><strong>fast_init</strong> (<em>mode</em>) – mode to check if its first run</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager.scheduleManager.build_active_from_path">
+<code class="descname">build_active_from_path</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager.html#scheduleManager.build_active_from_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager.scheduleManager.build_active_from_path" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>string</em>) – the root directory of the server in order to see what data should be saved</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager.scheduleManager.build_json_show">
+<code class="descname">build_json_show</code><span class="sig-paren">(</span><em>show_list</em>, <em>show</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager.html#scheduleManager.build_json_show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager.scheduleManager.build_json_show" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>show_list</strong> (<em>string</em>) – gathers the location of where json file will be saved</li>
+<li><strong>show</strong> – searches the dict and only uses correct tasks from defined paramaters</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager.scheduleManager.build_sequence">
+<code class="descname">build_sequence</code><span class="sig-paren">(</span><em>in_show</em>, <em>in_sequence</em>, <em>in_mode='default'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager.html#scheduleManager.build_sequence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager.scheduleManager.build_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>in_dict</strong> (<em>dict</em>) – main dictionary</li>
+<li><strong>in_show</strong> (<em>string</em>) – the current show key where the sequence will be added</li>
+<li><strong>in_sequence</strong> (<em>string</em>) – the current sequence key where the data will be created</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager.scheduleManager.build_shot">
+<code class="descname">build_shot</code><span class="sig-paren">(</span><em>in_show</em>, <em>in_sequence</em>, <em>in_shot</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager.html#scheduleManager.build_shot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager.scheduleManager.build_shot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>in_dict</strong> (<em>dict</em>) – main dictionary</li>
+<li><strong>in_show</strong> (<em>string</em>) – the current show key where the shot will be added</li>
+<li><strong>in_sequence</strong> (<em>string</em>) – the current sequence key where the shot will be added</li>
+<li><strong>in_shot</strong> (<em>string</em>) – the current shot key where the data will be created</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager.scheduleManager.build_task">
+<code class="descname">build_task</code><span class="sig-paren">(</span><em>in_task</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager.html#scheduleManager.build_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager.scheduleManager.build_task" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>in_task</strong> (<em>string</em>) – adds a new task based to the shot</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager.scheduleManager.find_in_obj">
+<code class="descname">find_in_obj</code><span class="sig-paren">(</span><em>obj</em>, <em>condition</em>, <em>path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager.html#scheduleManager.find_in_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager.scheduleManager.find_in_obj" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>obj</strong> (<em>dict</em>) – full dict to search through</li>
+<li><strong>condition</strong> (<em>string</em>) – the filter string that you want to search through the dict</li>
+<li><strong>path</strong> (<em>string</em>) – how deep into the dict you currently are based on previous keys</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager.scheduleManager.get_network_path">
+<code class="descname">get_network_path</code><span class="sig-paren">(</span><em>root</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager.html#scheduleManager.get_network_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager.scheduleManager.get_network_path" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>root</strong> (<em>string</em>) – the root directory of the server in order to see what data should be saved</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager.scheduleManager.get_sequence">
+<code class="descname">get_sequence</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager.html#scheduleManager.get_sequence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager.scheduleManager.get_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – searches the dict and only uses correct sequences from defined paramaters</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager.scheduleManager.get_shot">
+<code class="descname">get_shot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager.html#scheduleManager.get_shot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager.scheduleManager.get_shot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – searches the dict and only uses correct shots from defined paramaters</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager.scheduleManager.get_shows">
+<code class="descname">get_shows</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager.html#scheduleManager.get_shows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager.scheduleManager.get_shows" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – searches the dict and only uses correct shows from defined paramaters</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager.scheduleManager.get_task">
+<code class="descname">get_task</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager.html#scheduleManager.get_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager.scheduleManager.get_task" title="Permalink to this definition">¶</a></dt>
+<dd><p>:type : 
+:param : searches the dict and only uses correct tasks from defined paramaters
+:rtype: list</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager.scheduleManager.item_click">
+<code class="descname">item_click</code><span class="sig-paren">(</span><em>myListWidget</em>, <em>current_item</em>, <em>mode='show'</em>, <em>seq_mode='default'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager.html#scheduleManager.item_click"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager.scheduleManager.item_click" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>myListWidget</strong> (<em>object</em>) – the list that is being clicked</li>
+<li><strong>current_item</strong> (<em>var</em>) – the item inside the list being clicked</li>
+<li><strong>mode</strong> (<em>string</em>) – how the function reacts depending on what list is seletcted</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager.scheduleManager.my_tasks_generate">
+<code class="descname">my_tasks_generate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager.html#scheduleManager.my_tasks_generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager.scheduleManager.my_tasks_generate" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – creates the ui for the my tasks tab</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager.scheduleManager.populate_list">
+<code class="descname">populate_list</code><span class="sig-paren">(</span><em>in_dict</em>, <em>list_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager.html#scheduleManager.populate_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager.scheduleManager.populate_list" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>in_dict</strong> (<em>dict</em>) – the dictionary for what the list will be set with</li>
+<li><strong>list_name</strong> (<em>var</em>) – the list name which will be populated</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager.scheduleManager.set_active">
+<code class="descname">set_active</code><span class="sig-paren">(</span><em>tmp</em>, <em>active_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager.html#scheduleManager.set_active"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager.scheduleManager.set_active" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>tmp</strong> (<em>string</em>) – sets active vars to be used for dicts</li>
+<li><strong>active_type</strong> (<em>mode</em>) – mode used to depending on what active type will be selected</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="schedule_manager.scheduleManager.set_list">
+<code class="descname">set_list</code><span class="sig-paren">(</span><em>in_dict</em>, <em>list_widget</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/schedule_manager.html#scheduleManager.set_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#schedule_manager.scheduleManager.set_list" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>in_dict</strong> (<em>dict</em>) – the dictionary for what the list will be set with</li>
+<li><strong>list_widget</strong> (<em>object</em>) – the object where the list will be set with</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-database_connection"></span><dl class="class">
+<dt id="database_connection.databaseConnection">
+<em class="property">class </em><code class="descclassname">database_connection.</code><code class="descname">databaseConnection</code><span class="sig-paren">(</span><em>in_context=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database_connection.html#databaseConnection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database_connection.databaseConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class handles the connection to the mongodb server and its data, as well as 
+handles the saving of data back to the server. As well as saving the data locally or to the ftpserver</p>
+</dd></dl>
+
+<span class="target" id="module-task_key"></span><dl class="class">
+<dt id="task_key.taskKey">
+<em class="property">class </em><code class="descclassname">task_key.</code><code class="descname">taskKey</code><span class="sig-paren">(</span><em>in_schedule_manager</em>, <em>simple_mode=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/task_key.html#taskKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#task_key.taskKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>this class creates the table widget that appears in the scheulde_manager_ui.py, all of the logic and
+ui elements for this table are inside the taskKey class</p>
+<dl class="method">
+<dt id="task_key.taskKey.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>in_schedule_manager</em>, <em>simple_mode=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/task_key.html#taskKey.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#task_key.taskKey.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="task_key.taskKey.itemChanged">
+<code class="descname">itemChanged</code><span class="sig-paren">(</span><em>ui_element</em>, <em>key</em>, <em>in_task</em>, <em>mode='comboBox'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/task_key.html#taskKey.itemChanged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#task_key.taskKey.itemChanged" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ui_element</strong> (<em>object Qwidget</em>) – the current object type being changed</li>
+<li><strong>key</strong> (<em>string</em>) – the current key being alterd from the main dict</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>:param in_task:the current key being alterd from the main dict 
+:type mode: string
+:param mode: the type of QWidget, combowbox,qlineedit,checkbox etc
+:rtype: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="task_key.taskKey.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><em>mode='default'</em>, <em>check=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/task_key.html#taskKey.refresh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#task_key.taskKey.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>mode</strong> (<em>string</em>) – when the program is first ran will create a baisc outline from default paramaters</li>
+<li><strong>check</strong> (<em>NoneType</em>) – list of keys from dict will be used to create the row header names</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="task_key.taskKey.row_population">
+<code class="descname">row_population</code><span class="sig-paren">(</span><em>row_cords</em>, <em>in_dict</em>, <em>multi_line=False</em>, <em>in_task=None</em>, <em>in_task_header=None</em>, <em>read_only=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/task_key.html#taskKey.row_population"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#task_key.taskKey.row_population" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>row_cords</strong> (<em>integer</em>) – the current location where the data will be created 0,0 to 0,1 etc</li>
+<li><strong>in_dict</strong> (<em>dict</em>) – the main dictonary</li>
+<li><strong>multi_line</strong> (<em>boolean</em>) – set to True if multiple table rows are being populated at once</li>
+<li><strong>in_task</strong> (<em>string</em>) – the name of the task which is having its data populated</li>
+<li><strong>in_task_header</strong> (<em>list</em>) – current active task headers, will match the in_task string</li>
+<li><strong>read_only</strong> (<em>Boolean</em>) – if the data can be edited after it has been populated</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="task_key.taskKey.selectFile">
+<code class="descname">selectFile</code><span class="sig-paren">(</span><em>lineEdit</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/task_key.html#taskKey.selectFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#task_key.taskKey.selectFile" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lineEdit</strong> (<em>var</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="task_key.taskKey.set_table_size">
+<code class="descname">set_table_size</code><span class="sig-paren">(</span><em>col</em>, <em>row</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/task_key.html#taskKey.set_table_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#task_key.taskKey.set_table_size" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>col</strong> (<em>list</em>) – uses the list size to determine the size of the table columns</li>
+<li><strong>row</strong> (<em>list</em>) – uses the list size to determine the size of the table rows</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="task_key.taskKey.sizeHint">
+<code class="descname">sizeHint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/task_key.html#taskKey.sizeHint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#task_key.taskKey.sizeHint" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – ?? not sure what this is used for as doesnt appear to be called</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QSize object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="task_key.taskKey.task_run">
+<code class="descname">task_run</code><span class="sig-paren">(</span><em>show=''</em>, <em>sequence=''</em>, <em>shot=''</em>, <em>task=''</em>, <em>in_show_json=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/task_key.html#taskKey.task_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#task_key.taskKey.task_run" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>show</strong> (<em>string</em>) – the active show key which data is being gatherd from to create the tasks</li>
+<li><strong>sequence</strong> (<em>string</em>) – the active sequence key which data is being gatherd from to create the tasks</li>
+<li><strong>shot</strong> (<em>string</em>) – the active shot key which data is being gatherd from to create the tasks</li>
+<li><strong>task</strong> (<em>string</em>) – the active task key which data is being gatherd from to create the tasks</li>
+<li><strong>in_show_json</strong> (<em>dict</em>) – the active dictionary where the data is being gather</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-show_info"></span><dl class="class">
+<dt id="show_info.showInfo">
+<em class="property">class </em><code class="descclassname">show_info.</code><code class="descname">showInfo</code><span class="sig-paren">(</span><em>current_show</em>, <em>in_context=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/show_info.html#showInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#show_info.showInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>this code creates a new popup window that is called within the schedule_manager_ui.py, the purpose
+of this is to be able to add more information into the dictionary under the key {show_info: “###”}
+the unit test will create a popup window, although this will only work for ui as its functionarliy will only
+work when called within the schedule_manager_ui.py or civilization.py.</p>
+<dl class="method">
+<dt id="show_info.showInfo.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>current_show</em>, <em>in_context=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/show_info.html#showInfo.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#show_info.showInfo.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="show_info.showInfo.add_show_info">
+<code class="descname">add_show_info</code><span class="sig-paren">(</span><em>current_show</em>, <em>resolution</em>, <em>shot_time</em>, <em>client</em>, <em>contact</em>, <em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/show_info.html#showInfo.add_show_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#show_info.showInfo.add_show_info" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>current_show</strong> (<em>string</em>) – gathers the data from the QLineedit to be set into the dict</li>
+<li><strong>resolution</strong> (<em>string</em>) – gathers the data from the QLineedit to be set into the dict</li>
+<li><strong>shot_time</strong> (<em>integer</em>) – gathers the data from the QLineedit to be set into the dict</li>
+<li><strong>client</strong> (<em>string</em>) – gathers the data from the QLineedit to be set into the dict</li>
+<li><strong>contact</strong> (<em>string</em>) – gathers the data from the QLineedit to be set into the dict</li>
+<li><strong>text</strong> (<em>string</em>) – gathers the data from the QLineedit to be set into the dict</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="show_info.showInfo.set_resolution">
+<code class="descname">set_resolution</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/show_info.html#showInfo.set_resolution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#show_info.showInfo.set_resolution" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> (<em>self</em>) – sets the ui text box for resolution to whatever is seleceted in the combobox</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-new_window"></span><dl class="class">
+<dt id="new_window.newWindow">
+<em class="property">class </em><code class="descclassname">new_window.</code><code class="descname">newWindow</code><span class="sig-paren">(</span><em>current_show</em>, <em>window_type=''</em>, <em>in_context=None</em>, <em>in_ftp=None</em>, <em>in_schedule_manager=None</em>, <em>in_log=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/new_window.html#newWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#new_window.newWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>this class will create a template for a popup window that can be used throughtout the program, only
+used for 1 window so far but template is still in place</p>
+<dl class="method">
+<dt id="new_window.newWindow.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>current_show</em>, <em>window_type=''</em>, <em>in_context=None</em>, <em>in_ftp=None</em>, <em>in_schedule_manager=None</em>, <em>in_log=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/new_window.html#newWindow.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#new_window.newWindow.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="new_window.newWindow.rename_dict">
+<code class="descname">rename_dict</code><span class="sig-paren">(</span><em>old_name</em>, <em>new_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/new_window.html#newWindow.rename_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#new_window.newWindow.rename_dict" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>old_name</strong> (<em>string</em>) – old key name</li>
+<li><strong>new_name</strong> (<em>string</em>) – new key name that was input into the QLineEdit()</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="new_window.newWindow.rename_window">
+<code class="descname">rename_window</code><span class="sig-paren">(</span><em>current_show</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/new_window.html#newWindow.rename_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#new_window.newWindow.rename_window" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>current_show</strong> (<em>string</em>) – key needed to search through the dict</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-web_browser_alt">
+<span id="web-browser-tab"></span><h2>Web Browser Tab<a class="headerlink" href="#module-web_browser_alt" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="web_browser_alt.MainWindow">
+<em class="property">class </em><code class="descclassname">web_browser_alt.</code><code class="descname">MainWindow</code><span class="sig-paren">(</span><em>url</em>, <em>parent=None</em>, <em>in_context=None</em>, <em>in_login=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/web_browser_alt.html#MainWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#web_browser_alt.MainWindow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-ftp_connect">
+<span id="filebrowser-tab"></span><h2>FileBrowser Tab<a class="headerlink" href="#module-ftp_connect" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ftp_connect.FtpConnect">
+<em class="property">class </em><code class="descclassname">ftp_connect.</code><code class="descname">FtpConnect</code><a class="reference internal" href="_modules/ftp_connect.html#FtpConnect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ftp_connect.FtpConnect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<span class="target" id="module-ftp_connect_ui"></span><dl class="class">
+<dt id="ftp_connect_ui.FtpConnectUI">
+<em class="property">class </em><code class="descclassname">ftp_connect_ui.</code><code class="descname">FtpConnectUI</code><span class="sig-paren">(</span><em>parent=None</em>, <em>in_context=None</em>, <em>in_log=None</em>, <em>in_schedule_manager=None</em>, <em>load_from_schedule=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ftp_connect_ui.html#FtpConnectUI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ftp_connect_ui.FtpConnectUI" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<span class="target" id="module-file_browser"></span><dl class="class">
+<dt id="file_browser.FileBrowser">
+<em class="property">class </em><code class="descclassname">file_browser.</code><code class="descname">FileBrowser</code><span class="sig-paren">(</span><em>parent=None</em>, <em>in_context=None</em>, <em>in_path='C:/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/file_browser.html#FileBrowser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#file_browser.FileBrowser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<span class="target" id="module-threading_ftp"></span><dl class="class">
+<dt id="threading_ftp.ThreadingMain">
+<em class="property">class </em><code class="descclassname">threading_ftp.</code><code class="descname">ThreadingMain</code><span class="sig-paren">(</span><em>in_context</em>, <em>in_ftp</em>, <em>in_schedule_manager=None</em>, <em>in_auto_run_action=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/threading_ftp.html#ThreadingMain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#threading_ftp.ThreadingMain" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cinestron Ltd.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2018',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

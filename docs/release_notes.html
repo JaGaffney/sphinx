@@ -1,0 +1,304 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Release Notes &mdash; cinestron 2018 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> cinestron
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Release Notes</a><ul>
+<li><a class="reference internal" href="#version-1-1-1-8rd-june-2018">Version 1.1.1 - 8rd June 2018</a></li>
+<li><a class="reference internal" href="#version-1-1-0-3rd-june-2018">Version 1.1.0 - 3rd June 2018</a></li>
+<li><a class="reference internal" href="#version-1-0-0">Version 1.0.0</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cinestron</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Release Notes</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/release_notes.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="release-notes">
+<h1>Release Notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="version-1-1-1-8rd-june-2018">
+<h2>Version 1.1.1 - 8rd June 2018<a class="headerlink" href="#version-1-1-1-8rd-june-2018" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>New Features:</dt>
+<dd><ul class="first last simple">
+<li>Schedule manager: add duplicate shot, which will copy all existing data in one shot and make a new one with new name.</li>
+</ul>
+</dd>
+<dt>Updated Features:</dt>
+<dd><ul class="first last simple">
+<li>Ui: fix clock widget when logged out. They become squashed. Put the time zone identifier underneath and make the cinestron logo a half the size. Hint: Might need to group all these in better layouts to do this.</li>
+</ul>
+</dd>
+<dt>Bug Fixes:</dt>
+<dd><ul class="first last simple">
+<li>Right clicking (opening context) on a list without data no longer crashes.</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="version-1-1-0-3rd-june-2018">
+<h2>Version 1.1.0 - 3rd June 2018<a class="headerlink" href="#version-1-1-0-3rd-june-2018" title="Permalink to this headline">¶</a></h2>
+<p>Main improvements are in the Filebrowser and in the Project Manager(previously called Schedule Manager). These talk to each other better. And the the file browsers has improved functionality for syncing and opening files. Also Filebrowser saves what tabs you had last open.</p>
+<p>The Project Manager also has a tasks tab so you can see overall assignments and status per user.</p>
+<p>Also there is a basic email notification system when people upload/push files.</p>
+<p>Environment variables also get set CS_SHOW, CS_SEQ, CS_SHOT etc will get passed to other ran applications houdini for example</p>
+<dl class="docutils">
+<dt>New Features:</dt>
+<dd><ul class="first last simple">
+<li>file browser: Allow entering specific paths. Show/Seq/Shot task drop down fast select.</li>
+<li>file browser: delete on server and local</li>
+<li>file browser: if file is matching open it with a system call and set env vars. CS_ROOT, CS_SHOW, CS_SEQ, CS_SHOT, CS_TASK</li>
+<li>file manager: resolve some issues with matching files on server and local and which one is regarded as the winner.</li>
+<li>General: User preference file.json saved to C:// that restores UI with logins. And what tabs they had open.</li>
+<li>schedule manager: my tasks tab now functional, display users tasks</li>
+<li>schedule manager: now able to create custom tasks</li>
+<li>schedule manager: keyboard shortcuts now work for deleting(del) and adding new data (return / enter)</li>
+<li>Multiple tabs for file browser</li>
+<li>schedule manager, Create task folders on server simultaneously.</li>
+<li>File management: check local files against  server files. Colour code with red orange green traffic light system.</li>
+<li>File management: ftp push data</li>
+<li>Add direct links to Sphinx HTML documentation in ui’s.</li>
+<li>File management: Recursive pull and push from root directory.</li>
+<li>File manager. Browse shots/tasks. Add wild card for file matching. File size cap. Check if files are different.</li>
+<li>schedule manager: delete option now avaialbe includeing popup warnning</li>
+<li>schedule manager: added context menu(right click) which have various functionality (build folders/delete/showinfo/rename etc)</li>
+<li>schedule manager: custom Show info on right click</li>
+<li>File management. Send notification message when something is added to the server.</li>
+<li>schedule manager: added task management</li>
+</ul>
+</dd>
+<dt>Updated Features:</dt>
+<dd><ul class="first last simple">
+<li>Refactor schedule_manager_ui.py</li>
+<li>progress bar for file downloads.</li>
+<li>Schedule manager. Add show, sequence and shot independently into show dictionaries.</li>
+<li>Support multiple drives.</li>
+<li>Core: improve deployment system</li>
+<li>CSS now cleaned and whole program uses same CSS</li>
+</ul>
+</dd>
+<dt>Bug Fixes:</dt>
+<dd><ul class="first last simple">
+<li>Threading no longers locks the ui when using the ftp.</li>
+<li>No longer creates duplicate data if more than 1 seq is made</li>
+<li>schedle manager lists now show correct colour scheme</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="version-1-0-0">
+<h2>Version 1.0.0<a class="headerlink" href="#version-1-0-0" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>New Features:</dt>
+<dd><ul class="first last simple">
+<li></li>
+</ul>
+</dd>
+<dt>Updated Features:</dt>
+<dd><ul class="first last simple">
+<li></li>
+</ul>
+</dd>
+<dt>Bug Fixes:</dt>
+<dd><ul class="first last simple">
+<li></li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cinestron Ltd.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2018',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

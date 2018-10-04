@@ -1,0 +1,1181 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>schedule_manager_ui &mdash; cinestron 2018 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> cinestron
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cinestron</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>schedule_manager_ui</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for schedule_manager_ui</h1><div class="highlight"><pre>
+<span></span><span class="c1">#Copyright © 2018 by Jon Gaffney, All Rights Reserved, created to be used for Cinestron Ltd civilzation.py program</span>
+<span class="c1"># context contains all of our main imports and the CsContext class </span>
+<span class="c1">#imported in with no namespace</span>
+<span class="kn">from</span> <span class="nn">context</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">schedule_manager</span> <span class="k">as</span> <span class="nn">schedule_manager</span>
+<span class="kn">import</span> <span class="nn">spolier</span> <span class="k">as</span> <span class="nn">spoiler</span>
+<span class="kn">import</span> <span class="nn">show_info</span> <span class="k">as</span> <span class="nn">show_info</span>
+<span class="kn">import</span> <span class="nn">new_window</span> <span class="k">as</span> <span class="nn">new_window</span>
+<span class="kn">import</span> <span class="nn">timeline</span> <span class="k">as</span> <span class="nn">timeline</span>
+
+<span class="n">g_debug</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1">############################################################################</span>
+<span class="c1"># main ui class</span>
+<span class="c1">############################################################################</span>
+<div class="viewcode-block" id="scheduleManagerUI"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI">[docs]</a><span class="k">class</span> <span class="nc">scheduleManagerUI</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    the main ui elements for the data created in scheulde_manager</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">schedule_manager</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">log</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">my_show_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">temp_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">my_cinestron_user_info</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1">############################################################################</span>
+    <span class="c1"># making a member of class</span>
+    <span class="c1">############################################################################</span>
+<div class="viewcode-block" id="scheduleManagerUI.__init__"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">in_context</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">in_log</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">scheduleManagerUI</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type parent: object</span>
+<span class="sd">        :param parent: ?? not sure what this is doing</span>
+<span class="sd">        :type in_context: object</span>
+<span class="sd">        :param in_context: uses the context.py file if context was not called correctly</span>
+<span class="sd">        :type in_log: object</span>
+<span class="sd">        :param in_log: </span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># initlize our context, if one is not passed in</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">in_context</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">in_context</span>
+        <span class="k">else</span><span class="p">:</span>    
+            <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">CsContext</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">in_log</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">in_log</span>
+
+        <span class="c1">#  pass in the context to the schdeule manager also</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span> <span class="o">=</span> <span class="n">schedule_manager</span><span class="o">.</span><span class="n">scheduleManager</span><span class="p">(</span><span class="n">in_context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>  
+
+        <span class="c1">#############################################################################</span>
+        <span class="c1"># init main - grab up front user data</span>
+        <span class="c1">#############################################################################</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">get_shows</span><span class="p">()</span>
+        
+        <span class="c1">############################################################################</span>
+        <span class="c1"># init ui - back to ui</span>
+        <span class="c1">############################################################################</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_layout</span> <span class="o">=</span> <span class="n">QTabWidget</span><span class="p">()</span>
+        <span class="c1">#self.tab_master_layout = set_scheme(self.tab_master_layout)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_form_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span><span class="c1">#QFormLayout()</span>
+
+        <span class="c1"># entry tab</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab1</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="c1">#self.tab1 = set_scheme(self.tab1)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_layout</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab1</span><span class="p">,</span> <span class="s2">&quot;Tab 1&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_layout</span><span class="o">.</span><span class="n">setTabText</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;Projects&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entryTab</span><span class="p">()</span>
+
+        <span class="c1"># my project tab</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab3</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span> <span class="c1">#used for delete later in my_tasks_tab()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span> <span class="o">=</span> <span class="n">QScrollArea</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab3</span> <span class="o">=</span> <span class="n">set_scheme</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span> <span class="o">=</span> <span class="n">set_scheme</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="p">)</span>
+        <span class="c1">#self.tab_master_layout.addTab(self.tab3, &quot;Tasks&quot;)</span>
+        <span class="c1">#self.tab_master_layout.setTabText(1,&quot;Tasks&quot;)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">my_tasks_tab</span><span class="p">(</span><span class="n">first_run</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># NOTE try this later as more optimal</span>
+        <span class="c1">#self.tab_master_layout.currentChanged.connect(partial(self.my_tasks_tab, first_run=False))</span>
+
+        <span class="c1"># tree viewer tab</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab2</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabUI_treeview_build</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab4</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="c1">#self.tab4 = set_scheme(self.tab4)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_layout</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab4</span><span class="p">,</span> <span class="s2">&quot;Timeline (under construction)&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_layout</span><span class="o">.</span><span class="n">setTabText</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="s2">&quot;Timeline (under construction)&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeline_tab</span><span class="p">()</span>
+
+        <span class="c1"># general layout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_form_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_master_layout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_master_form_layout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Cinestron - Schedule Manager&quot;</span><span class="p">)</span></div>
+
+    <span class="c1">#######################################################################################</span>
+    <span class="c1"># refreshes the listview as well as treeview for each item when new &#39;X&#39; is added</span>
+    <span class="c1">#######################################################################################</span>
+<div class="viewcode-block" id="scheduleManagerUI.refresh_show"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI.refresh_show">[docs]</a>    <span class="k">def</span> <span class="nf">refresh_show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type show: string</span>
+<span class="sd">        :param show: the data that has been input into the ui element</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">refresh_show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="scheduleManagerUI.refresh_sequence"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI.refresh_sequence">[docs]</a>    <span class="k">def</span> <span class="nf">refresh_sequence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refresh_tree</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type refresh_tree: boolean</span>
+<span class="sd">        :param refresh_tree: on wether the 3rd tab should be updated, casues lag so no need to constantly update</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">refresh_sequence</span><span class="p">()</span>
+        <span class="c1"># refesh tree viewer</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">refresh_tree</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tabUI_treeview_build</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="scheduleManagerUI.refresh_shot"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI.refresh_shot">[docs]</a>    <span class="k">def</span> <span class="nf">refresh_shot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refresh_tree</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type refresh_tree: boolean</span>
+<span class="sd">        :param refresh_tree: on wether the 3rd tab should be updated, casues lag so no need to constantly update</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">refresh_shot</span><span class="p">()</span>
+        <span class="c1"># refesh tree viewer</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">refresh_tree</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tabUI_treeview_build</span><span class="p">()</span></div>
+
+    <span class="c1">#######################################################################################</span>
+    <span class="c1"># remanats of item click that have been moved to schedmanager.py, these are requied here.</span>
+    <span class="c1">####################################################################################### </span>
+<div class="viewcode-block" id="scheduleManagerUI.item_click_ui"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI.item_click_ui">[docs]</a>    <span class="k">def</span> <span class="nf">item_click_ui</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;show&quot;</span><span class="p">,</span> <span class="n">seq_mode</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type mode: string</span>
+<span class="sd">        :param mode: mode for the 2 options between show and sequence refreshing</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabUI_treeview_build</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enabled_disabled</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span><span class="s2">&quot;show&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">refresh_sequence</span><span class="p">(</span><span class="n">refresh_tree</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;sequence&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">refresh_shot</span><span class="p">(</span><span class="n">refresh_tree</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+    <span class="c1">############################################################################</span>
+    <span class="c1"># how the ui is created/displayed</span>
+    <span class="c1">############################################################################ </span>
+<div class="viewcode-block" id="scheduleManagerUI.entryTab"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI.entryTab">[docs]</a>    <span class="k">def</span> <span class="nf">entryTab</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self:</span>
+<span class="sd">        :param self: the main tab for this program which contains all of the input elements as well as ui layout</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">############################################################################</span>
+        <span class="c1"># creation of ui elements</span>
+        <span class="c1">############################################################################</span>
+        <span class="c1"># show layout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">my_show</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_show</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Add Project&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_listview_ui</span> <span class="o">=</span> <span class="n">QListWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">set_list</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span><span class="p">,</span> 
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_listview_ui</span><span class="p">)</span>
+
+        <span class="c1"># sequence layout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_sequence</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Add sequence&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">sequence_listview_ui</span> <span class="o">=</span> <span class="n">QListWidget</span><span class="p">()</span>
+
+        <span class="c1"># asset layout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">asset</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_asset</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Add asset&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">asset_listview_ui</span> <span class="o">=</span> <span class="n">QListWidget</span><span class="p">()</span>
+
+        <span class="c1"># shot layout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shot</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_shot</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Add shot&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">shot_listview_ui</span> <span class="o">=</span> <span class="n">QListWidget</span><span class="p">()</span>
+
+        <span class="c1"># delete item in schedule manager</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delete_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Temp Delete Button&quot;</span><span class="p">)</span>
+
+        <span class="c1"># sync to server button</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server_sync</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Sync to server (could be right click instead?&quot;</span><span class="p">)</span>
+
+        <span class="c1"># add task layout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_task</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_new_task</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Add new task&quot;</span><span class="p">)</span>
+     
+        <span class="c1"># by default, shot and sequence buttons are disabled, if they are clicked without show, program will crash/not update correctly</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enabled_disabled</span><span class="p">()</span>
+
+        <span class="c1">############################################################################</span>
+        <span class="c1"># when buttons/lists are clicked inside the UI</span>
+        <span class="c1">############################################################################</span>
+        <span class="c1"># Button for show + sequences + shot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_show</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_show_functions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">my_show</span><span class="o">.</span><span class="n">text</span><span class="p">()))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_sequence</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_sequence_functions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="s2">&quot;default&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_asset</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_sequence_functions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">asset</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="s2">&quot;asset&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_shot</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_shot_functions</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shot</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_new_task</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_task_functions</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">new_task</span><span class="o">.</span><span class="n">text</span><span class="p">(),))</span>
+
+        <span class="c1"># updating of the list with the correct data when the items are clicked</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_listview_ui</span><span class="o">.</span><span class="n">itemClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="n">partial</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">item_click</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_listview_ui</span><span class="p">,</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span><span class="p">,</span>
+                <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;show&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">sequence_listview_ui</span><span class="o">.</span><span class="n">itemClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="n">partial</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">item_click</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">sequence_listview_ui</span><span class="p">,</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">sequence_listview</span><span class="p">,</span>
+                <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;sequence&quot;</span><span class="p">,</span>
+                <span class="n">seq_mode</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">asset_listview_ui</span><span class="o">.</span><span class="n">itemClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="n">partial</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">item_click</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">asset_listview_ui</span><span class="p">,</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">sequence_listview</span><span class="p">,</span>
+                <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;sequence&quot;</span><span class="p">,</span>
+                <span class="n">seq_mode</span><span class="o">=</span><span class="s2">&quot;asset&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">shot_listview_ui</span><span class="o">.</span><span class="n">itemClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="n">partial</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">item_click</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">shot_listview_ui</span><span class="p">,</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">shot_listview</span><span class="p">,</span>
+                <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;shot&quot;</span><span class="p">))</span>
+
+        <span class="c1"># this code is needed due to removing elemetns from the ui to the sched manager.py</span>
+        <span class="c1"># NOTE jon.gaffney why do we have to these item clicked connections one with partial and one with lambda??</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_listview_ui</span><span class="o">.</span><span class="n">itemClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_click_ui</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;show&quot;</span><span class="p">)</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">sequence_listview_ui</span><span class="o">.</span><span class="n">itemClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_click_ui</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;sequence&quot;</span><span class="p">,</span> <span class="n">seq_mode</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">)</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">asset_listview_ui</span><span class="o">.</span><span class="n">itemClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_click_ui</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;sequence&quot;</span><span class="p">,</span> <span class="n">seq_mode</span><span class="o">=</span><span class="s2">&quot;asset&quot;</span><span class="p">)</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">shot_listview_ui</span><span class="o">.</span><span class="n">itemClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_click_ui</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;shot&quot;</span><span class="p">)</span> <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">delete_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_show_functions</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delete_pop_up</span><span class="p">()))</span>
+
+        <span class="c1"># set button context menu policy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_listview_ui</span><span class="o">.</span><span class="n">setContextMenuPolicy</span><span class="p">(</span>
+            <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">CustomContextMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_listview_ui</span><span class="o">.</span><span class="n">customContextMenuRequested</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_context_menu</span><span class="p">,</span> 
+                    <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_listview_ui</span><span class="p">,</span>
+                    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;show&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">sequence_listview_ui</span><span class="o">.</span><span class="n">setContextMenuPolicy</span><span class="p">(</span>
+            <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">CustomContextMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">sequence_listview_ui</span><span class="o">.</span><span class="n">customContextMenuRequested</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_context_menu</span><span class="p">,</span> 
+                    <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">sequence_listview_ui</span><span class="p">,</span> 
+                    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;sequence&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">asset_listview_ui</span><span class="o">.</span><span class="n">setContextMenuPolicy</span><span class="p">(</span>
+            <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">CustomContextMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">asset_listview_ui</span><span class="o">.</span><span class="n">customContextMenuRequested</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_context_menu</span><span class="p">,</span> 
+                    <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">asset_listview_ui</span><span class="p">,</span> 
+                    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;sequence&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">shot_listview_ui</span><span class="o">.</span><span class="n">setContextMenuPolicy</span><span class="p">(</span>
+            <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">CustomContextMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">shot_listview_ui</span><span class="o">.</span><span class="n">customContextMenuRequested</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_context_menu</span><span class="p">,</span> 
+                    <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">shot_listview_ui</span><span class="p">,</span> 
+                    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;shot&quot;</span><span class="p">))</span>
+
+        <span class="c1"># merge with server</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server_sync</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">ftpdb_push</span><span class="p">())</span>
+        
+        <span class="c1">############################################################################</span>
+        <span class="c1"># how the ui is displayed</span>
+        <span class="c1">############################################################################  </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab2</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+
+        <span class="c1"># finalize layouts</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QGridLayout</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_listview_ui</span> <span class="o">=</span> <span class="n">listWidget_resize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_listview_ui</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">sequence_listview_ui</span> <span class="o">=</span> <span class="n">listWidget_resize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">sequence_listview_ui</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">asset_listview_ui</span> <span class="o">=</span> <span class="n">listWidget_resize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">asset_listview_ui</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">shot_listview_ui</span> <span class="o">=</span> <span class="n">listWidget_resize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">shot_listview_ui</span><span class="p">)</span>
+
+        <span class="c1"># left hand side of the screen</span>
+        <span class="n">grid_left</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">grid_left</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Current projects:&quot;</span><span class="p">))</span>
+        <span class="n">grid_left</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_listview_ui</span><span class="p">)</span>
+        <span class="n">grid_left</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">my_show</span><span class="p">)</span>
+        <span class="n">grid_left</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_show</span><span class="p">)</span> 
+        <span class="n">grid_left</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QHLine</span><span class="p">())</span>
+        
+        <span class="c1"># center of the screen</span>
+        <span class="n">grid_center</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">grid_seq_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">grid_seq_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Sequences:&quot;</span><span class="p">))</span>
+        <span class="n">grid_seq_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">sequence_listview_ui</span><span class="p">)</span>
+        <span class="n">grid_seq_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">)</span>
+        <span class="n">grid_seq_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_sequence</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="n">grid_asset_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">grid_asset_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Asset Groups:&quot;</span><span class="p">))</span>
+        <span class="n">grid_asset_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">asset_listview_ui</span><span class="p">)</span>
+        <span class="n">grid_asset_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">asset</span><span class="p">)</span>
+        <span class="n">grid_asset_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_asset</span><span class="p">)</span>
+        <span class="n">grid_asset_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QHLine</span><span class="p">())</span>
+        <span class="n">grid_center</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">grid_seq_layout</span><span class="p">)</span>
+        <span class="n">grid_center</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">grid_asset_layout</span><span class="p">)</span>
+
+        <span class="c1"># right hand side of the screen</span>
+        <span class="n">grid_right</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">grid_right</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Shots/Assets:&quot;</span><span class="p">))</span>
+        <span class="n">grid_right</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">shot_listview_ui</span><span class="p">)</span>
+        <span class="n">grid_right</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shot</span><span class="p">)</span>
+        <span class="n">grid_right</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_shot</span><span class="p">)</span>
+        <span class="n">grid_right</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QHLine</span><span class="p">())</span>
+
+        <span class="c1"># bottom of the screen</span>
+        <span class="n">grid_bottom</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">grid_bottom</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">task_key_ui</span><span class="p">)</span>
+
+        <span class="c1"># locations on the screen of what left and right are</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">grid_left</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">grid_center</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">grid_right</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">grid_bottom</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignTop</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab2</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+        <span class="c1">#self.layout_tab2.addWidget(self.schedule_manager.task_key_ui)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QHLine</span><span class="p">())</span>
+
+        <span class="c1">#temp buttons</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_task</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_new_task</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QHLine</span><span class="p">())</span>
+
+        <span class="c1">#self.layout_tab2.addWidget(self.server_sync)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QHLine</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab1</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout_tab2</span><span class="p">)</span></div>
+    
+    <span class="c1">############################################################################</span>
+    <span class="c1"># the building of the dictonarys</span>
+    <span class="c1">############################################################################      </span>
+<div class="viewcode-block" id="scheduleManagerUI.add_show_functions"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI.add_show_functions">[docs]</a>    <span class="k">def</span> <span class="nf">add_show_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type show: string</span>
+<span class="sd">        :param show: data inputed from the QLineEdit</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">show</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="c1"># moved this from refresh show</span>
+            <span class="c1">#self.schedule_manager.show_json.append(current)</span>
+            <span class="c1">#self.schedule_manager.set_list( self.schedule_manager.show_json, self.schedule_manager.show_listview_ui)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">build_json_show</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span><span class="p">,</span> <span class="n">show</span><span class="p">)</span>
+
+            <span class="c1"># DATEBASE OUT #</span>
+            <span class="c1"># Push back to server after modifing our result</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">db_push</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">my_show</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">refresh_show</span><span class="p">()</span></div>
+            
+<div class="viewcode-block" id="scheduleManagerUI.add_sequence_functions"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI.add_sequence_functions">[docs]</a>    <span class="k">def</span> <span class="nf">add_sequence_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type sequence: string</span>
+<span class="sd">        :param sequence: data inputed from the QLineEdit</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">sequence</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;asset&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">build_sequence</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_show</span><span class="p">,</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">in_mode</span><span class="o">=</span><span class="s2">&quot;asset&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">refresh_sequence</span><span class="p">(</span><span class="n">refresh_tree</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">asset</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">build_sequence</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_show</span><span class="p">,</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">in_mode</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">refresh_sequence</span><span class="p">(</span><span class="n">refresh_tree</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="scheduleManagerUI.add_shot_functions"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI.add_shot_functions">[docs]</a>    <span class="k">def</span> <span class="nf">add_shot_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shot</span><span class="p">,</span> <span class="n">in_active_sequence</span><span class="p">):</span> 
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type shot: string</span>
+<span class="sd">        :param shot: data inputed from the QLineEdit</span>
+<span class="sd">        :type in_active_sequence: variable</span>
+<span class="sd">        :param in_active_sequence: the current key</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">shot</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">build_shot</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_show</span><span class="p">,</span> 
+                                                                                <span class="n">in_active_sequence</span><span class="p">,</span> 
+                                                                                <span class="n">shot</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">refresh_shot</span><span class="p">(</span><span class="n">refresh_tree</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shot</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="scheduleManagerUI.add_task_functions"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI.add_task_functions">[docs]</a>    <span class="k">def</span> <span class="nf">add_task_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_task</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type in_task: string</span>
+<span class="sd">        :param in_task: data inputed from the QLineEdit</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">in_task</span> <span class="o">!=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">build_task</span><span class="p">(</span><span class="n">in_task</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">enabled_disabled</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">new_task</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="scheduleManagerUI.add_show_info_functions"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI.add_show_info_functions">[docs]</a>    <span class="k">def</span> <span class="nf">add_show_info_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_show</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type current_show: string</span>
+<span class="sd">        :param current_show: the current show that has been rightclicked</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_info</span> <span class="o">=</span> <span class="n">show_info</span><span class="o">.</span><span class="n">showInfo</span><span class="p">(</span><span class="n">current_show</span><span class="p">,</span> <span class="n">in_context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">add_duplicate_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_show</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        :type current_show: string</span>
+<span class="sd">        :param current_show: the current show that has been rightclicked</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_window</span> <span class="o">=</span> <span class="n">new_window</span><span class="o">.</span><span class="n">newWindow</span><span class="p">(</span> 
+            <span class="n">current_show</span><span class="p">,</span>
+            <span class="n">window_type</span><span class="o">=</span><span class="s2">&quot;duplicate&quot;</span><span class="p">,</span>
+            <span class="n">in_context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">,</span>
+            <span class="n">in_schedule_manager</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="p">)</span>
+
+<div class="viewcode-block" id="scheduleManagerUI.add_rename_functions"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI.add_rename_functions">[docs]</a>    <span class="k">def</span> <span class="nf">add_rename_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_show</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type current_show: string</span>
+<span class="sd">        :param current_show: the current show that has been rightclicked</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_window</span> <span class="o">=</span> <span class="n">new_window</span><span class="o">.</span><span class="n">newWindow</span><span class="p">(</span> 
+            <span class="n">current_show</span><span class="p">,</span>
+            <span class="n">window_type</span><span class="o">=</span><span class="s2">&quot;rename&quot;</span><span class="p">,</span>
+            <span class="n">in_context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">,</span>
+            <span class="n">in_schedule_manager</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">open_file_browser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_show</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        :type current_show: string</span>
+<span class="sd">        :param current_show: the current show that has been rightclicked</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_window</span> <span class="o">=</span> <span class="n">new_window</span><span class="o">.</span><span class="n">newWindow</span><span class="p">(</span> 
+            <span class="n">current_show</span><span class="p">,</span>
+            <span class="n">window_type</span><span class="o">=</span><span class="s2">&quot;filebrowser&quot;</span><span class="p">,</span>
+            <span class="n">in_context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">,</span>
+            <span class="n">in_log</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">,</span>
+            <span class="n">in_schedule_manager</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="p">)</span>
+
+    <span class="c1">###############################################################################################</span>
+    <span class="c1"># will delete item from the UI when clicked</span>
+    <span class="c1"># consolidated into one function. As folder structure stops when it reaches a hidden folder.</span>
+    <span class="c1"># this is no need to set hidden down the tree</span>
+    <span class="c1">############################################################################################### </span>
+<div class="viewcode-block" id="scheduleManagerUI.delete_item"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI.delete_item">[docs]</a>    <span class="k">def</span> <span class="nf">delete_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">delete_mode</span><span class="o">=</span><span class="s2">&quot;hidden&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type mode: string</span>
+<span class="sd">        :param mode: mode for show/sequence/shot depending on which list has been clicked</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># DATEBASE IN #</span>
+        <span class="c1"># pull from server before modifing our result</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">db_get</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_show</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;show&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_sequence</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;sequence&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_shot</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;shot&quot;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span><span class="s2">&quot;show&quot;</span><span class="p">):</span>
+            <span class="c1"># sets hidden to true for all nested keys seq/asset/shot</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">delete_mode</span> <span class="o">==</span> <span class="s2">&quot;hidden&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_show</span><span class="p">][</span><span class="s2">&quot;hidden&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">delete_mode</span> <span class="o">==</span> <span class="s2">&quot;pop&quot;</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_show</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pop failed&quot;</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="c1"># DATEBASE OUT #</span>
+            <span class="c1"># Push back to server after modifing our result</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">db_push</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span><span class="p">)</span>
+
+            <span class="c1"># these stop the program from crashing if a active show is not selected as well as making the ui cleaner.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_sequence</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="c1">#self.add_sequence.setStyleSheet(&quot;color:&quot; + CS_RED_STRING)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_shot</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+            <span class="c1">#</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">refresh_show</span><span class="p">()</span>
+
+        <span class="k">elif</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span><span class="s2">&quot;sequence&quot;</span><span class="p">):</span>
+            <span class="c1"># werid error where somtimes will crash, you need to go back to previous key in order to delete</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_sequence</span> <span class="o">!=</span><span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">delete_mode</span> <span class="o">==</span> <span class="s2">&quot;hidden&quot;</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_show</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">][</span><span class="s2">&quot;hidden&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="p">(</span><span class="n">delete_mode</span> <span class="o">==</span> <span class="s2">&quot;pop&quot;</span><span class="p">):</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_show</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">)</span>
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pop failed&quot;</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="c1"># DATEBASE OUT #</span>
+            <span class="c1"># Push back to server after modifing our result</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">db_push</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">refresh_sequence</span><span class="p">(</span><span class="n">refresh_tree</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">shot_listview_ui</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+        <span class="k">elif</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span><span class="s2">&quot;shot&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_shot</span> <span class="o">!=</span><span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">delete_mode</span> <span class="o">==</span> <span class="s2">&quot;hidden&quot;</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_show</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_shot</span><span class="p">][</span><span class="s2">&quot;hidden&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="p">(</span><span class="n">delete_mode</span> <span class="o">==</span> <span class="s2">&quot;pop&quot;</span><span class="p">):</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_show</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_shot</span><span class="p">)</span>
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pop failed&quot;</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="c1"># DATEBASE OUT #</span>
+            <span class="c1"># Push back to server after modifing our result</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">database_connection</span><span class="o">.</span><span class="n">db_push</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">refresh_shot</span><span class="p">(</span><span class="n">refresh_tree</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+        <span class="c1">#</span>
+    
+    <span class="c1">###############################################################################################</span>
+    <span class="c1"># popup warning display when you want to delete an item</span>
+    <span class="c1">############################################################################################### </span>
+<div class="viewcode-block" id="scheduleManagerUI.delete_pop_up"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI.delete_pop_up">[docs]</a>    <span class="k">def</span> <span class="nf">delete_pop_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;user&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self:</span>
+<span class="sd">        :param self: popup display for when a show is been selected for deleation</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">buttonReply</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">question</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;Delete item&#39;</span><span class="p">,</span> <span class="s2">&quot;Are you sure you want to permanently delete this item?&quot;</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">buttonReply</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;admin&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">delete_item</span><span class="p">(</span><span class="n">delete_mode</span><span class="o">=</span><span class="s2">&quot;pop&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">delete_item</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_show</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">sequence_listview_ui</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">asset_listview_ui</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_sequence</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">sequence_listview_ui</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">asset_listview_ui</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_shot</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">shot_listview_ui</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="scheduleManagerUI.keyPressEvent"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI.keyPressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type event: event</span>
+<span class="sd">        :param event: when a key is pressed</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># is a pyqt function even though it doesnt say QT </span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Delete</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_show</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_sequence</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_shot</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span> <span class="p">):</span>
+                <span class="c1">#</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">delete_pop_up</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_show</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_sequence</span> <span class="o">=</span><span class="s2">&quot;&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_shot</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="c1"># when you press enter it will do the same features as add text button</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Return</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">my_show</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_show_functions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">my_show</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_sequence_functions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="s2">&quot;default&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">asset</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_sequence_functions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">asset</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="s2">&quot;asset&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shot</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_shot_functions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shot</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> 
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">)</span></div>
+
+    <span class="c1">#############################################################################################</span>
+    <span class="c1"># #def on_context_menu(self, point, myListWidget, current_item, tab_name=&quot;tab4&quot;):</span>
+    <span class="c1">#############################################################################################</span>
+<div class="viewcode-block" id="scheduleManagerUI.on_context_menu"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI.on_context_menu">[docs]</a>    <span class="k">def</span> <span class="nf">on_context_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">myListWidget</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;show&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type myListWidget: object QWidget</span>
+<span class="sd">        :param myListWidget: the current/active list that has been selected with a right click</span>
+<span class="sd">        :type point: point?</span>
+<span class="sd">        :param point: the current location of the mouse when a right click occurs</span>
+<span class="sd">        :type mode: string</span>
+<span class="sd">        :param mode: each list will have different options</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">myListWidget</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+      
+        <span class="c1"># add context buttons</span>
+        <span class="n">filebrowser_action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;Open Filebrowser&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">sync_action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;Sync to server&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">build_action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;Build Folders (server)&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">build_local_action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;Build Folders (local only)&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">delete_action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;Delete&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">show_info_action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;Show Info&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">rename_action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;Rename&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">duplicate_action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;Duplicate&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># trigger events</span>
+        <span class="n">filebrowser_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_file_browser</span><span class="p">(</span><span class="n">current</span><span class="p">))</span>
+        <span class="n">sync_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">ftpdb_push</span><span class="p">())</span>
+        <span class="n">build_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">create_folders_main_wrapper</span><span class="p">(</span><span class="n">build_folders</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">build_server_folders</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="n">build_local_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">create_folders_main_wrapper</span><span class="p">(</span><span class="n">build_folders</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">build_server_folders</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+        <span class="n">delete_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delete_pop_up</span><span class="p">))</span>
+        <span class="n">show_info_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_show_info_functions</span><span class="p">(</span><span class="n">current</span><span class="p">))</span>
+        <span class="n">rename_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_rename_functions</span><span class="p">(</span><span class="n">current</span><span class="p">))</span>
+        <span class="n">duplicate_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_duplicate_function</span><span class="p">(</span><span class="n">current</span><span class="p">))</span>
+
+        <span class="c1"># create context menu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">filebrowser_action</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">sync_action</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">build_action</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">build_local_action</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">rename_action</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">delete_action</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">mode</span><span class="o">==</span><span class="s2">&quot;show&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">show_info_action</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">duplicate_action</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">CS_VERSION</span> <span class="o">==</span> <span class="s2">&quot;development&quot;</span><span class="p">:</span>
+            <span class="n">hard_delete</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;Hard Delete (admin)&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="n">hard_delete</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">delete_pop_up</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;admin&quot;</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">hard_delete</span><span class="p">)</span>
+
+        <span class="c1"># show context menu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">popMenu</span><span class="o">.</span><span class="n">exec_</span><span class="p">(</span><span class="n">myListWidget</span><span class="o">.</span><span class="n">mapToGlobal</span><span class="p">(</span><span class="n">point</span><span class="p">))</span></div>
+
+    <span class="c1">#############################################################################################</span>
+    <span class="c1"># makes the buttons unclickable if no previous key/dict is selected + conditional formatting</span>
+    <span class="c1">#############################################################################################</span>
+<div class="viewcode-block" id="scheduleManagerUI.enabled_disabled"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI.enabled_disabled">[docs]</a>    <span class="k">def</span> <span class="nf">enabled_disabled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self:</span>
+<span class="sd">        :param self: defaults certain items to disabled so users cannot click ui elements, if not disalabed and data is not input correctly the program will crash</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">off_color</span> <span class="o">=</span> <span class="s2">&quot;color: &quot;</span> <span class="o">+</span> <span class="s2">&quot;QColor(100,10,100);&quot;</span>
+        <span class="n">active_color</span> <span class="o">=</span> <span class="s2">&quot;color: black;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_show</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;hover{ color: black;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">my_show</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">active_color</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_show</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_sequence</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_sequence</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">off_color</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">off_color</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_asset</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_asset</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">off_color</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">asset</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">off_color</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_sequence</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_sequence</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;hover{ color: black;&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">active_color</span><span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_asset</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_asset</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;hover{ color: black;&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">asset</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">active_color</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_sequence</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_shot</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_shot</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">off_color</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shot</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">off_color</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_shot</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_shot</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;hover{ color: black;&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shot</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">active_color</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_shot</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_sequence</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_new_task</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_new_task</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">off_color</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">new_task</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">off_color</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_new_task</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_new_task</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;hover{ color: black;&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">new_task</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">active_color</span><span class="p">)</span></div>
+
+    <span class="c1">###############################################################################################</span>
+    <span class="c1"># tree view tab, mainly used to debugging but can be used for viewing if preferd over json file</span>
+    <span class="c1">############################################################################################### </span>
+<div class="viewcode-block" id="scheduleManagerUI.tabUI_treeview_build"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI.tabUI_treeview_build">[docs]</a>    <span class="k">def</span> <span class="nf">tabUI_treeview_build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type self:</span>
+<span class="sd">        :param self:</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;stand alone, remove from main program once we go live&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">user_intel</span> <span class="o">=</span> <span class="n">cinestron_user_info</span><span class="o">.</span><span class="n">cinestron_user_info</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_name&quot;</span><span class="p">]]</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;developer&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">user_intel</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tab2</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tab2</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+                <span class="c1">#self.tab2 = set_scheme(self.tab2)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_layout</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab2</span><span class="p">,</span> <span class="s2">&quot;Tree Viewer&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_layout</span><span class="o">.</span><span class="n">setTabText</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="s2">&quot;Tree Viewer&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tabUI_treeview</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="scheduleManagerUI.tabUI_treeview"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI.tabUI_treeview">[docs]</a>    <span class="k">def</span> <span class="nf">tabUI_treeview</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_tab</span><span class="p">,</span> <span class="n">in_dictionary</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type in_tab: string</span>
+<span class="sd">        :param in_tab: that tab location where the treeview will appear</span>
+<span class="sd">        :type in_dictionary: dict</span>
+<span class="sd">        :param in_dictionary: the current active dict</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QFormLayout</span><span class="p">()</span>
+        <span class="n">viewer</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+    
+        <span class="n">widget</span> <span class="o">=</span> <span class="n">QTreeWidget</span><span class="p">()</span>
+        <span class="n">fill_widget</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">in_dictionary</span><span class="p">)</span>
+
+        <span class="n">widget3</span> <span class="o">=</span> <span class="n">QTreeWidget</span><span class="p">()</span>
+        <span class="n">fill_widget</span><span class="p">(</span><span class="n">widget3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">sequence_listview</span><span class="p">)</span>
+        <span class="n">viewer</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">widget3</span><span class="p">)</span>
+
+        <span class="n">widget5</span> <span class="o">=</span> <span class="n">QTreeWidget</span><span class="p">()</span>
+        <span class="n">fill_widget</span><span class="p">(</span><span class="n">widget5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">shot_listview</span><span class="p">)</span>
+        <span class="n">viewer</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">widget5</span><span class="p">)</span>
+        
+        <span class="c1">#</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">widget2</span> <span class="o">=</span> <span class="n">QTreeWidget</span><span class="p">()</span>
+            <span class="n">fill_widget</span><span class="p">(</span><span class="n">widget2</span><span class="p">,</span> <span class="n">in_dictionary</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_show</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_sequence</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">active_shot</span><span class="p">])</span>
+            <span class="n">viewer</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">widget2</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="n">in_tab</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">viewer</span><span class="p">)</span></div>
+
+<span class="c1">###############################################################################################</span>
+<span class="c1"># &quot;my&quot; tasks tab</span>
+<span class="c1">############################################################################################### </span>
+    <span class="c1"># this tab needs to show the current users projects, will need to search through the Json file for ther </span>
+    <span class="c1"># name in the task key and then show that show, otherwise skip that show.</span>
+<div class="viewcode-block" id="scheduleManagerUI.my_tasks_tab"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI.my_tasks_tab">[docs]</a>    <span class="k">def</span> <span class="nf">my_tasks_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first_run</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;filter&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type first_run: Boolean</span>
+<span class="sd">        :param first_run: creates empty ui elements during first run</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">first_run</span><span class="o">==</span><span class="kc">False</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tab3</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tab3</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+
+        <span class="n">display_name</span> <span class="o">=</span> <span class="s2">&quot;temporary show filter - needs refresh to work&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active_show_combobox</span> <span class="o">=</span> <span class="n">display_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">my_cinestron_user_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">my_tasks_generate</span><span class="p">()</span>
+
+        <span class="c1"># gets an active show list to use as a filter</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;filter&quot;</span><span class="p">:</span>
+            <span class="n">active_show_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">active_show_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">get_shows</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">active_show_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">active_show_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
+
+        <span class="c1">############################################################################</span>
+        <span class="c1"># how the ui is displayed</span>
+        <span class="c1">############################################################################ </span>
+        <span class="c1"># create the layout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab3</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+
+        <span class="c1"># create ui elements</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">task_show_combobox</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">task_show_combobox</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">display_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">task_show_combobox</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="n">active_show_list</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh_push</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Refresh tasks(temp)&quot;</span><span class="p">)</span>
+
+        <span class="c1"># adding the ui elements to the layout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab3</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">task_show_combobox</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab3</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">refresh_push</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab3</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QHLine</span><span class="p">())</span>
+
+        <span class="c1"># on ui element click events </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">task_show_combobox</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">my_task_set_combobox</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh_push</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_tasks_tab</span><span class="p">(</span><span class="n">first_run</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+
+        <span class="c1"># adds scoll bar to the layout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1131</span><span class="p">,</span> <span class="mi">951</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setVerticalScrollBarPolicy</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAsNeeded</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setHorizontalScrollBarPolicy</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAsNeeded</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setWidgetResizable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;scrollArea&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab3</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout_tab3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab3</span><span class="p">)</span>
+
+        <span class="c1"># add the scroll area to the master layout</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">first_run</span><span class="o">==</span><span class="kc">True</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_layout</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="p">,</span> <span class="s2">&quot;Tasks&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_layout</span><span class="o">.</span><span class="n">insertTab</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="p">,</span> <span class="s2">&quot;Tasks&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tab_master_layout</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> 
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">my_tasks_population</span><span class="p">(</span><span class="n">active_show_list</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">my_task_set_combobox</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type :</span>
+<span class="sd">        :param : shows the current text in the search task combobox</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active_show_combobox</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">task_show_combobox</span><span class="o">.</span><span class="n">currentText</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">my_tasks_tab</span><span class="p">(</span><span class="n">first_run</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">active_show_combobox</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_show_combobox</span>
+
+<div class="viewcode-block" id="scheduleManagerUI.my_tasks_population"><a class="viewcode-back" href="../dev_docs.html#schedule_manager_ui.scheduleManagerUI.my_tasks_population">[docs]</a>    <span class="k">def</span> <span class="nf">my_tasks_population</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">active_show</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type :</span>
+<span class="sd">        :param : populates the data for the my tasks</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">active_show_list</span> <span class="o">=</span> <span class="n">active_show</span>
+        <span class="c1"># get data to use for search dicts</span>
+        <span class="n">search_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;assigned&#39;</span><span class="p">,</span> <span class="s1">&#39;producer&#39;</span><span class="p">,</span> <span class="s1">&#39;supervisor&#39;</span><span class="p">]</span>
+        <span class="n">assigned_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">sorted_employee_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">my_cinestron_user_info</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+
+        <span class="c1"># user loop</span>
+        <span class="k">for</span> <span class="n">current</span> <span class="ow">in</span> <span class="n">sorted_employee_list</span><span class="p">:</span>
+
+            <span class="c1"># don&#39;t make a spolier if the artist donest have any info</span>
+            <span class="n">has_data</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">current</span> <span class="o">==</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">user_total_entries</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="c1"># use the special collapsable widget</span>
+                <span class="n">my_own_widget_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+                <span class="n">spoiler_widget</span> <span class="o">=</span> <span class="n">spoiler</span><span class="o">.</span><span class="n">Spoiler</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">current</span><span class="p">)</span>
+                <span class="c1"># type</span>
+                <span class="k">for</span> <span class="n">assign_type</span> <span class="ow">in</span> <span class="n">search_keys</span><span class="p">:</span>
+
+                    <span class="k">if</span> <span class="p">(</span><span class="n">assign_type</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">my_cinestron_user_info</span><span class="p">[</span><span class="n">current</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+                        <span class="k">for</span> <span class="n">next_entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_cinestron_user_info</span><span class="p">[</span><span class="n">current</span><span class="p">][</span><span class="n">assign_type</span><span class="p">]:</span>
+                            <span class="n">join_entry</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">next_entry</span><span class="p">)</span>
+                            <span class="n">join_entry</span> <span class="o">=</span> <span class="n">join_entry</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">assign_type</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="p">(</span><span class="n">join_entry</span> <span class="ow">in</span> <span class="n">user_total_entries</span><span class="p">):</span>
+                                <span class="n">ignore</span> <span class="o">=</span> <span class="mi">0</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="c1"># store and check for duplicates</span>
+                                <span class="n">user_total_entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">join_entry</span><span class="p">)</span>
+
+                                <span class="n">tmp</span> <span class="o">=</span> <span class="n">next_entry</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+                                <span class="n">joined_entry</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2"> Active tasks: &quot;</span>
+                                <span class="n">joined_entry</span> <span class="o">=</span> <span class="n">joined_entry</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+                                <span class="n">show_list</span> <span class="o">=</span> <span class="p">(</span><span class="n">next_entry</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> 
+                                <span class="n">sequence_list</span> <span class="o">=</span> <span class="p">(</span><span class="n">next_entry</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                                <span class="n">shot_list</span> <span class="o">=</span> <span class="p">(</span><span class="n">next_entry</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                                <span class="n">task_list</span> <span class="o">=</span> <span class="p">[]</span>
+                                <span class="n">task_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_entry</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+                                <span class="n">my_unique_task_key_ui</span> <span class="o">=</span> <span class="n">schedule_manager</span><span class="o">.</span><span class="n">task_key</span><span class="o">.</span><span class="n">taskKey</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="p">)</span>
+                                <span class="n">all_my_task_keys</span> <span class="o">=</span> <span class="p">[]</span>
+                                <span class="n">all_my_task_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">my_unique_task_key_ui</span><span class="p">)</span>
+
+                                <span class="c1"># this will make it so only active shows will display information</span>
+                                <span class="k">if</span> <span class="p">(</span><span class="n">tmp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">active_show_list</span><span class="p">):</span>
+                                    <span class="n">my_own_widget_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="n">joined_entry</span><span class="p">))</span>
+                                    <span class="n">my_own_widget_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">my_unique_task_key_ui</span><span class="p">)</span>
+
+                                    <span class="n">my_unique_task_key_ui</span><span class="o">.</span><span class="n">task_run</span><span class="p">(</span> 
+                                        <span class="n">show</span> <span class="o">=</span> <span class="n">show_list</span><span class="p">,</span>
+                                        <span class="n">sequence</span> <span class="o">=</span> <span class="n">sequence_list</span><span class="p">,</span>
+                                        <span class="n">shot</span> <span class="o">=</span> <span class="n">shot_list</span><span class="p">,</span> 
+                                        <span class="n">task</span> <span class="o">=</span> <span class="n">task_list</span><span class="p">,</span>
+                                        <span class="n">in_show_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="o">.</span><span class="n">show_json</span><span class="p">)</span>
+                                    <span class="c1">#</span>
+                                    <span class="c1"># make a spolier for the artist</span>
+                                    <span class="n">has_data</span> <span class="o">=</span> <span class="kc">True</span>
+                                <span class="c1">#</span>
+                        <span class="c1">#</span>
+                    <span class="c1">#</span>
+                    <span class="n">spoiler_widget</span><span class="o">.</span><span class="n">setContentLayout</span><span class="p">(</span><span class="n">my_own_widget_layout</span><span class="p">)</span>
+
+            <span class="c1"># addingback to main ui</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">has_data</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab3</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">spoiler_widget</span><span class="p">)</span></div>
+        <span class="c1">#</span>
+
+<span class="c1">###############################################################################################</span>
+<span class="c1"># &quot;my&quot; tasks tab</span>
+<span class="c1">############################################################################################### </span>
+    <span class="c1"># this tab needs to show the current users projects, will need to search through the Json file for ther </span>
+    <span class="c1"># name in the task key and then show that show, otherwise skip that show.</span>
+    <span class="k">def</span> <span class="nf">timeline_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1">#self.tab4.deleteLater()</span>
+        <span class="c1">#self.tab4 = QWidget()</span>
+        <span class="c1">#self.tab4 = set_scheme(self.tab2)</span>
+        <span class="c1">#self.tab_master_layout.addTab(self.tab4, &quot;Timeline (under construction&quot;)</span>
+        <span class="c1">#self.tab_master_layout.setTabText(4,&quot;Timeline (under construction&quot;)</span>
+
+        <span class="c1">############################################################################</span>
+        <span class="c1"># how the ui is displayed</span>
+        <span class="c1">############################################################################ </span>
+        <span class="c1"># create the layout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab4</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">timeline_display</span> <span class="o">=</span> <span class="n">timeline</span><span class="o">.</span><span class="n">timeLine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule_manager</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_tab4</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">timeline_display</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab4</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout_tab4</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="mi">2280</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">1520</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>   
+    <span class="n">app_icon</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">()</span>
+    <span class="n">logo_locaion</span> <span class="o">=</span> <span class="n">get_base_path</span><span class="p">()</span> <span class="o">+</span><span class="s1">&#39;\images\logo.jpg&#39;</span>
+    <span class="n">app_icon</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span><span class="n">logo_locaion</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">))</span>
+    <span class="n">app_icon</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span><span class="n">logo_locaion</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span><span class="mi">24</span><span class="p">))</span>
+    <span class="n">app_icon</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span><span class="n">logo_locaion</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">))</span>
+    <span class="n">app_icon</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span><span class="n">logo_locaion</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">48</span><span class="p">,</span><span class="mi">48</span><span class="p">))</span>
+    <span class="n">app_icon</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span><span class="n">logo_locaion</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">))</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">setWindowIcon</span><span class="p">(</span><span class="n">app_icon</span><span class="p">)</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="n">CsContext</span><span class="p">()</span>
+    <span class="c1">#name = &quot;jon.gaffney&quot;</span>
+    <span class="c1">#password = &quot;Hido3987&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;j.gaffney&quot;</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="s2">&quot;Kjdo3289&quot;</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_name_server&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;X</span><span class="se">\\</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">name</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_email&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;@cinestron.com&quot;</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_email_password&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">password</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_server_password&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">password</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">user_info</span><span class="p">[</span><span class="s2">&quot;user_IM_password&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">password</span>
+
+    <span class="n">context</span><span class="o">.</span><span class="n">setup_root_dirs</span><span class="p">()</span>
+
+    <span class="n">ex</span> <span class="o">=</span> <span class="n">scheduleManagerUI</span><span class="p">(</span><span class="n">in_context</span><span class="o">=</span><span class="n">context</span><span class="p">)</span>
+    <span class="n">ex</span> <span class="o">=</span> <span class="n">set_scheme</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span>
+    <span class="n">ex</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">ex</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">())</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">):</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cinestron Ltd.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2018',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
