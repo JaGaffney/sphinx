@@ -11,19 +11,6 @@
   <title>Developer Documentation &mdash; cinestron 2018 documentation</title>
   
 
-  
-  
-  
-  
-
-  
-
-  
-  
-    
-
-  
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
@@ -79,8 +66,10 @@
               <!-- Local TOC -->
               <div class="local-toc"><ul>
 <li><a class="reference internal" href="#">Developer Documentation</a><ul>
+<li><a class="reference internal" href="#module-civilization">Core</a></li>
 <li><a class="reference internal" href="#module-schedule_manager_ui">Project Manager Tab</a></li>
 <li><a class="reference internal" href="#module-web_browser_alt">Web Browser Tab</a></li>
+<li><a class="reference internal" href="#module-ftp_connect">FileBrowser Tab</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 </li>
@@ -107,20 +96,6 @@
         
         <div class="rst-content">
         
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
@@ -151,169 +126,13 @@
   <div class="section" id="developer-documentation">
 <h1>Developer Documentation<a class="headerlink" href="#developer-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
+</div>
 
-</dd></dl>
+<div class="section" id="module-civilization">
+<span id="core"></span><h2>Core<a class="headerlink" href="#module-civilization" title="Permalink to this headline">¶</a></h2>
 
-<span class="target" id="module-utils"></span><span class="target" id="module-context"></span><dl class="class">
-<dt id="context.CsContext">
-<em class="property">class </em><code class="descclassname">context.</code><code class="descname">CsContext</code><a class="reference internal" href="_modules/context.html#CsContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext" title="Permalink to this definition">¶</a></dt>
-<dd><p>what this class does</p>
-<dl class="method">
-<dt id="context.CsContext.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/context.html#CsContext.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
 
-<dl class="method">
-<dt id="context.CsContext.add_file_browser_tab">
-<code class="descname">add_file_browser_tab</code><span class="sig-paren">(</span><em>path</em>, <em>index</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/context.html#CsContext.add_file_browser_tab"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext.add_file_browser_tab" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>path</strong> – </li>
-<li><strong>index</strong> – </li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
 
-<dl class="method">
-<dt id="context.CsContext.clear_file_browser_tabs">
-<code class="descname">clear_file_browser_tabs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/context.html#CsContext.clear_file_browser_tabs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext.clear_file_browser_tabs" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="context.CsContext.get_drive">
-<code class="descname">get_drive</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/context.html#CsContext.get_drive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext.get_drive" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="context.CsContext.get_master_json">
-<code class="descname">get_master_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/context.html#CsContext.get_master_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext.get_master_json" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="context.CsContext.loadContext">
-<code class="descname">loadContext</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/context.html#CsContext.loadContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext.loadContext" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="context.CsContext.removeContext">
-<code class="descname">removeContext</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/context.html#CsContext.removeContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext.removeContext" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="context.CsContext.remove_file_browser_tab">
-<code class="descname">remove_file_browser_tab</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/context.html#CsContext.remove_file_browser_tab"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext.remove_file_browser_tab" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>string</em>) – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="context.CsContext.saveContext">
-<code class="descname">saveContext</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/context.html#CsContext.saveContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext.saveContext" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="context.CsContext.setup_root_dirs">
-<code class="descname">setup_root_dirs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/context.html#CsContext.setup_root_dirs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#context.CsContext.setup_root_dirs" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
 
 <span class="target" id="module-spolier"></span><dl class="class">
 <dt id="spolier.Spoiler">
@@ -987,12 +806,7 @@ connection to the server as well as mongo database</p>
 
 </dd></dl>
 
-<span class="target" id="module-database_connection"></span><dl class="class">
-<dt id="database_connection.databaseConnection">
-<em class="property">class </em><code class="descclassname">database_connection.</code><code class="descname">databaseConnection</code><span class="sig-paren">(</span><em>in_context=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database_connection.html#databaseConnection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database_connection.databaseConnection" title="Permalink to this definition">¶</a></dt>
-<dd><p>This class handles the connection to the mongodb server and its data, as well as 
-handles the saving of data back to the server. As well as saving the data locally or to the ftpserver</p>
-</dd></dl>
+
 
 <span class="target" id="module-task_key"></span><dl class="class">
 <dt id="task_key.taskKey">
@@ -1246,6 +1060,9 @@ used for 1 window so far but template is still in place</p>
 </dd></dl>
 
 </dd></dl>
+
+</div>
+
 
 </div>
 
