@@ -5,16 +5,8 @@ Developer Documentation
    :maxdepth: 4
    :caption: Contents:
 
-Mongo data base
-----------------------------------
-* To fast start mongo on the server:
-	cd ../../../../../&&cd "C:\Program Files\MongoDB\Server\3.6\bin"&&mongod.exe --config="C:\Program Files\MongoDB\Server\3.6\bin\mongod.cfg"&&mongo.exe
-
 Core
 ----------------------------------
-.. automodule:: civilization
-.. autoclass:: CivilizationUI
-	:members: __init__, add_tab, tab1UI, drive_change, login_mode_change, logout_functions, login_functions, login_call, tabEmailContacts, tabWebBrowserUI, add_email_recipent, email_wrapper, email_signed_login, tabscheduleManagerUI, newBrowserTab
 
 .. automodule:: utils
 .. autoclass:: None
@@ -41,10 +33,6 @@ Project Manager Tab
 .. autoclass:: scheduleManager
     :members: __init__, set_active, get_network_path, build_active_from_path, get_database_json, get_server_json, create_show_dirs_schedule_manager, get_shows, get_sequence, get_shot, get_task, build_json_show, build_sequence, build_shot, build_task, build_json_structure_wrapper, build_json_structure, set_list, populate_list, item_click, find_in_obj, my_tasks_generate
 
-.. automodule:: database_connection
-.. autoclass:: databaseConnection
-	:members: connect_to_server, save_to_server
-
 .. automodule:: task_key
 .. autoclass:: taskKey
 	:members: __init__, set_table_size, refresh, clear_table, sizeHint, selectFile, itemChanged, row_population, task_run
@@ -57,29 +45,6 @@ Project Manager Tab
 .. autoclass:: newWindow
 	:members: __init__, rename_window, rename_dict
 
-Web Browser Tab
-----------------------------------
-.. automodule:: web_browser_alt
-.. autoclass:: MainWindow
-
-
-FileBrowser Tab
-----------------------------------
-.. automodule:: ftp_connect
-.. autoclass:: FtpConnect
-    :members:
-
-.. automodule:: ftp_connect_ui
-.. autoclass:: FtpConnectUI
-    :members:
-
-.. automodule:: file_browser
-.. autoclass:: FileBrowser
-    :members:
-
-.. automodule:: threading_ftp
-.. autoclass:: ThreadingMain
-    :members:
 
 Indices and tables
 ------------------------------
